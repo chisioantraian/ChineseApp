@@ -10,9 +10,8 @@ namespace WpfApp2.Logic
 {
     public partial class ChineseService
     {
-        const string inputPath = @"C:\Users\chisi\Desktop\work\ConsoleApp1_csharp\ConsoleApp1_csharp\cjk-decomp.txt";
-        static string outputPath = @"C:\Users\chisi\Desktop\work\ConsoleApp1_csharp\ConsoleApp1_csharp\output.txt";
-        static StreamWriter outputFile = new StreamWriter(outputPath);
+        //TODO use relative paths
+        const string inputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt";
 
         //TODO use singleton
         public static Dictionary<char, List<char>> GetCharacterDecomposition()
