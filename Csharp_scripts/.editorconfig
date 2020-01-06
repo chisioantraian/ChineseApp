@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CA1707: Remove the underscores from assembly name ConsoleApp1_csharp.
+dotnet_diagnostic.CA1707.severity = suggestion
