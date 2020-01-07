@@ -26,6 +26,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MySql.Data" Version="8.0.18" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
   </ItemGroup>
 
 </Project>

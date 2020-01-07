@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Data.SQLite;
 
 namespace ConsoleApp1_csharp.scripts
 {
     public class Subtlex
     {
-        const string inputPath = @"C:\Users\chisi\Desktop\work\ConsoleApp1_csharp\ConsoleApp1_csharp\scripts\SUBTLEX.utf8";
-        const string strokesPath = @"C:\Users\chisi\Desktop\work\ConsoleApp1_csharp\ConsoleApp1_csharp\scripts\ucs-strokes.txt";
+        const string inputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\SUBTLEX.utf8";
+        const string strokesPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\ucs-strokes.txt";
         //static string outputPath = @"C:\Users\chisi\Desktop\work\ConsoleApp1_csharp\ConsoleApp1_csharp\output.txt";
         //static StreamWriter outputFile = new StreamWriter(outputPath);
         //var inputFile = new StreamReader(inputPath);
@@ -34,14 +35,15 @@ namespace ConsoleApp1_csharp.scripts
             public string StrokesCount { get; set; }
         };
 
+        List<Word> words = new List<Word>();
+
         public void Run()
         {
-            var words = new List<Word>();
 
             AddSubtlexInfo(words);
-            AddStrokesInfo(words);
+            //AddStrokesInfo(words);
 
-            Process(words);
+            //Process(words);
         }
 
         private void AddSubtlexInfo(List<Word> words)
@@ -108,6 +110,36 @@ namespace ConsoleApp1_csharp.scripts
             foreach (var w in test)
             {
                 Console.WriteLine($"{w.Simplified} , {w.StrokesCount}");
+            }
+        }
+
+        public void CreateDatabase()
+        {
+            string ctQuery = @"CREATE TABLE IF NOT EXISTS [Words] (
+                             [ID] NVARCHAR(20),
+                             [Pinyin] NVARCHAR(120),
+                             [Definition] NVARCHAR(500),
+                             [Simplified] NVARCHAR(30),
+                             [StrokeCount] NVARCHAR(5)
+                             )";
+            SQLiteConnection.CreateFile("dataCHN.db3");
+            using (var con = new SQLiteConnection("data source=dataCHN.db3"))
+            using (var com = new SQLiteCommand(con))
+            {
+                con.Open();
+
+                com.CommandText = ctQuery;
+                com.ExecuteNonQuery();
+
+                foreach (var w in words)
+                {
+                    Console.WriteLine($"{w.Simplified}");
+                    com.CommandText = $@"INSERT INTO Words (Pinyin, Definition, Simplified, StrokeCount)
+                                         VALUES ('{w.Pinyin}', '{w.Definition}', '{w.Simplified}', '{w.StrokesCount}')";
+                    com.ExecuteNonQuery();
+                }
+
+                con.Close();
             }
         }
 

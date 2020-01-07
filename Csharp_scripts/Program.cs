@@ -1,5 +1,4 @@
-﻿using ConsoleApp1_csharp.c7_nutshell;
-using ConsoleApp1_csharp.scripts;
+﻿using ConsoleApp1_csharp.scripts;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -20,6 +19,7 @@ namespace ConsoleApp1
         {
             Subtlex s = new Subtlex();
             s.Run();
+            s.CreateDatabase();
         }
     }
 }
