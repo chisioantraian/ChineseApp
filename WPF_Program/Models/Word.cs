@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WpfApp2.Models
+﻿namespace WpfApp2.Models
 {
     public class Word
     {

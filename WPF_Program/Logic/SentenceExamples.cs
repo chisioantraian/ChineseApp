@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace WpfApp2.Logic
 {
-    public class SentenceExamples
+    public static class SentenceExamples
     {
-        private static List<string> sentences = new List<string>()
+        private static readonly List<string> sentences = new List<string>()
         {
             "你喝茶",
             "他是我的同学",

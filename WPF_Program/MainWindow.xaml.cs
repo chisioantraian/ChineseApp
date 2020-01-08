@@ -1,7 +1,6 @@
 ﻿
 namespace WpfApp2
 {
-    using MySql.Data.MySqlClient;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -18,9 +17,8 @@ namespace WpfApp2
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        private List<Word> words;
-        private Dictionary<char, List<char>> dict;
+        private readonly List<Word> words;
+        private readonly Dictionary<char, List<char>> dict;
 
         public MainWindow()
         {
@@ -118,8 +116,6 @@ namespace WpfApp2
             wordPanel.Margin = margin;
             wordBorder.Child = wordPanel;
 
-
-
             StackPanel sPanel = new StackPanel { Orientation = Orientation.Horizontal };
 
             List<char> singleChar = word.Simplified.ToList();
@@ -143,7 +139,6 @@ namespace WpfApp2
                         .ToList();
                     UpdateShownWords(filteredWords);
                 };
-
 
                 TextBlock pBox = new TextBlock
                 {
@@ -212,8 +207,6 @@ namespace WpfApp2
                 DecompositionBlock.Text = $"{searchInput[0]} : {decompositionText}";
             }
 
-
-
             // get simplified representation of words which contains character represented by 'searchinput'
             foreach (var decompositionTuple in dict)
             {
@@ -246,9 +239,6 @@ namespace WpfApp2
             Console.WriteLine("ShowComposeResult - end");
         }
 
-
-
-
         private void UpdateShownWords(List<Word> filteredWords)
         {
             ResultCountBlock.Text = $"{filteredWords.Count} words found";
@@ -260,7 +250,6 @@ namespace WpfApp2
             {
                 AddWordToPanel(word);
             }
-
         }
 
         private void SBox_MouseEnter(object sender, MouseEventArgs e, string c)
@@ -318,19 +307,15 @@ namespace WpfApp2
 
             foreach (Word w in words)
             {
-                if (w.Simplified.Length == 1)
+                if (w.Simplified.Length == 1 && w.Simplified[0] == c)
                 {
-                    if (w.Simplified[0] == c)
-                    {
-                        string def = w.Definitions.Replace('/', '\n'); //todo \n
-                        result += $"{c}: {def}";
-                    }
+                    string def = w.Definitions.Replace('/', '\n'); //todo \n
+                    result += $"{c}: {def}";
                 }
             }
 
             return result;
         }
-
 
         private void InitializeExamples()
         {

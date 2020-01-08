@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using WpfApp2.Models;
 using static WpfApp2.Logic.Kangxi;
 
 namespace WpfApp2.Logic
 {
-    public partial class ChineseService
+    public static partial class ChineseService
     {
         //TODO use relative paths
-        const string inputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt";
+        private const string inputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt";
 
         //TODO use singleton
         public static Dictionary<char, List<char>> GetCharacterDecomposition()
@@ -45,16 +43,13 @@ namespace WpfApp2.Logic
             return resultDict;
         }
 
-
         private static void ProcessRule(Rule rule, Dictionary<char, List<char>> dict, List<Rule> decompositionRules)
         {
-            //var listComponents = new List<char> { rule.ToBeDecomposed };
             var listComponents = new List<char>();
             if (rule.ComponentA != null)
                 listComponents.Add((char)rule.ComponentA);
             if (rule.ComponentB != null)
                 listComponents.Add((char)rule.ComponentB);
-
 
             var result = new List<char>();
 
@@ -82,7 +77,6 @@ namespace WpfApp2.Logic
                 dict.Add(rule.ToBeDecomposed, result);
         }
 
-
         private static Dictionary<char, List<char>> GetDecompositionRules()
         {
             Dictionary<char, List<char>> basicDict = new Dictionary<char, List<char>>();
@@ -94,7 +88,6 @@ namespace WpfApp2.Logic
             }
             return basicDict;
         }
-
 
         private static Rule Annalyze(string line)
         {
@@ -118,7 +111,6 @@ namespace WpfApp2.Logic
 
             return new Rule(characterToBeDecomposed, compositionType, componentA, componentB);
         }
-
 
         private static void AnalyzeLine(string line, Dictionary<char, List<char>> dict)
         {

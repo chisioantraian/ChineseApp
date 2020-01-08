@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace WpfApp2.Logic
 {
-    public class Kangxi
+    public class KangxiRadical
     {
-        public class KangxiRadical
-        {
-            public char Symbol { get; set; }
-            public int Number { get; set; }
-        }
+        public char Symbol { get; set; }
+        public int Number { get; set; }
+    }
+
+    public static class Kangxi
+    {
         public static List<KangxiRadical> GetRadicals()
         {
             return new List<KangxiRadical>()

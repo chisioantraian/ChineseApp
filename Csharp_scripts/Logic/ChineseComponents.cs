@@ -9,10 +9,7 @@ namespace WpfApp2.Logic
 {
     public partial class ChineseService
     {
-        const string inputPath = @"C:\Users\chisi\Desktop\work\ConsoleApp1_csharp\ConsoleApp1_csharp\cjk-decomp.txt";
-        static string outputPath = @"C:\Users\chisi\Desktop\work\ConsoleApp1_csharp\ConsoleApp1_csharp\output.txt";
-        static StreamWriter outputFile = new StreamWriter(outputPath);
-
+        private const string inputPath = @"C:\Users\chisi\Desktop\work\ConsoleApp1_csharp\ConsoleApp1_csharp\cjk-decomp.txt";
 
         public class MyTuple
         {
@@ -37,12 +34,10 @@ namespace WpfApp2.Logic
         //TODO use singleton
         public static Dictionary<char, List<char>> GetCharacterDecomposition()
         {
-           
-
             var dict = new Dictionary<char, List<char>>();
             List<KangxiRadical> kangxiRadicals = Kangxi.GetRadicals();
             List<MyTuple> decompositionRules = new List<MyTuple>();
-            
+
             foreach (string line in File.ReadLines(inputPath).Skip(10640))
             {
                 //Console.WriteLine("test " + line);
@@ -92,12 +87,6 @@ namespace WpfApp2.Logic
                 if (! dict.ContainsKey(rule.ToBeDecomposed))
                 {
                     dict.Add(rule.ToBeDecomposed, result);
-                    outputFile.Write($"{rule.ToBeDecomposed} :");
-                    foreach (var r in result)
-                    {
-                        outputFile.Write($"{r} ");
-                    }
-                    outputFile.WriteLine("");
                 }
             }
 
@@ -126,6 +115,7 @@ namespace WpfApp2.Logic
 
             return new MyTuple(characterToBeDecomposed, compositionType, componentA, componentB);
         }
+
         private static void AnalyzeLine(string line, Dictionary<string, List<string>> dict)
         {
             string character = line.Split(':')[0];

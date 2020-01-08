@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WpfApp2.Models
+﻿namespace WpfApp2.Models
 {
     public class Rule
     {
-        private char characterToBeDecomposed;
-        private char? componentA;
-        private char? componentB;
+        private readonly char characterToBeDecomposed;
+        private readonly char? componentA;
+        private readonly char? componentB;
 
         public Rule(char characterToBeDecomposed, string compositionType, char? componentA, char? componentB)
         {

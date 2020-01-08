@@ -1,7 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using WpfApp2.Models;
 
 namespace WpfApp2.Logic
@@ -39,6 +37,5 @@ namespace WpfApp2.Logic
             }
             return words;
         }
-
     }
 }

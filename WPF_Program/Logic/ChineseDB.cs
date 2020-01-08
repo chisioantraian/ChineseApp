@@ -1,12 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using WpfApp2.Models;
 
 namespace WpfApp2.Logic
 {
-    public partial class ChineseService
+    public static partial class ChineseService
     {
         public static List<Word> GetWordsFromDatabase()
         {
@@ -39,6 +37,5 @@ namespace WpfApp2.Logic
             }
             return words;
         }
-
     }
 }
