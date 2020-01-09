@@ -11,7 +11,7 @@ namespace WpfApp2.Logic
     {
         private const string detailedInputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\SUBTLEX.utf8";
         private const string strokesPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\ucs-strokes.txt";
-
+        private static int rank = 0;
         public static List<Word> GetWordsFromDatabase()
         {
             List<Word> words = new List<Word>();
@@ -59,6 +59,7 @@ namespace WpfApp2.Logic
             List<string> tokens = line.Split('\t').ToList();
             DetailedWord toBeInserted = new DetailedWord()
             {
+                Rank = rank.ToString(),
                 Simplified = tokens[0],
                 Length = tokens[1],
                 Pinyin = tokens[2],
@@ -75,6 +76,7 @@ namespace WpfApp2.Logic
                 AllPosFreq = tokens[13],
                 Definition = tokens[14]
             };
+            rank++;
 
             detailedWords.Add(toBeInserted);
         }

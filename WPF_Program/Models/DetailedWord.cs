@@ -6,6 +6,7 @@ namespace CSharp_scripts.Models
 {
     public class DetailedWord
     {
+        public string Rank { get; set; }
         public string? Simplified { get; set; }
         public string? Length { get; set; }
         public string? Pinyin { get; set; }

@@ -28,6 +28,7 @@ namespace WpfApp2
             InitializeComponent();
             words = ChineseService.GetWordsFromDatabase();
             detailedWords = ChineseService.GetDetailedWords();
+            //TransferInformationBetweenLists();
             dict = ChineseService.GetCharacterDecomposition();
             Console.WriteLine($"number of words: {words.Count}");
             Console.WriteLine($"number of lines(dict): {dict.Count}");
@@ -42,6 +43,21 @@ namespace WpfApp2
                 .Where(w => w.Definitions.Contains("mountain"))
                 .ToList();
             UpdateShownWords(wordsExample);
+        }
+
+        private void TransferInformationBetweenLists()
+        {
+            foreach (DetailedWord dw in detailedWords)
+            {
+                foreach (Word w in words)
+                {
+                    if (w.Simplified == dw.Simplified) // TODO is this the best way?
+                    {
+                        w.Rank = Int32.Parse(dw.Rank);
+                        break;
+                    }
+                }
+            }
         }
 
         //TODO change
@@ -78,8 +94,21 @@ namespace WpfApp2
             string searchInput = SearchBar.Text;
             var filteredWords = words
                 .Where(w => w.Definitions.Contains(searchInput))
-                .OrderBy(w => w.Simplified.Length)
+                //.OrderBy(w => w.Simplified.Length)
+                //.OrderBy(w => Int32.Parse(w.Rank))
                 .ToList();
+
+            foreach (Word w in filteredWords)
+            {
+                foreach (DetailedWord dw in detailedWords)
+                    if (w.Simplified == dw.Simplified)
+                    {
+                        w.Rank = Int32.Parse(dw.Rank);
+                        break;
+                    }
+            }
+
+            filteredWords = filteredWords.OrderBy(w => w.Rank).ToList();
             UpdateShownWords(filteredWords);
         }
 
@@ -234,7 +263,9 @@ namespace WpfApp2
             foreach (var word in filteredWords)
             {
                 AddWordToPanel(word);
+                Console.Write($"{word.Rank} , ");
             }
+            Console.WriteLine("");
         }
 
         private void SBox_MouseEnter(object sender, MouseEventArgs e, string c)
