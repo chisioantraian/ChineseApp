@@ -78,11 +78,10 @@
                        FontSize="24" />
             </ListBox>
 
-            <ListBox Name="ZoomedWordBox"
-                     ScrollViewer.CanContentScroll="False"
+            <WrapPanel Name="MiddleWordBox"
                      Grid.Column="1">
 
-            </ListBox>
+            </WrapPanel>
 
 
             <ListBox Name="ExamplesList"

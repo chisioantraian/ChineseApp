@@ -11,6 +11,7 @@ namespace WpfApp2
     using System.Windows.Media;
     using WpfApp2.Models;
     using WpfApp2.Logic;
+    using CSharp_scripts.Models;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -19,17 +20,19 @@ namespace WpfApp2
     {
         private readonly List<Word> words;
         private readonly Dictionary<char, List<char>> dict;
+        private readonly List<DetailedWord> detailedWords;
 
         public MainWindow()
         {
             Console.WriteLine("Beginning of constructor");
             InitializeComponent();
             words = ChineseService.GetWordsFromDatabase();
+            detailedWords = ChineseService.GetDetailedWords();
             dict = ChineseService.GetCharacterDecomposition();
             Console.WriteLine($"number of words: {words.Count}");
             Console.WriteLine($"number of lines(dict): {dict.Count}");
             InitializeWordsPanel();
-            //InitializeExamples();
+            InitializeExamples();
             Console.WriteLine("End of constructor");
         }
 
@@ -78,24 +81,6 @@ namespace WpfApp2
                 .OrderBy(w => w.Simplified.Length)
                 .ToList();
             UpdateShownWords(filteredWords);
-
-            /*string searchInput = SearchBar.Text;
-            //var filteredWords = new List<Word>();
-
-            WordsList.Items.Clear();
-            WordsList.Items.Add(ResultCountBlock);
-            int count = 0;
-            foreach (Word word in words)
-            {
-                if (word.Definitions.Contains(searchInput))
-                {
-                    count += 1;
-                    AddWordToPanel(word);
-                    ResultCountBlock.Text = $"{count} words found";
-                }
-                //filteredWords.Add(word);
-            }*/
-            //UpdateShownWords(filteredWords);
         }
 
         private void AddWordToPanel(Word word)
@@ -128,7 +113,7 @@ namespace WpfApp2
                     Text = singleChar[i].ToString(),
                     FontSize = 48
                 };
-                sBox.MouseEnter += (s, e) => SBox_MouseEnter(s, e, sBox.Text);
+                //sBox.MouseEnter += (s, e) => SBox_MouseEnter(s, e, sBox.Text);
                 //
                 // TODO can remove
                 sBox.MouseUp += (e, s) =>
@@ -254,7 +239,7 @@ namespace WpfApp2
 
         private void SBox_MouseEnter(object sender, MouseEventArgs e, string c)
         {
-            ZoomedWordBox.Items.Clear();
+            //MiddleWordBox.Items.Clear();
             ExamplesList.Items.Clear();
             ExamplesList.Items.Add(StatisticsBox); //todo ??
 
@@ -264,7 +249,7 @@ namespace WpfApp2
                 FontSize = 400
             };
 
-            ZoomedWordBox.Items.Add(block);
+            //MiddleWordBox.Items.Add(block);
             DecompositionBlock.Text = GetNiceDecomposed(c[0]);
         }
 
@@ -324,9 +309,179 @@ namespace WpfApp2
                 ListBoxItem item = new ListBoxItem
                 {
                     Content = sentence,
-                };             
+                };
+                item.MouseLeftButtonUp += (s, e) =>
+                {
+                    Decompose(sentence);
+                };
                 ExamplesList.Items.Add(item);
             }
+        }
+
+        private void Decompose(string sentence)
+        {
+            //MiddleWordBox.Items.Clear();
+
+
+            string constructedWord = String.Empty;
+            var resultedWord = new List<Word>();
+            var toInsert = new List<Word>();
+            var result = new List<Word>();
+
+            foreach (char curr in sentence)
+            {
+                resultedWord = GetResultedWord(constructedWord + curr);
+                if (resultedWord.Count > 0)
+                {
+                    toInsert = resultedWord;
+                    constructedWord += curr;
+                }
+                else
+                {
+                    if (toInsert.Count > 0)
+                        result.Add(toInsert[0]);
+                        //toInsert.ForEach(w => result.Add(w));
+                    toInsert = GetResultedWord(curr.ToString());
+                    constructedWord = curr.ToString();
+                }
+            }
+            if (toInsert.Count > 0)
+                result.Add(toInsert[0]);
+                //toInsert.ForEach(w => result.Add(w));
+
+            foreach (Word w in result)
+            {
+                Console.Write($"{w.Simplified} , ");
+            }
+            Console.WriteLine("");
+
+
+            //TODO separate into function
+            UpdateShownWords(result);
+
+            MiddleWordBox.Children.Clear();
+            foreach (Word w in result)
+            {
+                //todo use default
+                DetailedWord detailedWord = detailedWords.FirstOrDefault(dw => dw.Simplified == w.Simplified);
+
+                if (detailedWord == null)
+                {
+                    detailedWord = new DetailedWord();
+                }
+
+                Console.WriteLine($"{w.Simplified} {detailedWord.DominantPos}");
+
+                //TODO combine switches
+                (SolidColorBrush, string) posTuple = detailedWord.DominantPos switch
+                {
+                    "a" => (Brushes.Purple, "adjective"),
+                    "ad" => (Brushes.Purple, "adj as adv"),
+                    "ag" => (Brushes.Purple, "adj morpheme"),
+                    "an" => (Brushes.Purple, "adj w. nom fun"),
+                    "b" => (Brushes.Purple, "non-pred adje"),
+                    "c" => (Brushes.Pink, "conjunction"),
+                    "cc" => (Brushes.Pink, "conjunction"),
+                    "d" => (Brushes.LightBlue, "adverb"),
+                    "dg" => (Brushes.LightBlue, "adv morpheme"),
+                    "e" => (Brushes.DarkBlue, "interjection"),
+                    "f" => (Brushes.DarkBlue, "dir. locality"),
+                    "g" => (Brushes.DarkBlue, "morpheme"),
+                    "h" => (Brushes.DarkBlue, "prefix"),
+                    "i" => (Brushes.Cyan, "idiom"),
+                    "j" => (Brushes.DarkBlue, "interjection"),
+                    "k" => (Brushes.DarkBlue, "suffix"),
+                    "l" => (Brushes.DarkBlue, "fixed expr"),
+                    "m" => (Brushes.Orange, "numeral"),
+                    "mg" => (Brushes.Orange, "num morpheme"),
+                    "mq" => (Brushes.Orange, "num classifier"),
+                    "n" => (Brushes.Red, "noun"),
+                    "ng" => (Brushes.Red, "noun morpheme"),
+                    "nr" => (Brushes.Red, "pers name"),
+                    "ns" => (Brushes.Red, "place name"),
+                    "nt" => (Brushes.Red, "org name"),
+                    "nx" => (Brushes.Red, "nom. string"),
+                    "nz" => (Brushes.Red, "other prop. noun"),
+                    "o" => (Brushes.LightBlue, "onomatopoeia"),
+                    "p" => (Brushes.Aquamarine, "preposition"),
+                    "q" => (Brushes.DarkKhaki, "classifier"),
+                    "r" => (Brushes.DarkOrange, "pronoun"),
+                    "rg" => (Brushes.DarkOrange, "pron. morpheme"),
+                    "s" => (Brushes.Beige, "space word"),
+                    "t" => (Brushes.SandyBrown, "time word"),
+                    "tg" => (Brushes.SandyBrown, "time morpheme"),
+                    "u" => (Brushes.DarkBlue, "auxiliary"),
+                    "v" => (Brushes.LightGreen, "verb"),
+                    "vd" => (Brushes.LightGreen, "vb as adv"),
+                    "vg" => (Brushes.LightGreen, "vb morpheme"),
+                    "vn" => (Brushes.LightGreen, "vb nom fun"),
+                    "w" => (Brushes.DarkBlue, "symbol.."),
+                    "x" => (Brushes.Gold, "unclassififed"),
+                    "y" => (Brushes.Brown, "modal part."),
+                    "z" => (Brushes.Honeydew, "descriptive"),
+                    _ => (Brushes.Gray, "_")
+                };
+
+                TextBlock wBlock = new TextBlock
+                {
+                    Text = w.Simplified,
+                    Foreground = posTuple.Item1,
+                    FontSize = 32,
+                };
+                Border wordBorder = new Border
+                {
+                    BorderBrush = posTuple.Item1,
+                    BorderThickness = new Thickness(2),
+                    CornerRadius = new CornerRadius(5)
+                };
+                Thickness wBlockMarginPBox = wBlock.Margin;
+                wBlockMarginPBox.Top = 5;
+                wBlockMarginPBox.Bottom = 5;
+                wBlockMarginPBox.Left = 5;
+                wBlockMarginPBox.Right = 5;
+                wBlock.Margin = wBlockMarginPBox;
+
+                TextBlock posBox = new TextBlock
+                {
+                    Text = posTuple.Item2,
+                    FontSize = 12,
+                    Foreground = posTuple.Item1,
+                };
+                //posBox.Inlines.Add(new Bold(new Run(posTuple.Item2)));
+                Thickness posMarginPBox = posBox.Margin;
+                posMarginPBox.Top = -5;
+                posBox.Margin = posMarginPBox;
+
+
+                StackPanel wordPanel = new StackPanel();
+                
+                wBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                posBox.HorizontalAlignment = HorizontalAlignment.Center;
+
+                wordPanel.Orientation = Orientation.Vertical;
+                wordPanel.Children.Add(wBlock);
+                wordPanel.Children.Add(posBox);
+                Thickness wordPadding = wordBorder.Padding;
+                wordPadding.Bottom = 5;
+                wordPadding.Right = 5;
+                wordPadding.Top = 5;
+                wordPadding.Left = 5;
+                wordBorder.Padding = wordPadding;
+
+                wordBorder.Child = wordPanel;
+
+
+                //wordBorder.Child = wBlock;
+                //MiddleWordBox.Children.Add(wordPanel);
+                MiddleWordBox.Children.Add(wordBorder);
+
+            }
+        }
+
+        private List<Word> GetResultedWord(string simpl)
+        {
+            //TODO modify
+            return words.Where(w => w.Simplified == simpl).ToList();
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -345,5 +500,6 @@ namespace WpfApp2
             int index = random.Next(words.Count);
             UpdateShownWords(new List<Word> { words[index] });
         }
+
     }
 }
