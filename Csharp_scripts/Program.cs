@@ -8,7 +8,8 @@ namespace ConsoleApp1
         {
             Subtlex s = new Subtlex();
             s.Run();
-            s.CreateDatabase();
+
+            //s.CreateDatabase();
         }
     }
 }

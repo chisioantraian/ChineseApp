@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Data.SQLite;
+using MySql.Data.MySqlClient;
 
 namespace ConsoleApp1_csharp.scripts
 {
@@ -11,7 +12,7 @@ namespace ConsoleApp1_csharp.scripts
         private const string inputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\SUBTLEX.utf8";
         private const string strokesPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\ucs-strokes.txt";
 
-        private class Word
+        private class DetailedWord
         {
             public string? Simplified { get; set; }
             public string? Length { get; set; }
@@ -29,29 +30,91 @@ namespace ConsoleApp1_csharp.scripts
             public string? AllPosFreq { get; set; }
             public string? Definition { get; set; }
             public string? StrokesCount { get; set; }
+            public string? _Traditional { get; set; }
         };
 
-        private readonly List<Word> words = new List<Word>();
+        private class Word
+        {
+            public string? Simplified { get; set; }
+            public string? Traditional { get; set; }
+            public string? Pronounciation { get; set; }
+            public string? Definitions { get; set; }
+        }
+
+        private class ResultedWord
+        {
+            public string? Traditional { get; set; }
+            public string? DominantPos { get; set; }
+        }
+
+        private readonly List<DetailedWord> detailedWords = new List<DetailedWord>();
+        private readonly List<Word> words = GetWordsFromDatabase();
 
         public void Run()
         {
-            AddSubtlexInfo(words);
-            AddStrokesInfo(words);
-            Process(words);
+            AddSubtlexInfo(detailedWords);
+            Console.WriteLine($"detailed size: {detailedWords.Count}");
+           Console.WriteLine($"simple size: {words.Count}");
+
+            CombineLists();
+
+            //AddStrokesInfo(detailedWords);
+            //Process(detailedWords);
         }
 
-        private void AddSubtlexInfo(List<Word> words)
+        private void CombineLists()
+        {
+
+        }
+
+
+
+        private static List<Word> GetWordsFromDatabase()
+        {
+            List<Word> words = new List<Word>();
+            const string connString = "SERVER=localhost;" +
+                    "DATABASE=chinese;" +
+                    "USER=root;" +
+                    "PASSWORD=password;";
+
+            const string sql = "SELECT * FROM words";
+
+            using var connection = new MySqlConnection(connString);
+            using var cmdSel = new MySqlCommand(sql, connection);
+
+            MySqlDataReader reader;
+
+            connection.Open();
+            reader = cmdSel.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Word word = new Word
+                {
+                    Simplified = reader.GetString("simplified"),
+                    Traditional = reader.GetString("traditional"),
+                    Pronounciation = reader.GetString("pronounciation"),
+                    Definitions = reader.GetString("definitions")
+                };
+                words.Add(word);
+            }
+            return words;
+        }
+
+
+
+        private void AddSubtlexInfo(List<DetailedWord> detailedWords)
         {
             foreach (var line in File.ReadAllLines(inputPath).Skip(1))
             {
-                AddWord(line, words);
+                AddWord(line, detailedWords);
             }
         }
 
-        private void AddWord(string line, List<Word> words)
+        private void AddWord(string line, List<DetailedWord> detailedWords)
         {
             List<string> tokens = line.Split('\t').ToList();
-            Word toBeInserted = new Word()
+            DetailedWord toBeInserted = new DetailedWord()
             {
                 Simplified = tokens[0],
                 Length = tokens[1],
@@ -70,12 +133,14 @@ namespace ConsoleApp1_csharp.scripts
                 Definition = tokens[14]
             };
 
-            words.Add(toBeInserted);
+            detailedWords.Add(toBeInserted);
         }
 
-        private void AddStrokesInfo(List<Word> words)
+
+
+        private void AddStrokesInfo(List<DetailedWord> detailedWords)
         {
-            foreach (Word w in words.Take(100))
+            foreach (DetailedWord w in detailedWords.Take(100))
             {
                 foreach (var line in File.ReadAllLines(strokesPath))
                 {
@@ -96,9 +161,10 @@ namespace ConsoleApp1_csharp.scripts
             }
         }
 
-        private void Process(List<Word> words)
+
+        private void Process(List<DetailedWord> detailedWords)
         {
-            var test = words.Take(100)
+            var test = detailedWords.Take(100)
                             .AsEnumerable()
                             .Where(w => w.Length == "1")
                             .OrderBy(w => Int32.Parse(w?.StrokesCount ?? "0"))
@@ -108,6 +174,7 @@ namespace ConsoleApp1_csharp.scripts
                 Console.WriteLine($"{w.Simplified} , {w.StrokesCount}");
             }
         }
+
 
         public void CreateDatabase()
         {
@@ -128,7 +195,7 @@ namespace ConsoleApp1_csharp.scripts
             com.CommandText = ctQuery;
             com.ExecuteNonQuery();
 
-            foreach (var w in words)
+            foreach (var w in detailedWords)
             {
                 const string query = @"INSERT INTO WORDS (Pinyin, Definition, Simplified, StrokeCount)
                                      VALUES (@_pinyin, @_definition, @_simplified, @_strokecount);";
@@ -144,5 +211,8 @@ namespace ConsoleApp1_csharp.scripts
 
             con.Close();
         }
+
+
+
     }
 }

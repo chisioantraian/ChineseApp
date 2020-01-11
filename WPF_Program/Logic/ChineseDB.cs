@@ -12,6 +12,7 @@ namespace WpfApp2.Logic
         private const string detailedInputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\SUBTLEX.utf8";
         private const string strokesPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\ucs-strokes.txt";
         private static int rank = 0;
+
         public static List<Word> GetWordsFromDatabase()
         {
             List<Word> words = new List<Word>();
