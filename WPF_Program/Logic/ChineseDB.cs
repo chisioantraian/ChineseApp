@@ -7,12 +7,19 @@ using WpfApp2.Models;
 
 namespace WpfApp2.Logic
 {
+    /// <summary>
+    /// Get all the necessary info from the disk
+    /// </summary>
     public static partial class ChineseService
     {
         private const string detailedInputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\SUBTLEX.utf8";
         private const string strokesPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\scripts\ucs-strokes.txt";
         private static int rank = 0;
 
+        /// <summary>
+        /// Get all the words from the mysqlDB
+        /// </summary>
+        /// <returns>The list of words resulted</returns>
         public static List<Word> GetWordsFromDatabase()
         {
             List<Word> words = new List<Word>();
@@ -45,6 +52,10 @@ namespace WpfApp2.Logic
             return words;
         }
 
+        /// <summary>
+        /// Get the list of words(there are more formats) from a local file
+        /// </summary>
+        /// <returns>The list resulted</returns>
         public static List<DetailedWord> GetDetailedWords()
         {
             List<DetailedWord> detailedWords = new List<DetailedWord>();
@@ -55,6 +66,11 @@ namespace WpfApp2.Logic
             return detailedWords;
         }
 
+        /// <summary>
+        /// Add a word to the list, from the parsed line
+        /// </summary>
+        /// <param name="line">Line to be parsed</param>
+        /// <param name="detailedWords">List which contains all words</param>
         private static void AddWord(string line, List<DetailedWord> detailedWords)
         {
             List<string> tokens = line.Split('\t').ToList();

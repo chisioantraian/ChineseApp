@@ -4,6 +4,9 @@ using System.Text;
 
 namespace CSharp_scripts.Models
 {
+    /// <summary>
+    /// Represents a chinese word, but in a different format from the Word class
+    /// </summary>
     public class DetailedWord
     {
         public string Rank { get; set; }

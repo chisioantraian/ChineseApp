@@ -2,6 +2,9 @@
 
 namespace WpfApp2.Logic
 {
+    /// <summary>
+    /// Represents examples to be used in the app
+    /// </summary>
     public static class SentenceExamples
     {
         private static readonly List<string> sentences = new List<string>()

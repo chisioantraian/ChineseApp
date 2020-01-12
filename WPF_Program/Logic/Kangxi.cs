@@ -2,12 +2,18 @@
 
 namespace WpfApp2.Logic
 {
+    /// <summary>
+    /// Represents a  single Kangxi Radical
+    /// </summary>
     public class KangxiRadical
     {
         public char Symbol { get; set; }
         public int Number { get; set; }
     }
 
+    /// <summary>
+    /// Represents the list of all Kangxi Radicals, the most used radical system
+    /// </summary>
     public static class Kangxi
     {
         public static List<KangxiRadical> GetRadicals()

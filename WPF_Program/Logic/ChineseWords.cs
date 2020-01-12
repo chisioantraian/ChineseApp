@@ -7,6 +7,9 @@ using WpfApp2.Models;
 
 namespace WPF_program.Logic
 {
+    /// <summary>
+    /// Represents an interface to all the info about chinese characters, obtained from different files
+    /// </summary>
     internal class ChineseWords
     {
         private readonly List<Word> words;
@@ -18,6 +21,11 @@ namespace WPF_program.Logic
             detailedWords = ChineseService.GetDetailedWords();
         }
 
+        /// <summary>
+        /// Sort a list of words by the words frequency in the language
+        /// </summary>
+        /// <param name="filteredWords">The list to be sorted</param>
+        /// <returns>The list sorted</returns>
         private List<Word> GetSortedByFrequency(List<Word> filteredWords)
         {
             foreach (Word w in filteredWords)
@@ -34,6 +42,11 @@ namespace WPF_program.Logic
             return filteredWords.OrderBy(w => w.Rank).ToList();
         }
 
+        /// <summary>
+        /// Get the list of words, where the definition contains the paramater
+        /// </summary>
+        /// <param name="text">The string to be looked after</param>
+        /// <returns>The results list</returns>
         internal List<Word> EnglishResult(string text)
         {
             List<Word> filteredWords =
@@ -43,6 +56,11 @@ namespace WPF_program.Logic
             return GetSortedByFrequency(filteredWords);
         }
 
+        /// <summary>
+        /// Get the list of words, where the simplified form contains the paramater
+        /// </summary>
+        /// <param name="text">The simplified char to be looked after</param>
+        /// <returns>The results list</returns>
         internal List<Word> SearchBySimplified(string text)
         {
             var filteredWords = words
@@ -52,6 +70,11 @@ namespace WPF_program.Logic
             return GetSortedByFrequency(filteredWords);
         }
 
+        /// <summary>
+        /// Get the list of words, where the pronounciation contains the paramater
+        /// </summary>
+        /// <param name="text">The string representing the pinyin</param>
+        /// <returns>The results list</returns>
         internal List<Word> SearchByPinyin(string text)
         {
             string[] prons = text.Split(' ');
@@ -76,6 +99,10 @@ namespace WPF_program.Logic
             return GetSortedByFrequency(filteredWords);
         }
 
+        /// <summary>
+        /// Get a list of random words
+        /// </summary>
+        /// <returns>The computed list</returns>
         internal List<Word> GetRandomWords()
         {
             Random random = new Random();
@@ -88,11 +115,13 @@ namespace WPF_program.Logic
             return result;
         }
 
+        /// <returns>The list of all words in the application</returns>
         internal List<Word> GetAll()
         {
             return words;
         }
 
+        /// <returns>The list of all (detailed)words in the application. For the moment there are multiple formats..</returns>
         internal List<DetailedWord> GetAllDetailed()
         {
             return detailedWords;

@@ -12,6 +12,7 @@ namespace WpfApp2.Logic
         private const string inputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt";
 
         //TODO use singleton
+        //TODO comment
         public static Dictionary<char, List<char>> GetCharacterDecomposition()
         {
             Dictionary<char, List<char>> basicDict = GetDecompositionRules();

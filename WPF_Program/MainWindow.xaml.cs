@@ -36,12 +36,33 @@ namespace WpfApp2
             InitializeExamples();
         }
 
-        public void InitializeWordsPanel()
+        /// <summary>
+        /// Get the entered text, and show the results the user wants to see
+        /// </summary>
+        /// <param name="sender">The Search Button</param>
+        /// <param name="e">The clicked event args</param>
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            List<Word> wordsExample = chineseWords.EnglishResult("rainforest");
-            UpdateShownWords(wordsExample);
+            List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
+            UpdateShownWords(filteredWords);
         }
 
+        /// <summary>
+        /// Populate the results panel with some random words
+        /// </summary>
+        /// <param name="sender">The Random Button</param>
+        /// <param name="e">The clicked event args</param>
+        private void RandomButton_Click(object sender, RoutedEventArgs e)
+        {
+            List<Word> randomWords = chineseWords.GetRandomWords();
+            UpdateShownWords(randomWords);
+        }
+
+        /// <summary>
+        /// Choose what happens when the user presses enter, in the search bar
+        /// </summary>
+        /// <param name="sender">the source of the event - the search bar</param>
+        /// <param name="e">the event args - it must be enter</param>
         private void SearchBar_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter)
@@ -57,17 +78,114 @@ namespace WpfApp2
             }
         }
 
+        /// <summary>
+        /// After the application starts, populate with some words
+        /// </summary>
+        public void InitializeWordsPanel()
+        {
+            List<Word> wordsExample = chineseWords.EnglishResult("rainforest");
+            UpdateShownWords(wordsExample);
+        }
+
+        /// <summary>
+        /// When the user wants to analyze chinese text, or just find translation
+        /// </summary>
         private void ShowChineseResult()
         {
             ShowDecomposed(SearchBar.Text);
         }
 
+        /// <summary>
+        /// When the user enters english words, to be translated
+        /// </summary>
         private void ShowEnglishResult()
         {
             List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
             UpdateShownWords(filteredWords);
         }
 
+        
+
+        /// <summary>
+        /// When the user wants to find chinese words, by entering their romanized pronounciation
+        /// </summary>
+        private void ShowPronounciationResult()
+        {
+            List<Word> filteredWords = chineseWords.SearchByPinyin(SearchBar.Text);
+            UpdateShownWords(filteredWords);
+        }
+
+        /// <summary>
+        /// From a single character, show all other chinese characters which contain it as a component
+        /// </summary>
+        private void ShowComposeResult()
+        {
+            Console.WriteLine("ShowComposeResult - begin");
+            string searchInput = SearchBar.Text;
+            List<char> simplifiedComponentsFound = new List<char>();
+
+            if (dict.ContainsKey(searchInput[0]))
+            {
+                string decompositionText = string.Empty;
+                foreach (char c in dict[searchInput[0]])
+                {
+                    decompositionText += ("   " + c);
+                }
+                DecompositionBlock.Text = $"{searchInput[0]} : {decompositionText}";
+            }
+
+            // get simplified representation of words which contains character represented by 'searchinput'
+            foreach (var decompositionTuple in dict)
+            {
+                List<char> componentsList = decompositionTuple.Value;
+                if (componentsList != null && componentsList.Contains(searchInput[0]))
+                {
+                    Console.WriteLine(searchInput[0]);
+                    simplifiedComponentsFound.Add(decompositionTuple.Key);
+                }
+            }
+            Console.WriteLine($"simplifiedComponentsFound size = {simplifiedComponentsFound.Count}");
+
+            // get complete words(1 char-length) using the above simplified list
+            List<Word> filteredWords = new List<Word>();
+            foreach (var word in allWords)
+            {
+                if (word.Simplified.Length > 1)
+                    continue;
+                foreach (char character in word.Simplified)
+                {
+                    if (simplifiedComponentsFound.Contains(character))
+                    {
+                        filteredWords.Add(word);
+                        break;
+                    }
+                }
+            }
+            UpdateShownWords(filteredWords);
+            Console.WriteLine("ShowComposeResult - end");
+        }
+
+        /// <summary>
+        /// In the results panel, replace the shown words
+        /// </summary>
+        /// <param name="filteredWords"> The new words to be shown</param>
+        private void UpdateShownWords(List<Word> filteredWords)
+        {
+            ResultCountBlock.Text = $"{filteredWords.Count} words found";
+
+            WordsList.Items.Clear();
+            WordsList.Items.Add(ResultCountBlock);
+
+            foreach (var word in filteredWords)
+            {
+                AddWordToPanel(word);
+            }
+        }
+
+        /// <summary>
+        /// Create a Card from the word, and add it to the results panel
+        /// </summary>
+        /// <param name="word">word to be inserted</param>
         private void AddWordToPanel(Word word)
         {
             StackPanel sPanel = new StackPanel { Orientation = Orientation.Horizontal };
@@ -135,72 +253,10 @@ namespace WpfApp2
             WordsList.Items.Add(wordBorder);
         }
 
-        private void ShowPronounciationResult()
-        {
-            List<Word> filteredWords = chineseWords.SearchByPinyin(SearchBar.Text);
-            UpdateShownWords(filteredWords);
-        }
-
-        private void ShowComposeResult()
-        {
-            Console.WriteLine("ShowComposeResult - begin");
-            string searchInput = SearchBar.Text;
-            List<char> simplifiedComponentsFound = new List<char>();
-
-            if (dict.ContainsKey(searchInput[0]))
-            {
-                string decompositionText = string.Empty;
-                foreach (char c in dict[searchInput[0]])
-                {
-                    decompositionText += ("   " + c);
-                }
-                DecompositionBlock.Text = $"{searchInput[0]} : {decompositionText}";
-            }
-
-            // get simplified representation of words which contains character represented by 'searchinput'
-            foreach (var decompositionTuple in dict)
-            {
-                List<char> componentsList = decompositionTuple.Value;
-                if (componentsList != null && componentsList.Contains(searchInput[0]))
-                {
-                    Console.WriteLine(searchInput[0]);
-                    simplifiedComponentsFound.Add(decompositionTuple.Key);
-                }
-            }
-            Console.WriteLine($"simplifiedComponentsFound size = {simplifiedComponentsFound.Count}");
-
-            // get complete words(1 char-length) using the above simplified list
-            List<Word> filteredWords = new List<Word>();
-            foreach (var word in allWords)
-            {
-                if (word.Simplified.Length > 1)
-                    continue;
-                foreach (char character in word.Simplified)
-                {
-                    if (simplifiedComponentsFound.Contains(character))
-                    {
-                        filteredWords.Add(word);
-                        break;
-                    }
-                }
-            }
-            UpdateShownWords(filteredWords);
-            Console.WriteLine("ShowComposeResult - end");
-        }
-
-        private void UpdateShownWords(List<Word> filteredWords)
-        {
-            ResultCountBlock.Text = $"{filteredWords.Count} words found";
-
-            WordsList.Items.Clear();
-            WordsList.Items.Add(ResultCountBlock);
-
-            foreach (var word in filteredWords)
-            {
-                AddWordToPanel(word);
-            }
-        }
-
+        /// <summary>
+        /// When the mouse hovers over a char, show a magnfied version of it
+        /// </summary>
+        /// <param name="c">The character to be magnified</param>
         private void SBox_MouseEnter(string c)
         {
             //MiddleWordBox.Items.Clear();
@@ -217,6 +273,11 @@ namespace WpfApp2
             DecompositionBlock.Text = GetNiceDecomposed(c[0]);
         }
 
+        /// <summary>
+        /// Gell a character's decomposition, till radicals/strokes level
+        /// </summary>
+        /// <param name="c">The character to be decomposed</param>
+        /// <returns>The decomposition</returns>
         private string GetNiceDecomposed(char c)
         {
             string result = String.Empty;
@@ -266,6 +327,9 @@ namespace WpfApp2
             return result;
         }
 
+        /// <summary>
+        /// Add some sentence to the app, which will be used as examples
+        /// </summary>
         private void InitializeExamples()
         {
             foreach (string sentence in SentenceExamples.Examples())
@@ -279,6 +343,10 @@ namespace WpfApp2
             }
         }
 
+        /// <summary>
+        /// Split a sentence into words, show these words and analyze the sentence
+        /// </summary>
+        /// <param name="sentence">The sentence to be splitted</param>
         private void ShowDecomposed(string sentence)
         {
             List<Word> result = GetWordsFromSentence(sentence);
@@ -325,6 +393,11 @@ namespace WpfApp2
             }
         }
 
+        /// <summary>
+        /// Split a sentence represented as a string into a list of words
+        /// </summary>
+        /// <param name="sentence">The sentence to be splitted</param>
+        /// <returns>The list of words</returns>
         private List<Word> GetWordsFromSentence(string sentence)
         {
             string constructedWord = string.Empty;
@@ -353,6 +426,11 @@ namespace WpfApp2
             return result;
         }
 
+        /// <summary>
+        /// From a word(DetailedWord) pos tag, get its full pos name , and also return a color, unique to it
+        /// </summary>
+        /// <param name="detailedWord">The (detailed)word which contains the pos tag</param>
+        /// <returns>A tuple representing a color and the full name of the tag</returns>
         private static (SolidColorBrush, string) GetPosInfo(DetailedWord detailedWord)
         {
             return detailedWord.DominantPos switch
@@ -405,21 +483,15 @@ namespace WpfApp2
             };
         }
 
+
+        /// <summary>
+        /// Get all chinese words which have the simplified form equal to a particular string
+        /// </summary>
+        /// <param name="simpl">The string to be searched after</param>
+        /// <returns>The list of chinese words which satisfy the condition</returns>
         private List<Word> GetResultedWord(string simpl)
         {
             return allWords.Where(w => w.Simplified == simpl).ToList();
-        }
-
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
-            UpdateShownWords(filteredWords);
-        }
-
-        private void RandomButton_Click(object sender, RoutedEventArgs e)
-        {
-            List<Word> randomWords = chineseWords.GetRandomWords();
-            UpdateShownWords( randomWords );
         }
 
     }

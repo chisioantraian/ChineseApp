@@ -1,5 +1,8 @@
 ﻿namespace WpfApp2.Models
 {
+    /// <summary>
+    /// Represents the way in which a character will be decomposed into subcomponents
+    /// </summary>
     public class Rule
     {
         private readonly char characterToBeDecomposed;
