@@ -259,7 +259,6 @@ namespace WpfApp2
         /// <param name="c">The character to be magnified</param>
         private void SBox_MouseEnter(string c)
         {
-            //MiddleWordBox.Items.Clear();
             ExamplesList.Items.Clear();
             ExamplesList.Items.Add(StatisticsBox);
 
@@ -363,7 +362,7 @@ namespace WpfApp2
                     FontSize = 32,
                     Foreground = posTuple.Item1,
                     HorizontalAlignment = HorizontalAlignment.Center,
-                    Margin = new Thickness(15),
+                    Margin = new Thickness(5),
                     Text = w.Simplified,
                 };
                 Border wordBorder = new Border
@@ -371,7 +370,7 @@ namespace WpfApp2
                     BorderBrush = posTuple.Item1,
                     BorderThickness = new Thickness(2),
                     CornerRadius = new CornerRadius(5),
-                    Padding = new Thickness(15)
+                    Padding = new Thickness(5)
                 };
                 TextBlock posBox = new TextBlock
                 {
@@ -379,7 +378,7 @@ namespace WpfApp2
                     Foreground = posTuple.Item1,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     Margin = new Thickness(0, -5, 0, 0),
-                    Text = posTuple.Item2,
+                    Text = $"{posTuple.Item2} \n {detailedWord.AllPos} \n {detailedWord.AllPosFreq}", //modify
                 };
                 StackPanel wordPanel = new StackPanel
                 {
