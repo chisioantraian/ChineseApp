@@ -482,7 +482,6 @@ namespace WpfApp2
             };
         }
 
-
         /// <summary>
         /// Get all chinese words which have the simplified form equal to a particular string
         /// </summary>
