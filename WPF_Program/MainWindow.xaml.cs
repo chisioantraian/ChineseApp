@@ -103,7 +103,6 @@ namespace WpfApp2
             List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
             UpdateShownWords(filteredWords);
         }
-
         
 
         /// <summary>
