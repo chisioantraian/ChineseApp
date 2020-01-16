@@ -103,7 +103,7 @@ namespace WpfApp2
             List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
             UpdateShownWords(filteredWords);
         }
-        
+
 
         /// <summary>
         /// When the user wants to find chinese words, by entering their romanized pronounciation
@@ -377,6 +377,7 @@ namespace WpfApp2
                     Foreground = posTuple.Item1,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     Margin = new Thickness(0, -5, 0, 0),
+                    //Text = $"{posTuple.Item2}"
                     Text = $"{posTuple.Item2} \n {detailedWord.AllPos} \n {detailedWord.AllPosFreq}", //modify
                 };
                 StackPanel wordPanel = new StackPanel
