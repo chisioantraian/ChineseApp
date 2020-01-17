@@ -373,12 +373,12 @@ namespace WpfApp2
                 };
                 TextBlock posBox = new TextBlock
                 {
-                    FontSize = 12,
+                    FontSize = 18,
                     Foreground = posTuple.Item1,
                     HorizontalAlignment = HorizontalAlignment.Center,
                     Margin = new Thickness(0, -5, 0, 0),
-                    //Text = $"{posTuple.Item2}"
-                    Text = $"{posTuple.Item2} \n {detailedWord.AllPos} \n {detailedWord.AllPosFreq}", //modify
+                    Text = $"{posTuple.Item2}"
+                    //Text = $"{posTuple.Item2} \n {detailedWord.AllPos} \n {detailedWord.AllPosFreq}", //modify
                 };
                 StackPanel wordPanel = new StackPanel
                 {
