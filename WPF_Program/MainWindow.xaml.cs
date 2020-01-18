@@ -104,7 +104,6 @@ namespace WpfApp2
             UpdateShownWords(filteredWords);
         }
 
-
         /// <summary>
         /// When the user wants to find chinese words, by entering their romanized pronounciation
         /// </summary>
