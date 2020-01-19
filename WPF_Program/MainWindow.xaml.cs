@@ -325,7 +325,7 @@ namespace WpfApp2
         }
 
         /// <summary>
-        /// Add some sentence to the app, which will be used as examples
+        /// Add some sentences to the app, which will be used as examples
         /// </summary>
         private void InitializeExamples()
         {
