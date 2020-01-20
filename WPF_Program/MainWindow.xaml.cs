@@ -271,7 +271,7 @@ namespace WpfApp2
         }
 
         /// <summary>
-        /// Gell a character's decomposition, till radicals/strokes level
+        /// Get a character's decomposition, till radicals/strokes level
         /// </summary>
         /// <param name="c">The character to be decomposed</param>
         /// <returns>The decomposition</returns>
