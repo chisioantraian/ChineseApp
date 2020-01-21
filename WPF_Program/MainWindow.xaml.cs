@@ -252,7 +252,7 @@ namespace WpfApp2
         }
 
         /// <summary>
-        /// When the mouse hovers over a char, show a magnfied version of it
+        /// When the mouse hovers over a char, show a magnified version of it
         /// </summary>
         /// <param name="c">The character to be magnified</param>
         private void SBox_MouseEnter(string c)
