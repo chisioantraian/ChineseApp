@@ -105,7 +105,7 @@ namespace WpfApp2
         }
 
         /// <summary>
-        /// When the user wants to find chinese words, by entering their romanized pronounciation
+        /// When the user wants to find chinese words, by entering their romanized pronounciation (pynin)
         /// </summary>
         private void ShowPronounciationResult()
         {
