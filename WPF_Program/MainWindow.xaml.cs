@@ -79,7 +79,7 @@ namespace WpfApp2
         }
 
         /// <summary>
-        /// After the application starts, populate with some words
+        /// After the application starts, show some words
         /// </summary>
         public void InitializeWordsPanel()
         {
