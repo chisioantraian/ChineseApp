@@ -88,7 +88,7 @@ namespace WpfApp2
         }
 
         /// <summary>
-        /// When the user wants to analyze chinese text, or just find translation
+        /// When the user wants to analyze the chinese text, or just find translation
         /// </summary>
         private void ShowChineseResult()
         {
