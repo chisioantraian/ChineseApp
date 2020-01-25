@@ -6,7 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="SUBTLEX.utf8" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
 </Project>
