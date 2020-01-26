@@ -330,7 +330,8 @@ namespace WpfApp2
         /// </summary>
         private void InitializeExamples()
         {
-            foreach (string sentence in SentenceExamples.Examples())
+            //foreach (string sentence in SentenceExamples.Examples())
+            foreach (string sentence in Chinese.SentenceExamples.getAllSentences())
             {
                 ListBoxItem item = new ListBoxItem
                 {

@@ -55,7 +55,6 @@ module ChineseService =
             }
             words.Add word
         connection.Close()
-        printfn "it works ;)"
         words
 
 

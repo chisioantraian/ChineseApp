@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="SentenceExamples.fs" />
     <Compile Include="MyTypes.fs" />
     <None Include="SUBTLEX.utf8" />
     <Compile Include="ChineseService.fs" />
