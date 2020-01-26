@@ -11,8 +11,12 @@ namespace WpfApp2
     using System.Windows.Media;
     using WpfApp2.Models;
     using WpfApp2.Logic;
-    using CSharp_scripts.Models;
     using WPF_program.Logic;
+
+    //using CSharp_scripts.Models;
+
+    using NumeTestare;
+    using static MyTypes;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -30,7 +34,8 @@ namespace WpfApp2
             InitializeComponent();
             chineseWords = new ChineseWords();
             allWords = chineseWords.GetAll();
-            allDetailedWords = chineseWords.GetAllDetailed();
+            //allDetailedWords = chineseWords.GetAllDetailed();
+            allDetailedWords = Testare.getAllDetailedWords().ToList();
             dict = ChineseService.GetCharacterDecomposition();
             InitializeWordsPanel();
             InitializeExamples();
@@ -352,7 +357,8 @@ namespace WpfApp2
             MiddleWordBox.Children.Clear();
             foreach (Word w in result)
             {
-                DetailedWord detailedWord = allDetailedWords.Find(dw => dw.Simplified == w.Simplified) ?? new DetailedWord();
+                //DetailedWord detailedWord = allDetailedWords.Find(dw => dw.Simplified == w.Simplified) ?? new DetailedWord();
+                DetailedWord? detailedWord = allDetailedWords.Find(dw => dw.Simplified == w.Simplified);
                 (SolidColorBrush, string) posTuple = GetPosInfo(detailedWord);
 
                 TextBlock wBlock = new TextBlock
@@ -429,8 +435,10 @@ namespace WpfApp2
         /// </summary>
         /// <param name="detailedWord">The (detailed)word which contains the pos tag</param>
         /// <returns>A tuple representing a color and the full name of the tag</returns>
-        private static (SolidColorBrush, string) GetPosInfo(DetailedWord detailedWord)
+        private static (SolidColorBrush, string) GetPosInfo(DetailedWord? detailedWord)
         {
+            if (detailedWord == null)
+                return (Brushes.Gray, "_");
             return detailedWord.DominantPos switch
             {
                 "a" => (Brushes.Purple, "adjective"),

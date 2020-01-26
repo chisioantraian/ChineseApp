@@ -6,23 +6,8 @@ open System
 open System.IO
 open System.Collections.Generic
 
-type DetailedWordF = {
-    Simplified: string
-    Length: string
-    Pinyin: string
-    PinyinInput: string
-    WCount: string
-    WMillion: string
-    Log10W: string
-    W_CD: string
-    W_CD_percent: string
-    Log10CD: string
-    DominantPos: string
-    DominantPosFreq: string
-    AllPos: string
-    AllPosFreq: string
-    Definition: string
-}
+open MyTypes
+
 
 //[<EntryPoint>]
 //let main argv =
@@ -50,7 +35,7 @@ module Testare =
             Definition = tokens.[14];
         }
 
-    let cautaTateCuvintele() =
+    let getAllDetailedWords() =
         File.ReadAllLines(filePath) |> Seq.map getWordFromLine 
 
 
