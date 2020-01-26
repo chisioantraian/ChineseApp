@@ -1,9 +1,9 @@
-﻿using CSharp_scripts.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using WpfApp2.Logic;
-using WpfApp2.Models;
+
+using static MyTypes;
 
 namespace WPF_program.Logic
 {
@@ -18,7 +18,7 @@ namespace WPF_program.Logic
         public ChineseWords()
         {
             words = ChineseService.GetWordsFromDatabase();
-            detailedWords = ChineseService.GetDetailedWords();
+            detailedWords = Chinese.ChineseService.getAllDetailedWords().ToList();
         }
 
         /// <summary>
@@ -34,12 +34,12 @@ namespace WPF_program.Logic
                 {
                     if (w.Simplified == dw.Simplified)
                     {
-                        w.Rank = Int32.Parse(dw.Rank);
+                        w.Rank = Int32.Parse(dw.WCount);
                         break;
                     }
                 }
             }
-            return filteredWords.OrderBy(w => w.Rank).ToList();
+            return filteredWords.OrderBy(w => w.Rank).Reverse().ToList();
         }
 
         /// <summary>

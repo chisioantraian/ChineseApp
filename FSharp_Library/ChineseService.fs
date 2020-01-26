@@ -1,6 +1,5 @@
-﻿// Learn more about F# at http://fsharp.org
-
-namespace NumeTestare
+﻿
+namespace Chinese
 
 open System
 open System.IO
@@ -8,10 +7,7 @@ open System.Collections.Generic
 
 open MyTypes
 
-
-//[<EntryPoint>]
-//let main argv =
-module Testare =
+module ChineseService =
 
     let filePath = @"C:\Users\chisi\Desktop\work\ChineseApp\FSharp_Library\SUBTLEX.utf8"
 

@@ -17,3 +17,11 @@ type DetailedWord = {
     AllPosFreq: string
     Definition: string
 }
+
+type Word = {
+    mutable Rank: int
+    Traditional: string
+    Simplified: string
+    Pronounciation: string
+    Definitions: string
+}

@@ -9,13 +9,10 @@ namespace WpfApp2
     using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
-    using WpfApp2.Models;
     using WpfApp2.Logic;
     using WPF_program.Logic;
 
-    //using CSharp_scripts.Models;
-
-    using NumeTestare;
+    using Chinese;
     using static MyTypes;
 
     /// <summary>
@@ -34,9 +31,8 @@ namespace WpfApp2
             InitializeComponent();
             chineseWords = new ChineseWords();
             allWords = chineseWords.GetAll();
-            //allDetailedWords = chineseWords.GetAllDetailed();
-            allDetailedWords = Testare.getAllDetailedWords().ToList();
-            dict = ChineseService.GetCharacterDecomposition();
+            allDetailedWords = Chinese.ChineseService.getAllDetailedWords().ToList();             //allDetailedWords = chineseWords.GetAllDetailed();
+            dict = Logic.ChineseService.GetCharacterDecomposition();
             InitializeWordsPanel();
             InitializeExamples();
         }

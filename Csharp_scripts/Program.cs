@@ -4,7 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using NumeTestare;
+using Chinese;
 
 namespace ConsoleApp1
 {
@@ -14,7 +14,7 @@ namespace ConsoleApp1
         {
             //Subtlex s = new Subtlex();
             //s.Run();
-            var words = Testare.cautaTateCuvintele().ToList();
+            var words = ChineseService.getAllDetailedWords().ToList();
             words.ForEach(w => Console.WriteLine($"{w.Simplified} #"));
             //s.CreateDatabase();
         }
