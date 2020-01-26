@@ -17,7 +17,7 @@ namespace WPF_program.Logic
 
         public ChineseWords()
         {
-            words = ChineseService.GetWordsFromDatabase();
+            words = Chinese.ChineseService.getAllWords();//ChineseService.GetWordsFromDatabase();
             detailedWords = Chinese.ChineseService.getAllDetailedWords().ToList();
         }
 

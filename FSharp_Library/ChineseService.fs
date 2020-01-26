@@ -3,6 +3,7 @@ namespace Chinese
 
 open System
 open System.IO
+open MySql.Data.MySqlClient
 open System.Collections.Generic
 
 open MyTypes
@@ -33,5 +34,28 @@ module ChineseService =
 
     let getAllDetailedWords() =
         File.ReadAllLines(filePath) |> Seq.map getWordFromLine 
+
+    let getAllWords() =
+        let connString = "SERVER=localhost; DATABASE=chinese; USER=root; PASSWORD=password;"
+        let qry = "SELECT * FROM words;"
+        let words = new List<Word>()
+
+        let connection = new MySqlConnection(connString)
+        let commandSel = new MySqlCommand(qry, connection)
+
+        connection.Open()
+        let reader = commandSel.ExecuteReader()
+        while reader.Read() do
+            let word = {
+                Rank = 0;
+                Simplified = reader.GetString "simplified";
+                Traditional = reader.GetString "traditional";
+                Pronounciation = reader.GetString "pronounciation";
+                Definitions = reader.GetString "definitions";
+            }
+            words.Add word
+        connection.Close()
+        printfn "it works ;)"
+        words
 
 

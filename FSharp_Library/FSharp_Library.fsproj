@@ -9,10 +9,17 @@
     <Compile Include="MyTypes.fs" />
     <None Include="SUBTLEX.utf8" />
     <Compile Include="ChineseService.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.19" />
+    <PackageReference Include="SQLProvider" Version="1.1.76" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
   </ItemGroup>
 
 </Project>

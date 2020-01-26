@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using WpfApp2.Models;
 
 using static MyTypes;
 
@@ -41,12 +40,6 @@ namespace WpfApp2.Logic
             {
                 Word word = new Word(0, reader.GetString("traditional"), reader.GetString("simplified"),
                     reader.GetString("pronounciation"), reader.GetString("definitions"));
-                /*{
-                    Simplified = reader.GetString("simplified"),
-                    Traditional = reader.GetString("traditional"),
-                    Pronounciation = reader.GetString("pronounciation"),
-                    Definitions = reader.GetString("definitions")
-                };*/
                 words.Add(word);
             }
             return words;

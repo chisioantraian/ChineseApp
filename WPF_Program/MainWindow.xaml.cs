@@ -31,7 +31,7 @@ namespace WpfApp2
             InitializeComponent();
             chineseWords = new ChineseWords();
             allWords = chineseWords.GetAll();
-            allDetailedWords = Chinese.ChineseService.getAllDetailedWords().ToList();             //allDetailedWords = chineseWords.GetAllDetailed();
+            allDetailedWords = chineseWords.GetAllDetailed();
             dict = Logic.ChineseService.GetCharacterDecomposition();
             InitializeWordsPanel();
             InitializeExamples();
