@@ -70,12 +70,14 @@ module ChineseService =
             if detailedWord.IsSome then
                 w.Rank <- Int32.Parse detailedWord.Value.WCount
         filteredWords |> Seq.sortBy (fun w -> w.Rank) |> Seq.rev
-
+    
     let getEnglishResult (text:string) =
         allWords
         |> Seq.filter (fun w -> w.Definitions.Contains(text))
         |> getSortedByFrequency
 
-
-
+    let searchBySimplified (text:string) =
+        allWords
+        |> Seq.filter (fun w -> w.Simplified.Contains(text))
+        |> getSortedByFrequency
 

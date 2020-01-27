@@ -40,11 +40,6 @@ namespace WPF_program.Logic
         internal List<Word> EnglishResult(string text)
         {
             return Chinese.ChineseService.getEnglishResult(text).ToList();
-            List<Word> filteredWords =
-                    words
-                    .Where(w => w.Definitions.Contains(text))
-                    .ToList();
-            return GetSortedByFrequency(filteredWords);
         }
 
         /// <summary>
@@ -54,6 +49,7 @@ namespace WPF_program.Logic
         /// <returns>The results list</returns>
         internal List<Word> SearchBySimplified(string text)
         {
+            return Chinese.ChineseService.searchBySimplified(text).ToList();
             var filteredWords = words
                 .Where(w => w.Simplified.Contains(text))
                 .ToList();
