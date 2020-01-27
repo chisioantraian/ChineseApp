@@ -63,12 +63,19 @@ module ChineseService =
     let getAllWords() =
         allWords
 
-    let getSortedByFrequency (filteredWords:List<Word>) =
+    let getSortedByFrequency filteredWords = //(filteredWords:List<Word>) =
         for w in filteredWords do
             let detailedWord = allDetailedWords
                                 |> Seq.tryFind (fun dw -> w.Simplified = dw.Simplified)
             if detailedWord.IsSome then
                 w.Rank <- Int32.Parse detailedWord.Value.WCount
         filteredWords |> Seq.sortBy (fun w -> w.Rank) |> Seq.rev
+
+    let getEnglishResult (text:string) =
+        allWords
+        |> Seq.filter (fun w -> w.Definitions.Contains(text))
+        |> getSortedByFrequency
+
+
 
 

@@ -30,19 +30,6 @@ namespace WPF_program.Logic
         private List<Word> GetSortedByFrequency(List<Word> filteredWords)
         {
             return Chinese.ChineseService.getSortedByFrequency(filteredWords).ToList();
-
-            foreach (Word w in filteredWords)
-            {
-                foreach (DetailedWord dw in detailedWords)
-                {
-                    if (w.Simplified == dw.Simplified)
-                    {
-                        w.Rank = Int32.Parse(dw.WCount);
-                        break;
-                    }
-                }
-            }
-            return filteredWords.OrderBy(w => w.Rank).Reverse().ToList();
         }
 
         /// <summary>
@@ -52,6 +39,7 @@ namespace WPF_program.Logic
         /// <returns>The results list</returns>
         internal List<Word> EnglishResult(string text)
         {
+            return Chinese.ChineseService.getEnglishResult(text).ToList();
             List<Word> filteredWords =
                     words
                     .Where(w => w.Definitions.Contains(text))
