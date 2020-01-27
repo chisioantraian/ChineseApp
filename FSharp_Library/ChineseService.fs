@@ -32,10 +32,10 @@ module ChineseService =
             Definition = tokens.[14];
         }
 
-    let getAllDetailedWords() =
+    let allDetailedWords =
         File.ReadAllLines(filePath) |> Seq.map getWordFromLine 
 
-    let getAllWords() =
+    let allWords =
         let connString = "SERVER=localhost; DATABASE=chinese; USER=root; PASSWORD=password;"
         let qry = "SELECT * FROM words;"
         let words = new List<Word>()
@@ -56,5 +56,27 @@ module ChineseService =
             words.Add word
         connection.Close()
         words
+
+    let getAllDetailedWords() =
+        allDetailedWords
+        
+
+    let getAllWords() =
+        allWords
+
+    //FIXME must modify
+    let getSortedByFrequency (filteredWords:List<Word>) =
+        for w in filteredWords do
+            //let detailedWord = allDetailedWords
+            //                  |> Seq.find (fun dw -> w.Simplified = dw.Simplified)
+            //                  |> (fun dw -> dw.WCount)
+            //                  |> int
+            //w.Rank <- Int32.Parse(detailedWord.WCount)
+            w.Rank <- allDetailedWords
+                      |> Seq.tryFind (fun dw -> w.Simplified = dw.Simplified)
+                      |> (fun dw -> dw.WCount)
+                      |> int
+            //w.Rank <- Int32.Parse(detailedWord.WCount)      
+        filteredWords |> Seq.sortBy (fun w -> w.Rank)
 
 

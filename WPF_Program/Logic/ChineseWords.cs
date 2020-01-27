@@ -15,6 +15,7 @@ namespace WPF_program.Logic
         private readonly List<Word> words;
         private readonly List<DetailedWord> detailedWords;
 
+
         public ChineseWords()
         {
             words = Chinese.ChineseService.getAllWords();
@@ -28,6 +29,8 @@ namespace WPF_program.Logic
         /// <returns>The list sorted</returns>
         private List<Word> GetSortedByFrequency(List<Word> filteredWords)
         {
+            return Chinese.ChineseService.getSortedByFrequency(filteredWords).ToList();
+
             foreach (Word w in filteredWords)
             {
                 foreach (DetailedWord dw in detailedWords)

@@ -41,7 +41,7 @@ namespace WpfApp2
         /// Get the entered text, and show the results the user wants to see
         /// </summary>
         /// <param name="sender">The Search Button</param>
-        /// <param name="e">The clicked event args</param>
+        /// <param name="e">The clicked event args</param> 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
