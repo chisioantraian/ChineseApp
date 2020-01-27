@@ -50,11 +50,6 @@ namespace WPF_program.Logic
         internal List<Word> SearchBySimplified(string text)
         {
             return Chinese.ChineseService.searchBySimplified(text).ToList();
-            var filteredWords = words
-                .Where(w => w.Simplified.Contains(text))
-                .ToList();
-
-            return GetSortedByFrequency(filteredWords);
         }
 
         /// <summary>
@@ -64,6 +59,7 @@ namespace WPF_program.Logic
         /// <returns>The results list</returns>
         internal List<Word> SearchByPinyin(string text)
         {
+            return Chinese.ChineseService.searchByPinyin(text).ToList();
             string[] prons = text.Split(' ');
             List<Word> filteredWords = new List<Word>();
             foreach (var word in words)

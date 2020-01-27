@@ -81,3 +81,23 @@ module ChineseService =
         |> Seq.filter (fun w -> w.Simplified.Contains(text))
         |> getSortedByFrequency
 
+    //TODO too C#-like
+    let searchByPinyin (text:string) =
+        let prons = text.Split(' ')
+
+        let checkIfPinyinMatches (word:Word) =
+            let wordProns = word.Pronounciation.Split(' ')
+            if prons.Length <> wordProns.Length then
+                false
+            else
+                let mutable toInsert = true
+                for i in 0 .. prons.Length-1 do
+                    if  not (wordProns.[i].StartsWith (prons.[i])) then
+                        toInsert <- false
+                    if wordProns.[i].Length <> (prons.[i].Length + 1) then
+                        toInsert <- false
+                toInsert
+        allWords
+        |> Seq.filter checkIfPinyinMatches
+        |> getSortedByFrequency
+        
