@@ -59,24 +59,16 @@ module ChineseService =
 
     let getAllDetailedWords() =
         allDetailedWords
-        
 
     let getAllWords() =
         allWords
 
-    //FIXME must modify
     let getSortedByFrequency (filteredWords:List<Word>) =
         for w in filteredWords do
-            //let detailedWord = allDetailedWords
-            //                  |> Seq.find (fun dw -> w.Simplified = dw.Simplified)
-            //                  |> (fun dw -> dw.WCount)
-            //                  |> int
-            //w.Rank <- Int32.Parse(detailedWord.WCount)
-            w.Rank <- allDetailedWords
-                      |> Seq.tryFind (fun dw -> w.Simplified = dw.Simplified)
-                      |> (fun dw -> dw.WCount)
-                      |> int
-            //w.Rank <- Int32.Parse(detailedWord.WCount)      
-        filteredWords |> Seq.sortBy (fun w -> w.Rank)
+            let detailedWord = allDetailedWords
+                                |> Seq.tryFind (fun dw -> w.Simplified = dw.Simplified)
+            if detailedWord.IsSome then
+                w.Rank <- Int32.Parse detailedWord.Value.WCount
+        filteredWords |> Seq.sortBy (fun w -> w.Rank) |> Seq.rev
 
 
