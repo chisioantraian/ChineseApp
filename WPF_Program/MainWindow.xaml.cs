@@ -20,7 +20,7 @@ namespace WpfApp2
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ChineseWords chineseWords;
+        //private readonly ChineseWords chineseWords;
         private readonly List<Word> allWords;
         private readonly List<DetailedWord> allDetailedWords;
 
@@ -29,9 +29,9 @@ namespace WpfApp2
         public MainWindow()
         {
             InitializeComponent();
-            chineseWords = new ChineseWords();
-            allWords = chineseWords.GetAll();
-            allDetailedWords = chineseWords.GetAllDetailed();
+            //chineseWords = new ChineseWords();
+            allWords = Chinese.ChineseService.getAllWords();//allWords = chineseWords.GetAll();
+            allDetailedWords = Chinese.ChineseService.getAllDetailedWords().ToList();//allDetailedWords = chineseWords.GetAllDetailed();
             dict = Logic.ChineseService.GetCharacterDecomposition();
             InitializeWordsPanel();
             InitializeExamples();
@@ -44,7 +44,8 @@ namespace WpfApp2
         /// <param name="e">The clicked event args</param> 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
+            //List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
+            List<Word> filteredWords = Chinese.ChineseService.getEnglishResult(SearchBar.Text).ToList();
             UpdateShownWords(filteredWords);
         }
 
@@ -55,7 +56,8 @@ namespace WpfApp2
         /// <param name="e">The clicked event args</param>
         private void RandomButton_Click(object sender, RoutedEventArgs e)
         {
-            List<Word> randomWords = chineseWords.GetRandomWords();
+            //List<Word> randomWords = chineseWords.GetRandomWords();
+            List<Word> randomWords = Chinese.ChineseService.getRandomWords();
             UpdateShownWords(randomWords);
         }
 
@@ -84,7 +86,8 @@ namespace WpfApp2
         /// </summary>
         public void InitializeWordsPanel()
         {
-            List<Word> wordsExample = chineseWords.EnglishResult("rainforest");
+            List<Word> wordsExample = Chinese.ChineseService.getEnglishResult("Jupiter").ToList();
+            //List<Word> wordsExample = chineseWords.EnglishResult("rainforest");
             UpdateShownWords(wordsExample);
         }
 
@@ -101,7 +104,8 @@ namespace WpfApp2
         /// </summary>
         private void ShowEnglishResult()
         {
-            List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
+            //List<Word> filteredWords = chineseWords.EnglishResult(SearchBar.Text);
+            List<Word> filteredWords = Chinese.ChineseService.getEnglishResult(SearchBar.Text).ToList();
             UpdateShownWords(filteredWords);
         }
 
@@ -110,7 +114,8 @@ namespace WpfApp2
         /// </summary>
         private void ShowPronounciationResult()
         {
-            List<Word> filteredWords = chineseWords.SearchByPinyin(SearchBar.Text);
+            //List<Word> filteredWords = chineseWords.SearchByPinyin(SearchBar.Text);
+            List<Word> filteredWords = Chinese.ChineseService.getEnglishResult(SearchBar.Text).ToList();
             UpdateShownWords(filteredWords);
         }
 
@@ -205,7 +210,10 @@ namespace WpfApp2
                 sBox.MouseUp += (e, s) =>
                 {
                     SearchBar.Text = sBox.Text;
-                    List<Word> filteredWords = chineseWords.SearchBySimplified(sBox.Text);
+                    //List<Word> filteredWords = chineseWords.SearchBySimplified(sBox.Text);
+                    List<Word> filteredWords = Chinese.ChineseService.searchBySimplified(sBox.Text).ToList();
+                    Console.WriteLine($"fws = {filteredWords.Count}");
+                    //List<Word> filteredWords = chineseWords.SearchBySimplified(sBox.Text);
                     UpdateShownWords(filteredWords);
                 };
 

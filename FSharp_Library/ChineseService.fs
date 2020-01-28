@@ -63,6 +63,7 @@ module ChineseService =
     let getAllWords() =
         allWords
 
+    //TODO it's too slow
     let getSortedByFrequency filteredWords = //(filteredWords:List<Word>) =
         for w in filteredWords do
             let detailedWord = allDetailedWords
@@ -79,7 +80,7 @@ module ChineseService =
     let searchBySimplified (text:string) =
         allWords
         |> Seq.filter (fun w -> w.Simplified.Contains(text))
-        |> getSortedByFrequency
+        //|> getSortedByFrequency
 
     //TODO too C#-like
     let searchByPinyin (text:string) =
