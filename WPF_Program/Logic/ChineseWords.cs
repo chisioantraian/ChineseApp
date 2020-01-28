@@ -23,16 +23,6 @@ namespace WPF_program.Logic
         }
 
         /// <summary>
-        /// Sort a list of words by the words frequency in the language
-        /// </summary>
-        /// <param name="filteredWords">The list to be sorted</param>
-        /// <returns>The list sorted</returns>
-        private List<Word> GetSortedByFrequency(List<Word> filteredWords)
-        {
-            return Chinese.ChineseService.getSortedByFrequency(filteredWords).ToList();
-        }
-
-        /// <summary>
         /// Get the list of words, where the definition contains the paramater
         /// </summary>
         /// <param name="text">The string to be looked after</param>
@@ -60,26 +50,6 @@ namespace WPF_program.Logic
         internal List<Word> SearchByPinyin(string text)
         {
             return Chinese.ChineseService.searchByPinyin(text).ToList();
-            string[] prons = text.Split(' ');
-            List<Word> filteredWords = new List<Word>();
-            foreach (var word in words)
-            {
-                string[] wordProns = word.Pronounciation.Split(' ');
-                if (prons.Length != wordProns.Length)
-                    continue;
-                bool toInsert = true;
-                for (int i = 0; i < prons.Length; i++)
-                {
-                    if (!wordProns[i].StartsWith(prons[i]))
-                        toInsert = false;
-                    if (wordProns[i].Length != (prons[i].Length + 1))
-                        toInsert = false;
-                }
-                if (toInsert)
-                    filteredWords.Add(word);
-            }
-
-            return GetSortedByFrequency(filteredWords);
         }
 
         /// <summary>
@@ -88,14 +58,7 @@ namespace WPF_program.Logic
         /// <returns>The computed list</returns>
         internal List<Word> GetRandomWords()
         {
-            Random random = new Random();
-            List<Word> result = new List<Word>();
-            for (int i = 0; i < 5; i++)
-            {
-                int index = random.Next(words.Count);
-                result.Add(words[index]);
-            }
-            return result;
+            return Chinese.ChineseService.getRandomWords().ToList();
         }
 
         /// <returns>The list of all words in the application</returns>

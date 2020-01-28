@@ -74,7 +74,7 @@ module ChineseService =
     let getEnglishResult (text:string) =
         allWords
         |> Seq.filter (fun w -> w.Definitions.Contains(text))
-        |> getSortedByFrequency
+        //|> getSortedByFrequency
 
     let searchBySimplified (text:string) =
         allWords
@@ -100,4 +100,12 @@ module ChineseService =
         allWords
         |> Seq.filter checkIfPinyinMatches
         |> getSortedByFrequency
+
+    let getRandomWords() =
+        let random = new Random()
+        let result = new List<Word>()
+        for i in 0 .. 20 do
+            let index = random.Next(allWords.Count)
+            result.Add (allWords.[index])
+        result
         
