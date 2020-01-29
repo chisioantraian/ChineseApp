@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using WpfApp2.Models;
-using static WpfApp2.Logic.Kangxi;
+//using static WpfApp2.Logic.Kangxi;
 
 namespace WpfApp2.Logic
 {
@@ -17,12 +17,12 @@ namespace WpfApp2.Logic
         {
             Dictionary<char, List<char>> basicDict = GetDecompositionRules();
             Dictionary<char, List<char>> resultDict = new Dictionary<char, List<char>>();
-            List<KangxiRadical> kangxiRadicals = Kangxi.GetRadicals();
+            List<MyTypes.KangxiRadical> kangxiRadicals = Chinese.Kangxi.getRadicals().ToList();//Kangxi.GetRadicals();
 
             foreach (char dictKey in basicDict.Keys)
             {
                 bool foundRadical = false;
-                foreach (KangxiRadical kg in kangxiRadicals)
+                foreach (MyTypes.KangxiRadical kg in kangxiRadicals)
                 {
                     if (kg.Symbol == dictKey)
                     {

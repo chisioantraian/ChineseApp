@@ -25,3 +25,8 @@ type Word = {
     Pronounciation: string
     Definitions: string
 }
+
+type KangxiRadical = {
+    Symbol: char
+    Number: int
+}
