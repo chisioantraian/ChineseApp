@@ -25,7 +25,7 @@ namespace WPF_program.Controllers
             dict = WpfApp2.Logic.ChineseService.GetCharacterDecomposition();
         }
 
-        public static void ShowResult(Key lastEnteredKey)
+        public static void ShowResult(Key lastEnteredKey = Key.Enter)
         {
             if (lastEnteredKey != Key.Enter)
                 return;
@@ -33,9 +33,9 @@ namespace WPF_program.Controllers
 
             switch (typeItem.Content.ToString())
             {
-                case "Chinese": Controller.ShowChineseResult(); break;
-                case "English": Controller.ShowEnglishResult(); break;
-                case "Pronounciation": Controller.ShowPronounciationResult(); break;
+                case "Chinese": ShowChineseResult(); break;
+                case "English": ShowEnglishResult(); break;
+                case "Pronounciation": ShowPronounciationResult(); break;
                 case "Compose": ShowComposeResult(); break;
             }
         }

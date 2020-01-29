@@ -1,7 +1,6 @@
 ﻿
 namespace WpfApp2
 {
-    using System;
     using System.Windows;
     using System.Windows.Input;
     using WPF_program.Controllers;
@@ -11,13 +10,12 @@ namespace WpfApp2
         public MainWindow()
         {
             InitializeComponent();
-            Console.WriteLine("reorganized code3");
             Controller.setWindow(this);
             Controller.InitializeSentenceExamples();
             Controller.ShowSomeRandomWords();
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e) => Controller.ShowEnglishResult();
+        private void SearchButton_Click(object sender, RoutedEventArgs e) => Controller.ShowResult();
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
         private void SearchBar_KeyUp(object sender, KeyEventArgs e) => Controller.ShowResult(e.Key);
 

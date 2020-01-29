@@ -2,11 +2,11 @@
 using System.IO;
 using System.Linq;
 using WpfApp2.Models;
-//using static WpfApp2.Logic.Kangxi;
+using static MyTypes;
 
 namespace WpfApp2.Logic
 {
-    public static partial class ChineseService
+    public static class ChineseService
     {
         //TODO use relative paths
         private const string inputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt";
@@ -17,12 +17,12 @@ namespace WpfApp2.Logic
         {
             Dictionary<char, List<char>> basicDict = GetDecompositionRules();
             Dictionary<char, List<char>> resultDict = new Dictionary<char, List<char>>();
-            List<MyTypes.KangxiRadical> kangxiRadicals = Chinese.Kangxi.getRadicals().ToList();//Kangxi.GetRadicals();
+            List<KangxiRadical> kangxiRadicals = Chinese.Kangxi.getRadicals().ToList();
 
             foreach (char dictKey in basicDict.Keys)
             {
                 bool foundRadical = false;
-                foreach (MyTypes.KangxiRadical kg in kangxiRadicals)
+                foreach (KangxiRadical kg in kangxiRadicals)
                 {
                     if (kg.Symbol == dictKey)
                     {
