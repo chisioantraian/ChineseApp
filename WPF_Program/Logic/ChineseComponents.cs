@@ -15,6 +15,7 @@ namespace WpfApp2.Logic
         //TODO comment
         public static Dictionary<char, List<char>> GetCharacterDecomposition()
         {
+            return Chinese.Decomposition.getCharacterDecomposition();
             Dictionary<char, List<char>> basicDict = GetDecompositionRules();
             Dictionary<char, List<char>> resultDict = new Dictionary<char, List<char>>();
             List<KangxiRadical> kangxiRadicals = Chinese.Kangxi.getRadicals().ToList();

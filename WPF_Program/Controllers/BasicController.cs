@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chinese;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -6,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using WpfApp2;
+
 using static MyTypes;
 
 namespace WPF_program.Controllers
@@ -20,8 +22,8 @@ namespace WPF_program.Controllers
         public static void setWindow(MainWindow window)
         {
             mainWindow = window;
-            allWords = Chinese.ChineseService.getAllWords();
-            allDetailedWords = Chinese.ChineseService.getAllDetailedWords().ToList();
+            allWords = ChineseService.getAllWords();
+            allDetailedWords = ChineseService.getAllDetailedWords().ToList();
             dict = WpfApp2.Logic.ChineseService.GetCharacterDecomposition();
         }
 
@@ -84,7 +86,7 @@ namespace WPF_program.Controllers
                     }
                 }
             }
-            Controller.UpdateShownWords(filteredWords);
+            UpdateShownWords(filteredWords);
             Console.WriteLine("ShowComposeResult - end");
         }
 
@@ -92,7 +94,7 @@ namespace WPF_program.Controllers
         private static void ShowDecomposed(string sentence)
         {
             List<Word> result = GetWordsFromSentence(sentence);
-            Controller.UpdateShownWords(result);
+            UpdateShownWords(result);
 
             mainWindow.MiddleWordBox.Children.Clear();
             foreach (Word w in result)

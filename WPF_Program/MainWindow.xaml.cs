@@ -1,6 +1,7 @@
 ﻿
 namespace WpfApp2
 {
+    using System;
     using System.Windows;
     using System.Windows.Input;
     using WPF_program.Controllers;
@@ -10,6 +11,7 @@ namespace WpfApp2
         public MainWindow()
         {
             InitializeComponent();
+            Console.WriteLine("test 1");
             Controller.setWindow(this);
             Controller.InitializeSentenceExamples();
             Controller.ShowSomeRandomWords();
