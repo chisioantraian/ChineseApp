@@ -24,7 +24,7 @@ namespace WPF_program.Controllers
             mainWindow = window;
             allWords = ChineseService.getAllWords();
             allDetailedWords = ChineseService.getAllDetailedWords().ToList();
-            dict = WpfApp2.Logic.ChineseService.GetCharacterDecomposition();
+            dict = Decomposition.getCharacterDecomposition();
         }
 
         public static void ShowResult(Key lastEnteredKey = Key.Enter)

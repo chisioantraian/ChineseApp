@@ -63,8 +63,8 @@
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -78,16 +78,42 @@
                        FontSize="24" />
             </ListBox>
 
-            <WrapPanel Name="MiddleWordBox"
-                     Grid.Column="1">
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <WrapPanel Grid.Row="0" Name="MiddleWordBox" />
+                
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-            </WrapPanel>
+                    <Border BorderThickness="2" BorderBrush="Black" Grid.Column="0">
+                        <TextBlock 
+                            Name="ZoomedCharacterBox"
+                            FontSize="200" />
+                    </Border>
+
+                    <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1">
+                        <TextBlock 
+                            Name="DecompositionBlock"
+                            FontSize="16" />
+                    </Border>
+
+                </Grid>
+                
+            </Grid>
+
 
 
             <ListBox Name="ExamplesList"
                      Grid.Column="2" >
                 <StackPanel Name="StatisticsBox">
-                    <TextBlock Name="DecompositionBlock"
+                    <TextBlock Name="DecompositionBlock2"
                            FontSize="20"
                            Margin="10" />
                 </StackPanel>

@@ -8,43 +8,6 @@ namespace WpfApp2.Logic
 {
     public static class ChineseService
     {
-        //TODO use relative paths
-        private const string inputPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt";
-
-        //TODO use singleton
-        //TODO comment
-        public static Dictionary<char, List<char>> GetCharacterDecomposition()
-        {
-            return Chinese.Decomposition.getCharacterDecomposition();
-            Dictionary<char, List<char>> basicDict = GetDecompositionRules();
-            Dictionary<char, List<char>> resultDict = new Dictionary<char, List<char>>();
-            List<KangxiRadical> kangxiRadicals = Chinese.Kangxi.getRadicals().ToList();
-
-            foreach (char dictKey in basicDict.Keys)
-            {
-                bool foundRadical = false;
-                foreach (KangxiRadical kg in kangxiRadicals)
-                {
-                    if (kg.Symbol == dictKey)
-                    {
-                        foundRadical = true;
-                        break;
-                    }
-                }
-
-                if (! foundRadical)
-                {
-                    resultDict.Add(dictKey, basicDict[dictKey]);
-                }
-                else
-                {
-                    resultDict.Add(dictKey, null);
-                }
-            }
-
-            return resultDict;
-        }
-
         private static void ProcessRule(Rule rule, Dictionary<char, List<char>> dict, List<Rule> decompositionRules)
         {
             var listComponents = new List<char>();
@@ -79,18 +42,6 @@ namespace WpfApp2.Logic
                 dict.Add(rule.ToBeDecomposed, result);
         }
 
-        private static Dictionary<char, List<char>> GetDecompositionRules()
-        {
-            Dictionary<char, List<char>> basicDict = new Dictionary<char, List<char>>();
-
-            // components -> radicals decomposition list
-            foreach (string line in File.ReadLines(inputPath).Skip(10640))
-            {
-                AnalyzeLine(line, basicDict);
-            }
-            return basicDict;
-        }
-
         private static Rule Annalyze(string line)
         {
             char characterToBeDecomposed = line.Split(':')[0][0];
@@ -114,31 +65,5 @@ namespace WpfApp2.Logic
             return new Rule(characterToBeDecomposed, compositionType, componentA, componentB);
         }
 
-        private static void AnalyzeLine(string line, Dictionary<char, List<char>> dict)
-        {
-            char character = line.Split(':')[0][0];
-            //string compositionType = line.Split(':')[1].Split('(')[0]
-            string afterParan = line.Split('(')[1];
-            char componentA;
-            char? componentB = null;
-            var components = new List<char>();
-
-            if (afterParan.Contains(","))
-            {
-                componentA = afterParan.Split(',')[0][0];
-                componentB = afterParan
-                    .Split(',')[1]
-                    .Split(')')[0][0];
-                components.Add(componentA);
-                components.Add((char)componentB);
-            }
-            else
-            {
-                componentA = afterParan.Split(')')[0][0];
-                components.Add(componentA);
-            }
-            if (! dict.ContainsKey(character))
-                dict.Add(character, components);
-        }
     }
 }
