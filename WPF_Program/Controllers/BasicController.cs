@@ -42,22 +42,42 @@ namespace WPF_program.Controllers
             }
         }
 
+        private static void ShowCharacterDecomposition(char characterToBeDecomposed)
+        {
+            if (dict.ContainsKey(characterToBeDecomposed))
+            {
+                string decompositionText = string.Empty;
+                var chars = new Queue<char>();
+                decompositionText += "ch : ";
+                foreach (char c in dict[characterToBeDecomposed])
+                {
+                    decompositionText += ("   " + c);
+                    chars.Enqueue(c);
+                }
+                while (chars.Count > 0)
+                {
+                    char ch = chars.Dequeue();
+                    decompositionText += "ch : ";
+                    if (!dict.ContainsKey(ch))
+                        break;
+                    foreach (char c in dict[ch])
+                    {
+                        decompositionText += ("   " + c);
+                        chars.Enqueue(ch);
+                    }
+                    decompositionText += '\n';
+                }
+
+                mainWindow.DecompositionBlock.Text = $"{characterToBeDecomposed} : {decompositionText} ";
+            }
+        }
+
         // From a single character, show all other chinese characters which contain it as a component
         private static void ShowComposeResult()
         {
             Console.WriteLine("ShowComposeResult - begin");
             string searchInput = mainWindow.SearchBar.Text;
             List<char> simplifiedComponentsFound = new List<char>();
-
-            if (dict.ContainsKey(searchInput[0]))
-            {
-                string decompositionText = string.Empty;
-                foreach (char c in dict[searchInput[0]])
-                {
-                    decompositionText += ("   " + c);
-                }
-                mainWindow.DecompositionBlock.Text = $"{searchInput[0]} : {decompositionText}";
-            }
 
             // get simplified representation of words which contains character represented by 'searchinput'
             foreach (var decompositionTuple in dict)

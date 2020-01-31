@@ -66,16 +66,15 @@ namespace WPF_program.Controllers
                 {
                     //mainWindow.SearchBar.Text = sBox.Text;
                     mainWindow.ZoomedCharacterBox.Text = sBox.Text;
+                    ShowCharacterDecomposition(sBox.Text[0]);
                 };
                 //
                 sBox.MouseUp += (e, s) =>
                 {
                     mainWindow.SearchBar.Text = sBox.Text;
                     List<Word> filteredWords = ChineseService.searchBySimplified(sBox.Text).ToList();
-                    //UpdateShownWords(filteredWords);
-
-                    ShowComposeResult();
-
+                    UpdateShownWords(filteredWords);
+                    //ShowComposeResult();
                 };
 
                 TextBlock pBox = new TextBlock
