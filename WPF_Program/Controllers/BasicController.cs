@@ -242,7 +242,7 @@ namespace WPF_program.Controllers
             };
         }
 
-        // Get all chinese words which have the simplified form equal to a particular string
+        // Get all chinese words which have the simplified form equal to the passed string
         private static List<Word> GetResultedWord(string simpl)
         {
             return allWords.Where(w => w.Simplified == simpl).ToList();
