@@ -18,7 +18,9 @@ namespace WpfApp2
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) => Controller.ShowResult();
+        
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
+        
         private void SearchBar_KeyUp(object sender, KeyEventArgs e) => Controller.ShowResult(e.Key);
 
     }
