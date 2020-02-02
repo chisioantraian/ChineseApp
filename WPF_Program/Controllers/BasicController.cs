@@ -46,69 +46,15 @@ namespace WPF_program.Controllers
         {
             if (!dict.ContainsKey(characterToBeDecomposed))
                 return;
-            ///
             string decompositionText = Decomposition.decomposeCharToRadicals(characterToBeDecomposed);
-            /*string decompositionText = string.Empty;
-            var chars = new Queue<char>();
-            decompositionText += "ch : ";
-            foreach (char c in dict[characterToBeDecomposed])
-            {
-                decompositionText += ("   " + c);
-                chars.Enqueue(c);
-            }
-            while (chars.Count > 0)
-            {
-                char ch = chars.Dequeue();
-                decompositionText += "ch : ";
-                if (!dict.ContainsKey(ch))
-                    break;
-                foreach (char c in dict[ch])
-                {
-                    decompositionText += ("   " + c);
-                    chars.Enqueue(ch);
-                }
-                decompositionText += '\n';
-            }*/
-            ///
             mainWindow.DecompositionBlock.Text = $"{characterToBeDecomposed} : {decompositionText} ";
         }
 
         // From a single character, show all other chinese characters which contain it as a component
         private static void ShowComposeResult()
         {
-            Console.WriteLine("ShowComposeResult - begin");
-            string searchInput = mainWindow.SearchBar.Text;
-            List<char> simplifiedComponentsFound = new List<char>();
-
-            // get simplified representation of words which contains character represented by 'searchinput'
-            foreach (var decompositionTuple in dict)
-            {
-                List<char> componentsList = decompositionTuple.Value;
-                if (componentsList != null && componentsList.Contains(searchInput[0]))
-                {
-                    Console.WriteLine(searchInput[0]);
-                    simplifiedComponentsFound.Add(decompositionTuple.Key);
-                }
-            }
-            Console.WriteLine($"simplifiedComponentsFound size = {simplifiedComponentsFound.Count}");
-
-            // get complete words(1 char-length) using the above simplified list
-            List<Word> filteredWords = new List<Word>();
-            foreach (var word in allWords)
-            {
-                if (word.Simplified.Length > 1)
-                    continue;
-                foreach (char character in word.Simplified)
-                {
-                    if (simplifiedComponentsFound.Contains(character))
-                    {
-                        filteredWords.Add(word);
-                        break;
-                    }
-                }
-            }
+            List<Word> filteredWords = Decomposition.getCharactersWithComponent(mainWindow.SearchBar.Text);
             UpdateShownWords(filteredWords);
-            Console.WriteLine("ShowComposeResult - end");
         }
 
         // Split a sentence into words, show these words and analyze the sentence

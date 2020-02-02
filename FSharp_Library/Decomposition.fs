@@ -2,6 +2,8 @@
 
 open System.Collections.Generic;
 open System.IO;
+
+open MyTypes
 open Kangxi
 
 module Decomposition =
@@ -46,7 +48,6 @@ module Decomposition =
 
     //TODO rename variables
     let decomposeCharToRadicals (ch:char) =
-        printfn "begining decompose"
         let mutable decompositionText = ""
         let chars = new Queue<char>()
         for c in basicDict.[ch] do
@@ -54,37 +55,28 @@ module Decomposition =
             chars.Enqueue(c)
         while chars.Count > 0 do
             let firstCh = chars.Dequeue()
-            printfn "inside while %c" firstCh
-            decompositionText <- decompositionText + (firstCh.ToString() + " :- ")
+            decompositionText <- decompositionText + (firstCh.ToString() + " : ")
             if basicDict.ContainsKey(firstCh) then
                 for c in basicDict.[firstCh] do
                      decompositionText <- decompositionText + (" " + c.ToString())
                      chars.Enqueue(c)
                 decompositionText <- decompositionText + "\n"
         decompositionText
-        (*
-
-        string decompositionText = string.Empty;
-        var chars = new Queue<char>();
-        decompositionText += "ch : ";
-        foreach (char c in dict[characterToBeDecomposed])
-        {
-            decompositionText += ("   " + c);
-            chars.Enqueue(c);
-        }
-        while (chars.Count > 0)
-        {
-            char ch = chars.Dequeue();
-            decompositionText += "ch : ";
-            if (!dict.ContainsKey(ch))
-                break;
-            foreach (char c in dict[ch])
-            {
-                decompositionText += ("   " + c);
-                chars.Enqueue(ch);
-            }
-            decompositionText += '\n';
-        }
-        *)
 
 
+    let getCharactersWithComponent (text:string) = 
+        let ch = text.[0]
+        let simplifiedComponentsFound = new List<char>()
+        for decompositionTuple in basicDict do
+            let componentList = decompositionTuple.Value
+            if componentList.Contains(ch) then
+                printfn "dt : %c" decompositionTuple.Key
+                simplifiedComponentsFound.Add(decompositionTuple.Key)
+        printfn "scf size = %d" simplifiedComponentsFound.Count
+
+        let filteredWords = new List<Word>()
+        for word in ChineseService.allWords do
+            if word.Simplified.Length = 1 then 
+                if simplifiedComponentsFound.Contains(word.Simplified.[0]) then
+                    filteredWords.Add(word)
+        filteredWords
