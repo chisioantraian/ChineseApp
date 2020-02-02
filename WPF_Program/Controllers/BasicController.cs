@@ -44,32 +44,33 @@ namespace WPF_program.Controllers
 
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
-            if (dict.ContainsKey(characterToBeDecomposed))
+            if (!dict.ContainsKey(characterToBeDecomposed))
+                return;
+            ///
+            string decompositionText = Decomposition.decomposeCharToRadicals(characterToBeDecomposed);
+            /*string decompositionText = string.Empty;
+            var chars = new Queue<char>();
+            decompositionText += "ch : ";
+            foreach (char c in dict[characterToBeDecomposed])
             {
-                string decompositionText = string.Empty;
-                var chars = new Queue<char>();
+                decompositionText += ("   " + c);
+                chars.Enqueue(c);
+            }
+            while (chars.Count > 0)
+            {
+                char ch = chars.Dequeue();
                 decompositionText += "ch : ";
-                foreach (char c in dict[characterToBeDecomposed])
+                if (!dict.ContainsKey(ch))
+                    break;
+                foreach (char c in dict[ch])
                 {
                     decompositionText += ("   " + c);
-                    chars.Enqueue(c);
+                    chars.Enqueue(ch);
                 }
-                while (chars.Count > 0)
-                {
-                    char ch = chars.Dequeue();
-                    decompositionText += "ch : ";
-                    if (!dict.ContainsKey(ch))
-                        break;
-                    foreach (char c in dict[ch])
-                    {
-                        decompositionText += ("   " + c);
-                        chars.Enqueue(ch);
-                    }
-                    decompositionText += '\n';
-                }
-
-                mainWindow.DecompositionBlock.Text = $"{characterToBeDecomposed} : {decompositionText} ";
-            }
+                decompositionText += '\n';
+            }*/
+            ///
+            mainWindow.DecompositionBlock.Text = $"{characterToBeDecomposed} : {decompositionText} ";
         }
 
         // From a single character, show all other chinese characters which contain it as a component
