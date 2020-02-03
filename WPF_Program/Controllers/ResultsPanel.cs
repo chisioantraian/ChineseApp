@@ -120,8 +120,6 @@ namespace WPF_program.Controllers
             mainWindow.WordsList.Items.Add(wordBorder);
         }
 
-
-
         internal static void ShowSomeRandomWords()
         {
             List<Word> randomWords = ChineseService.getRandomWords();
