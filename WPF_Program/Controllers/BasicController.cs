@@ -44,8 +44,6 @@ namespace WPF_program.Controllers
 
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
-            if (!dict.ContainsKey(characterToBeDecomposed))
-                return;
             string decompositionText = Decomposition.decomposeCharToRadicals(characterToBeDecomposed);
             mainWindow.DecompositionBlock.Text = $"{characterToBeDecomposed} : {decompositionText} ";
         }
@@ -105,41 +103,10 @@ namespace WPF_program.Controllers
             }
         }
 
-        // Get all chinese words which have the simplified form equal to the passed string
-        private static List<Word> GetResultedWord(string simpl)
-        {
-            return allWords.Where(w => w.Simplified == simpl).ToList();
-        }
-
-
         // Split a sentence represented as a string into a list of words
         private static List<Word> GetWordsFromSentence(string sentence)
         {
             return ChineseService.getWordsFromSentence(sentence);
-            string constructedWord = string.Empty;
-            var resultedWord = new List<Word>();
-            var toInsert = new List<Word>();
-            var result = new List<Word>();
-
-            foreach (char curr in sentence)
-            {
-                resultedWord = GetResultedWord(constructedWord + curr);
-                if (resultedWord.Count > 0)
-                {
-                    toInsert = resultedWord;
-                    constructedWord += curr;
-                }
-                else
-                {
-                    if (toInsert.Count > 0)
-                        result.Add(toInsert[0]); //toInsert.ForEach(w => result.Add(w));
-                    toInsert = GetResultedWord(curr.ToString());
-                    constructedWord = curr.ToString();
-                }
-            }
-            if (toInsert.Count > 0)
-                result.Add(toInsert[0]); //toInsert.ForEach(w => result.Add(w));
-            return result;
         }
 
         // From a word(DetailedWord) pos tag, get its full pos name , and also return a color, unique to it

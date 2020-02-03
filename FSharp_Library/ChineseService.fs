@@ -133,29 +133,4 @@ module ChineseService =
             result.Add(toInsert.[0]) //toInsert.ForEach(w => result.Add(w));
         result
 
-        (*--string constructedWord = string.Empty;
-        ---var resultedWord = new List<Word>();
-        ---var toInsert = new List<Word>();
-        ---var result = new List<Word>();
-
-        ---foreach (char curr in sentence)
-        ---{
-            ---resultedWord = GetResultedWord(constructedWord + curr);
-            ---if (resultedWord.Count > 0)
-            ---{
-                ---toInsert = resultedWord;
-                ---constructedWord += curr;
-            ---}
-            else
-            {
-                if (toInsert.Count > 0)
-                    result.Add(toInsert[0]); //toInsert.ForEach(w => result.Add(w));
-                toInsert = GetResultedWord(curr.ToString());
-                constructedWord = curr.ToString();
-            }
-        ---}
-        if (toInsert.Count > 0)
-            result.Add(toInsert[0]); //toInsert.ForEach(w => result.Add(w));
-        return result;*)
-
         

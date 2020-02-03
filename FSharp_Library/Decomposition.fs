@@ -48,20 +48,23 @@ module Decomposition =
 
     //TODO rename variables
     let decomposeCharToRadicals (ch:char) =
-        let mutable decompositionText = ""
-        let chars = new Queue<char>()
-        for c in basicDict.[ch] do
-            decompositionText <- decompositionText + (" " + c.ToString());
-            chars.Enqueue(c)
-        while chars.Count > 0 do
-            let firstCh = chars.Dequeue()
-            decompositionText <- decompositionText + (firstCh.ToString() + " : ")
-            if basicDict.ContainsKey(firstCh) then
-                for c in basicDict.[firstCh] do
-                     decompositionText <- decompositionText + (" " + c.ToString())
-                     chars.Enqueue(c)
-                decompositionText <- decompositionText + "\n"
-        decompositionText
+        if not (basicDict.ContainsKey(ch)) then
+            "cannot find decomposition"
+        else
+            let mutable decompositionText = ""
+            let chars = new Queue<char>()
+            for c in basicDict.[ch] do
+                decompositionText <- decompositionText + (" " + c.ToString());
+                chars.Enqueue(c)
+            while chars.Count > 0 do
+                let firstCh = chars.Dequeue()
+                decompositionText <- decompositionText + (firstCh.ToString() + " : ")
+                if basicDict.ContainsKey(firstCh) then
+                    for c in basicDict.[firstCh] do
+                         decompositionText <- decompositionText + (" " + c.ToString())
+                         chars.Enqueue(c)
+                    decompositionText <- decompositionText + "\n"
+            decompositionText
 
 
     let getCharactersWithComponent (text:string) = 
