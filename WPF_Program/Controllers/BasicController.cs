@@ -105,9 +105,17 @@ namespace WPF_program.Controllers
             }
         }
 
+        // Get all chinese words which have the simplified form equal to the passed string
+        private static List<Word> GetResultedWord(string simpl)
+        {
+            return allWords.Where(w => w.Simplified == simpl).ToList();
+        }
+
+
         // Split a sentence represented as a string into a list of words
         private static List<Word> GetWordsFromSentence(string sentence)
         {
+            return ChineseService.getWordsFromSentence(sentence);
             string constructedWord = string.Empty;
             var resultedWord = new List<Word>();
             var toInsert = new List<Word>();
@@ -189,11 +197,6 @@ namespace WPF_program.Controllers
             };
         }
 
-        // Get all chinese words which have the simplified form equal to the passed string
-        private static List<Word> GetResultedWord(string simpl)
-        {
-            return allWords.Where(w => w.Simplified == simpl).ToList();
-        }
 
 
         // Get a character's decomposition, till radicals/strokes level

@@ -110,5 +110,52 @@ module ChineseService =
             result.Add (allWords.[index])
         result
 
+    let getResultedWord (simpl:string) = 
+        allWords
+        |> Seq.filter (fun w -> w.Simplified = simpl)
+
+    //todo clarify
+    let getWordsFromSentence (sentence:string) =
+        let mutable constructedWord = ""
+        let mutable toInsert = new List<Word>()
+        let mutable result = new List<Word>()
+        for curr in sentence do
+            let resultedWord = getResultedWord(constructedWord + curr.ToString()) |> Seq.toList //getResultedWord(constructedWord + curr)
+            if resultedWord.Length > 0 then
+                toInsert <- new List<Word>(resultedWord)
+                constructedWord <- constructedWord + curr.ToString()
+            else
+                if toInsert.Count > 0 then
+                    result.Add(toInsert.[0])
+                toInsert <- new List<Word>(getResultedWord(curr.ToString())) //(getResultedWord(curr.ToString()))
+                constructedWord <- curr.ToString()
+        if toInsert.Count > 0 then
+            result.Add(toInsert.[0]) //toInsert.ForEach(w => result.Add(w));
+        result
+
+        (*--string constructedWord = string.Empty;
+        ---var resultedWord = new List<Word>();
+        ---var toInsert = new List<Word>();
+        ---var result = new List<Word>();
+
+        ---foreach (char curr in sentence)
+        ---{
+            ---resultedWord = GetResultedWord(constructedWord + curr);
+            ---if (resultedWord.Count > 0)
+            ---{
+                ---toInsert = resultedWord;
+                ---constructedWord += curr;
+            ---}
+            else
+            {
+                if (toInsert.Count > 0)
+                    result.Add(toInsert[0]); //toInsert.ForEach(w => result.Add(w));
+                toInsert = GetResultedWord(curr.ToString());
+                constructedWord = curr.ToString();
+            }
+        ---}
+        if (toInsert.Count > 0)
+            result.Add(toInsert[0]); //toInsert.ForEach(w => result.Add(w));
+        return result;*)
 
         
