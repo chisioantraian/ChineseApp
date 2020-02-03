@@ -9,6 +9,8 @@ open Kangxi
 module Decomposition =
     let inputPath =  @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt"
     let basicDict = new Dictionary<char, List<char>>()
+    //let allWords = ChineseService.allWords
+    //let kangxiRadicals = Kangxi.getRadicals() |> Seq.toList
 
     let analyzeLine (line:string) =
         let character = line.Split(':').[0].[0]
@@ -46,24 +48,44 @@ module Decomposition =
 
         resultDict
 
-    //TODO rename variables
-    let decomposeCharToRadicals (ch:char) =
-        if not (basicDict.ContainsKey(ch)) then
+
+    let getDefinition(character:char) =
+
+        let mutable result = " - "
+        for w in ChineseService.allWords do
+            if w.Simplified = character.ToString() then
+                result <- w.Definitions
+        result
+
+    //TODO rename variables, refactor
+    let decomposeCharToRadicals (topChar:char) =
+        if not (basicDict.ContainsKey(topChar)) then
             "cannot find decomposition"
         else
             let mutable decompositionText = ""
             let chars = new Queue<char>()
-            for c in basicDict.[ch] do
-                decompositionText <- decompositionText + (" " + c.ToString());
-                chars.Enqueue(c)
+            if Kangxi.checkIfKangxiRadical(topChar) then
+                decompositionText <- topChar.ToString() + " - KANGXI RADICAL\n"
+            else
+                for c in basicDict.[topChar] do
+                    decompositionText <- decompositionText + (" " + c.ToString())
+                    chars.Enqueue(c)
+                decompositionText <- decompositionText + "\n"
+            //decompositionText <- decompositionText + "   *** " + getDefinition(topChar) + "\n"
             while chars.Count > 0 do
-                let firstCh = chars.Dequeue()
-                decompositionText <- decompositionText + (firstCh.ToString() + " : ")
-                if basicDict.ContainsKey(firstCh) then
-                    for c in basicDict.[firstCh] do
-                         decompositionText <- decompositionText + (" " + c.ToString())
-                         chars.Enqueue(c)
-                    decompositionText <- decompositionText + "\n"
+                let firstChar = chars.Dequeue()
+                decompositionText <- decompositionText + (firstChar.ToString() + " : ")
+                if Kangxi.checkIfKangxiRadical(firstChar) then
+                    decompositionText <- decompositionText + " - KANGXI RADICAL\n"
+                    //decompositionText <- decompositionText + "   *** " + getDefinition(firstChar) + "\n"
+                elif basicDict.ContainsKey(firstChar) then
+                        for c in basicDict.[firstChar] do
+                             decompositionText <- decompositionText + (" " + c.ToString())
+                             chars.Enqueue(c)
+                        decompositionText <- decompositionText + "\n"
+                        //decompositionText <- decompositionText + "   *** " + getDefinition(firstChar) + "\n"
+                else
+                    decompositionText <- decompositionText + " STROKE / unencoded\n"
             decompositionText
 
 

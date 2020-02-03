@@ -45,7 +45,7 @@ namespace WPF_program.Controllers
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
             string decompositionText = Decomposition.decomposeCharToRadicals(characterToBeDecomposed);
-            mainWindow.DecompositionBlock.Text = $"{characterToBeDecomposed} : {decompositionText} ";
+            mainWindow.DecompositionBlock.Text = $"{decompositionText} ";
         }
 
         // From a single character, show all other chinese characters which contain it as a component
@@ -164,56 +164,5 @@ namespace WPF_program.Controllers
             };
         }
 
-
-
-        // Get a character's decomposition, till radicals/strokes level
-        /*private string GetNiceDecomposed(char c)
-        {
-            string result = String.Empty;
-
-            Queue<char> qu = new Queue<char>();
-            qu.Enqueue(c);
-
-            while (qu.Count > 0)
-            {
-                char curr = qu.Dequeue();
-                if (dict.ContainsKey(curr))
-                {
-                    List<char> currList = dict[curr];
-                    if (currList == null)
-                    {
-                        result += $"{curr} : Kangxi radical\n";
-                    }
-                    else if (currList.Count >= 2)
-                    {
-                        result += $"{curr} : {currList[0]}   {currList[1]}\n";
-                        qu.Enqueue(currList[0]);
-                        qu.Enqueue(currList[1]);
-                    }
-                    else if (currList.Count == 1)
-                    {
-                        result += $"{curr} : {currList[0]}\n";
-                        qu.Enqueue(currList[0]);
-                    }
-                    else
-                    {
-                        result += $"{curr} : basic stroke\n";
-                    }
-                }
-            }
-
-            result += "\n definitions : \n";
-
-            foreach (Word w in allWords)
-            {
-                if (w.Simplified.Length == 1 && w.Simplified[0] == c)
-                {
-                    string def = w.Definitions.Replace('/', '\n');
-                    result += $"{c}: {def}";
-                }
-            }
-
-            return result;
-        }*/
     }
 }

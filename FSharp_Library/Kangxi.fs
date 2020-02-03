@@ -4,7 +4,7 @@ open MyTypes
 
 module Kangxi =
     
-    let getRadicals() =
+    let allRadicals = 
         seq {
             { Symbol = '一'; Number = 1 }
             { Symbol = '丨'; Number = 2 }
@@ -327,3 +327,13 @@ module Kangxi =
             { Symbol = '龟'; Number = 213 }
             { Symbol = '龠'; Number = 214 } 
         }
+
+    let getRadicals() =
+        allRadicals
+
+    let checkIfKangxiRadical (character : char) =
+        let mutable found = false
+        for radical in allRadicals do
+            if radical.Symbol = character then
+                found <- true
+        found
