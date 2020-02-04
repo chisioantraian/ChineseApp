@@ -59,7 +59,7 @@ namespace WPF_program.Controllers
         // Split a sentence into words, show these words and analyze the sentence
         private static void ShowDecomposed(string sentence)
         {
-            List<Word> result = GetWordsFromSentence(sentence);
+            List<Word> result = ChineseService.getWordsFromSentence(sentence);
             UpdateShownWords(result);
 
             mainWindow.MiddleWordBox.Children.Clear();
@@ -71,12 +71,6 @@ namespace WPF_program.Controllers
                 var wordBorder = UiFactory.CreateWordBox(posTuple, w);
                 mainWindow.MiddleWordBox.Children.Add(wordBorder);
             }
-        }
-
-        // Split a sentence represented as a string into a list of words
-        private static List<Word> GetWordsFromSentence(string sentence)
-        {
-            return ChineseService.getWordsFromSentence(sentence);
         }
 
         // From a word(DetailedWord) pos tag, get its full pos name , and also return a color, unique to it
