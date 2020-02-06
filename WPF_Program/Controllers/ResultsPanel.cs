@@ -61,7 +61,6 @@ namespace WPF_program.Controllers
                 //sBox.MouseEnter += (s, e) => SBox_MouseEnter(sBox.Text);
                 sBox.MouseEnter += (e, s) =>
                 {
-                    //mainWindow.SearchBar.Text = sBox.Text;
                     mainWindow.ZoomedCharacterBox.Text = sBox.Text;
                     ShowCharacterDecomposition(sBox.Text[0]);
                 };
@@ -71,7 +70,6 @@ namespace WPF_program.Controllers
                     mainWindow.SearchBar.Text = sBox.Text;
                     List<Word> filteredWords = ChineseService.searchBySimplified(sBox.Text).ToList();
                     UpdateShownWords(filteredWords);
-                    //ShowComposeResult();
                 };
 
                 TextBlock pBox = new TextBlock
