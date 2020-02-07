@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using WpfApp2.Models;
-using static MyTypes;
 
 namespace WpfApp2.Logic
 {
