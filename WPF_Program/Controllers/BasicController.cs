@@ -72,7 +72,7 @@ namespace WPF_program.Controllers
             }
         }
 
-        // From a word(DetailedWord) pos tag, get its full pos name , and also return a color, unique to it
+        // From a word(DetailedWord) pos tag, get its full pos name , and also return a color which is unique to it
         private static (SolidColorBrush, string) GetPosInfo(DetailedWord? detailedWord)
         {
             if (detailedWord == null)
