@@ -63,7 +63,7 @@ module ChineseService =
     let getAllWords() =
         allWords
 
-    //TODO it's too slow
+    //TODO it's too slow. move rank in allWords
     let getSortedByFrequency filteredWords = //(filteredWords:List<Word>) =
         for w in filteredWords do
             let detailedWord = allDetailedWords
