@@ -10,6 +10,17 @@ using static MyTypes;
 
 namespace WPF_program.Controllers
 {
+    public class SPPair
+    {
+        public char ChineseCharacter { get; set; }
+        public string Pinyin { get; set; } 
+    }
+    public class ResultWord
+    {
+        public List<SPPair> sPPairs { get; set; }// = new List<SPPair>();
+        public string Definitions { get; set; }
+    }
+
     public static partial class Controller
     {
         internal static void ShowChineseResult()
@@ -32,17 +43,45 @@ namespace WPF_program.Controllers
 
         internal static void UpdateShownWords(List<Word> filteredWords)
         {
-            mainWindow.ResultCountBlock.Text = $"{filteredWords.Count} words found";
+            //mainWindow.ResultCountBlock.Text = $"{filteredWords.Count} words found";
 
-            mainWindow.WordsList.Items.Clear();
-            mainWindow.WordsList.Items.Add(mainWindow.ResultCountBlock);
+            //mainWindow.WordsList.Items.Clear();
+            //mainWindow.WordsList.Items.Add(mainWindow.ResultCountBlock);
+            //mainWindow.WordsList.Sour
 
+
+
+            //mainWindow.WordsList.ItemsSource = filteredWords;
+
+            //return;
+            List<ResultWord> resultedWords = new List<ResultWord>();
             foreach (var word in filteredWords)
             {
-                AddWordToResultsPanel(word);
+                List<SPPair> sPPairs = new List<SPPair>();
+                List<char> singleChar = word.Simplified.ToList();
+                List<string> singlePron = word.Pronounciation.Split(" ").ToList();
+                for (int i = 0; i < singleChar.Count && i < singlePron.Count; i++)
+                {
+                    SPPair sPair = new SPPair { ChineseCharacter = singleChar[i], Pinyin = singlePron[i] };
+                    sPPairs.Add(sPair);
+                }
+
+                var rWord = new ResultWord
+                {
+                    sPPairs = sPPairs,
+                    Definitions = word.Definitions
+                };
+                resultedWords.Add(rWord);
+                //AddWordToResultsPanel(word);
             }
+
+            mainWindow.WordsList.ItemsSource = resultedWords;
         }
 
+        internal static void ShowWordWithThisCharacter(char character)
+        {
+            ShowCharacterDecomposition(character);
+        }
         private static void AddWordToResultsPanel(Word word)
         {
             StackPanel sPanel = new StackPanel { Orientation = Orientation.Horizontal };

@@ -73,9 +73,63 @@
                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                      HorizontalContentAlignment="Stretch">
                 
-                <TextBlock Name="ResultCountBlock"
+                <!-- <TextBlock Name="ResultCountBlock"
                        Margin="10"
-                       FontSize="24" />
+                       FontSize="24" /> -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Black"
+                                BorderThickness="1"
+                                CornerRadius="8">
+                            <StackPanel>
+                                
+                                <ItemsControl ItemsSource="{Binding sPPairs}">
+
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock
+                                                    Text="{Binding ChineseCharacter}"
+                                                    FontSize="48"
+                                                    HorizontalAlignment="Center"
+                                                    MouseUp="caracterPronuntie_MouseUp"
+                                                    MouseEnter="caracterPronuntie_MouseEnter"
+                                                    />
+
+                                                <TextBlock
+                                                    Name="caracterPronuntie"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="-10"
+>
+                                                    <TextBlock.Inlines>
+                                                        <Run Text="{Binding Pinyin}"
+                                                             FontSize="12" 
+                                                             FontWeight="Bold"
+                                                             Foreground="DarkGreen"
+                                                             />
+                                                    </TextBlock.Inlines>
+                                                </TextBlock>
+ 
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+
+                                </ItemsControl>
+                                    
+                                <TextBlock Text="{Binding Definitions}" 
+                                       FontSize="16"
+                                       Foreground="Brown"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
             </ListBox>
 
             <Grid Grid.Column="1">
