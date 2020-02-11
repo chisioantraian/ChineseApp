@@ -15,14 +15,14 @@ namespace WPF_program.Controllers
     public static partial class Controller
     {
         private static MainWindow mainWindow;
-        private static List<Word> allWords;
+        private static List<WordAvecFrequency> allWords;
         private static List<DetailedWord> allDetailedWords;
         private static Dictionary<char, List<char>> dict;
 
         public static void setWindow(MainWindow window)
         {
             mainWindow = window;
-            allWords = ChineseService.getAllWords();
+            allWords = ChineseService.getAllWords().ToList();
             allDetailedWords = ChineseService.getAllDetailedWords().ToList();
             dict = Decomposition.getCharacterDecomposition();
         }
@@ -51,18 +51,18 @@ namespace WPF_program.Controllers
         // From a single character, show all other chinese characters which contain it as a component
         private static void ShowComposeResult()
         {
-            List<Word> filteredWords = Decomposition.getCharactersWithComponent(mainWindow.SearchBar.Text);
+            List<WordAvecFrequency> filteredWords = Decomposition.getCharactersWithComponent(mainWindow.SearchBar.Text);
             UpdateShownWords(filteredWords);
         }
 
         // Split a sentence into words, show these words and analyze the sentence
         private static void ShowDecomposed(string sentence)
         {
-            List<Word> result = ChineseService.getWordsFromSentence(sentence);
+            List<WordAvecFrequency> result = ChineseService.getWordsFromSentence(sentence);
             UpdateShownWords(result);
 
             mainWindow.MiddleWordBox.Children.Clear();
-            foreach (Word w in result)
+            foreach (WordAvecFrequency w in result)
             {
                 DetailedWord? detailedWord = allDetailedWords.Find(dw => dw.Simplified == w.Simplified);
                 (SolidColorBrush, string) posTuple = GetPosInfo(detailedWord);

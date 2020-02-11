@@ -5,18 +5,15 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Chinese;
+using CSharp_scripts.scripts;
 
-namespace ConsoleApp1
+namespace CSharp_scripts
 {
     internal static class Program
     {
         public static void Main()
         {
-            //Subtlex s = new Subtlex();
-            //s.Run();
-            var words = ChineseService.getAllDetailedWords().ToList();
-            words.ForEach(w => Console.WriteLine($"{w.Simplified} #"));
-            //s.CreateDatabase();
+            WordsFrequency.Run();
         }
 
     }

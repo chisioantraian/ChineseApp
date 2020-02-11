@@ -6,14 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wordfreq.txt" />
     <Compile Include="SentenceExamples.fs" />
     <Compile Include="MyTypes.fs" />
     <None Include="SUBTLEX.utf8" />
     <Compile Include="Kangxi.fs" />
     <Compile Include="ChineseService.fs" />
     <Compile Include="Decomposition.fs" />
+    <Compile Include="WordWithFrequency.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <Folder Include="Models\" />
