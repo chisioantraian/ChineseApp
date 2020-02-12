@@ -24,7 +24,7 @@ module WordWithFrequency =
     let buildFile() =
         let allWords = getAllWords()
         let freqDict = buildFreqDict()
-        let resultedList = new List<WordAvecFrequency>()
+        let resultedList = new List<Word>()
         
         for word in allWords do
             let frequency = if freqDict.ContainsKey(word.Simplified) then

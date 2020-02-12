@@ -9,21 +9,23 @@ using WpfApp2;
 
 using static MyTypes;
 using WPF_program.Ui_Factory;
+using System.Diagnostics;
+using System.Threading;
 
 namespace WPF_program.Controllers
 {
     public static partial class Controller
     {
         private static MainWindow mainWindow;
-        private static List<WordAvecFrequency> allWords;
-        private static List<DetailedWord> allDetailedWords;
+        private static List<Word> allWords;
+        private static Dictionary<string,DetailedWord> allDetailedWords;
         private static Dictionary<char, List<char>> dict;
 
         public static void setWindow(MainWindow window)
         {
             mainWindow = window;
             allWords = ChineseService.getAllWords().ToList();
-            allDetailedWords = ChineseService.getAllDetailedWords().ToList();
+            allDetailedWords = ChineseService.getAllDetailedWords();
             dict = Decomposition.getCharacterDecomposition();
         }
 
@@ -51,24 +53,34 @@ namespace WPF_program.Controllers
         // From a single character, show all other chinese characters which contain it as a component
         private static void ShowComposeResult()
         {
-            List<WordAvecFrequency> filteredWords = Decomposition.getCharactersWithComponent(mainWindow.SearchBar.Text);
+            List<Word> filteredWords = Decomposition.getCharactersWithComponent(mainWindow.SearchBar.Text);
             UpdateShownWords(filteredWords);
         }
 
+        static int i = 0;
         // Split a sentence into words, show these words and analyze the sentence
         private static void ShowDecomposed(string sentence)
         {
-            List<WordAvecFrequency> result = ChineseService.getWordsFromSentence(sentence);
+            Stopwatch stopWatch = new StopWatch();
+            stopWatch.Start();
+            List<Word> result = ChineseService.getWordsFromSentence(sentence);
+            stopWatch.Stop();
+            mainWindow.SearchBar.Text = $"ms: {stopWatch.Elapsed.TotalMilliseconds}";
             UpdateShownWords(result);
 
-            mainWindow.MiddleWordBox.Children.Clear();
-            foreach (WordAvecFrequency w in result)
-            {
-                DetailedWord? detailedWord = allDetailedWords.Find(dw => dw.Simplified == w.Simplified);
-                (SolidColorBrush, string) posTuple = GetPosInfo(detailedWord);
 
-                var wordBorder = UiFactory.CreateWordBox(posTuple, w);
-                mainWindow.MiddleWordBox.Children.Add(wordBorder);
+            mainWindow.MiddleWordBox.Children.Clear();
+            foreach (Word w in result)
+            {
+                //DetailedWord? detailedWord = allDetailedWords.Find(dw => dw.Simplified == w.Simplified);
+                if (allDetailedWords.ContainsKey(w.Simplified))
+                {
+                    DetailedWord detailedWord = allDetailedWords[w.Simplified];
+                    (SolidColorBrush, string) posTuple = GetPosInfo(detailedWord);
+
+                    var wordBorder = UiFactory.CreateWordBox(posTuple, w);
+                    mainWindow.MiddleWordBox.Children.Add(wordBorder);
+                }
             }
         }
 
@@ -127,5 +139,9 @@ namespace WPF_program.Controllers
             };
         }
 
+    }
+
+    internal class StopWatch : Stopwatch
+    {
     }
 }

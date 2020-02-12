@@ -3,7 +3,7 @@ using WpfApp2.Models;
 
 namespace WpfApp2.Logic
 {
-    public static class ChineseService
+    public static class ChineseComponents
     {
         private static void ProcessRule(Rule rule, Dictionary<char, List<char>> dict, List<Rule> decompositionRules)
         {

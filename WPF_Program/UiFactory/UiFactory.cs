@@ -7,7 +7,7 @@ namespace WPF_program.Ui_Factory
 {
     public static class UiFactory
     {
-        public static Border CreateWordBox((SolidColorBrush, string) posTuple, WordAvecFrequency w)
+        public static Border CreateWordBox((SolidColorBrush, string) posTuple, Word w)
         {
             TextBlock wBlock = new TextBlock
             {

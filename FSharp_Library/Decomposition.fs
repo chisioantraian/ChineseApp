@@ -52,7 +52,7 @@ module Decomposition =
     let getDefinition(character:char) =
 
         let mutable result = " - "
-        for w in ChineseService.allWordsAvecFrequency do
+        for w in ChineseService.allWords do
             if w.Simplified = character.ToString() then
                 result <- w.Definitions
         result
@@ -99,8 +99,8 @@ module Decomposition =
                 simplifiedComponentsFound.Add(decompositionTuple.Key)
         printfn "scf size = %d" simplifiedComponentsFound.Count
 
-        let filteredWords = new List<WordAvecFrequency>()
-        for word in ChineseService.allWordsAvecFrequency do
+        let filteredWords = new List<Word>()
+        for word in ChineseService.allWords do
             if word.Simplified.Length = 1 then 
                 if simplifiedComponentsFound.Contains(word.Simplified.[0]) then
                     filteredWords.Add(word)

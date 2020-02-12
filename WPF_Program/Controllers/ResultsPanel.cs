@@ -25,23 +25,23 @@ namespace WPF_program.Controllers
     {
         internal static void ShowChineseResult()
         {
-            List<WordAvecFrequency> filteredWords = ChineseService.searchBySimplified(mainWindow.SearchBar.Text).ToList();
+            List<Word> filteredWords = ChineseService.searchBySimplified(mainWindow.SearchBar.Text).ToList();
             UpdateShownWords(filteredWords);
         }
 
         internal static void ShowEnglishResult()
         {
-            List<WordAvecFrequency> filteredWords = ChineseService.getEnglishResult(mainWindow.SearchBar.Text).ToList();
+            List<Word> filteredWords = ChineseService.getEnglishResult(mainWindow.SearchBar.Text).ToList();
             UpdateShownWords(filteredWords);
         }
 
         internal static void ShowPronounciationResult()
         {
-            List<WordAvecFrequency> filteredWords = ChineseService.searchByPinyin(mainWindow.SearchBar.Text).ToList();
+            List<Word> filteredWords = ChineseService.searchByPinyin(mainWindow.SearchBar.Text).ToList();
             UpdateShownWords(filteredWords);
         }
 
-        internal static void UpdateShownWords(List<WordAvecFrequency> filteredWords)
+        internal static void UpdateShownWords(List<Word> filteredWords)
         {
             //mainWindow.ResultCountBlock.Text = $"{filteredWords.Count} words found";
             //mainWindow.WordsList.Items.Add(mainWindow.ResultCountBlock);
@@ -75,7 +75,7 @@ namespace WPF_program.Controllers
         
         internal static void ShowSomeRandomWords()
         {
-            List<WordAvecFrequency> randomWords = ChineseService.getRandomWords();
+            List<Word> randomWords = ChineseService.getRandomWords();
             UpdateShownWords(randomWords);
         }
     }

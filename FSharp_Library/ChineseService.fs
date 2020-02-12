@@ -13,8 +13,11 @@ module ChineseService =
     let filePath = @"C:\Users\chisi\Desktop\work\ChineseApp\FSharp_Library\SUBTLEX.utf8"
     let wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\FSharp_Library\allWords.utf8"
 
-    let getWordFromLine (line:string) = 
-        let tokens = line.Split '\t'
+    let allDetailedWords = new Dictionary<string, DetailedWord>()
+    let all = new 
+
+    let getDetailedWordFromLine (line:string) =
+        let tokens = line.Split('\t')
         {
             Simplified = tokens.[0];
             Length = tokens.[1];
@@ -33,33 +36,15 @@ module ChineseService =
             Definition = tokens.[14];
         }
 
-    let allDetailedWords =
-        File.ReadAllLines(filePath) |> Seq.map getWordFromLine 
+    //delete first row file
+    let buildAllDetailedWords() =
+        for line in File.ReadAllLines(filePath) do
+            let detailedWord = getDetailedWordFromLine(line)
+            if not (allDetailedWords.ContainsKey(detailedWord.Simplified)) then
+                allDetailedWords.Add(detailedWord.Simplified, detailedWord)
 
-    (*let allWords =
-        let connString = "SERVER=localhost; DATABASE=chinese; USER=root; PASSWORD=password;"
-        let qry = "SELECT * FROM words;"
-        let words = new List<Word>()
-
-        let connection = new MySqlConnection(connString)
-        let commandSel = new MySqlCommand(qry, connection)
-
-        connection.Open()
-        let reader = commandSel.ExecuteReader()
-        while reader.Read() do
-            let word = {
-                Rank = 0;
-                Simplified = reader.GetString "simplified";
-                Traditional = reader.GetString "traditional";
-                Pronounciation = reader.GetString "pronounciation";
-                Definitions = reader.GetString "definitions";
-            }
-            words.Add word
-        connection.Close()
-        words
-    *)
     
-    let allWordsAvecFrequency =
+    let allWords =
         let buildWordFromLine (line:string) =
             let token = line.Split('\t')
             {
@@ -72,28 +57,22 @@ module ChineseService =
         File.ReadAllLines(wordsPath) |> Seq.map buildWordFromLine
 
     let getAllDetailedWords() =
+        buildAllDetailedWords()
         allDetailedWords
 
     let getAllWords() =
-        allWordsAvecFrequency//allWords
+        allWords
 
-    //TODO it's too slow. Move rank in allWords
-    let getSortedByFrequency filteredWords = //(filteredWords:List<Word>) =
-        (*for w in filteredWords do
-            let detailedWord = allDetailedWords
-                                |> Seq.tryFind (fun dw -> w.Simplified = dw.Simplified)
-            if detailedWord.IsSome then
-                w.Rank <- Int32.Parse detailedWord.Value.WCount
-        filteredWords |> Seq.sortBy (fun w -> w.Rank) |> Seq.rev*)
+    let getSortedByFrequency filteredWords =
         filteredWords |> Seq.sortBy (fun w -> w.Frequency) |> Seq.rev
     
     let getEnglishResult (text:string) =
-        allWordsAvecFrequency
+        allWords
         |> Seq.filter (fun w -> w.Definitions.Contains(text))
         |> getSortedByFrequency
 
     let searchBySimplified (text:string) =
-        allWordsAvecFrequency
+        allWords
         |> Seq.filter (fun w -> w.Simplified.Contains(text))
         |> getSortedByFrequency
 
@@ -101,7 +80,7 @@ module ChineseService =
     let searchByPinyin (text:string) =
         let prons = text.Split(' ')
 
-        let checkIfPinyinMatches (word:WordAvecFrequency) =
+        let checkIfPinyinMatches (word:Word) =
             let wordProns = word.Pinyin.Split(' ')
             if prons.Length <> wordProns.Length then
                 false
@@ -113,39 +92,67 @@ module ChineseService =
                     if wordProns.[i].Length <> (prons.[i].Length + 1) then
                         toInsert <- false
                 toInsert
-        allWordsAvecFrequency
+        allWords
         |> Seq.filter checkIfPinyinMatches
         |> getSortedByFrequency
 
     let getRandomWords() =
         let random = new Random()
-        let result = new List<WordAvecFrequency>()
+        let result = new List<Word>()
         //for i in 0 .. 20 do
         //    let index = random.Next(allWordsAvecFrequency.Count)
         //    result.Add (allWordsAvecFrequency.[index])
         result
 
     let getResultedWord (simpl:string) = 
-        allWordsAvecFrequency
+        allWords
         |> Seq.filter (fun w -> w.Simplified = simpl)
 
     //todo clarify
     let getWordsFromSentence (sentence:string) =
-        let mutable constructedWord = ""
-        let mutable toInsert = new List<WordAvecFrequency>()
-        let mutable result = new List<WordAvecFrequency>()
+        (*let mutable constructedWord = ""
+        let mutable toInsert = new List<Word>()
+        let mutable result = new List<Word>()
         for curr in sentence do
             let resultedWord = getResultedWord(constructedWord + curr.ToString()) |> Seq.toList //getResultedWord(constructedWord + curr)
             if resultedWord.Length > 0 then
-                toInsert <- new List<WordAvecFrequency>(resultedWord)
+                toInsert <- new List<Word>(resultedWord)
                 constructedWord <- constructedWord + curr.ToString()
             else
                 if toInsert.Count > 0 then
                     result.Add(toInsert.[0])
-                toInsert <- new List<WordAvecFrequency>(getResultedWord(curr.ToString())) //(getResultedWord(curr.ToString()))
+                toInsert <- new List<Word>(getResultedWord(curr.ToString())) //(getResultedWord(curr.ToString()))
                 constructedWord <- curr.ToString()
         if toInsert.Count > 0 then
             result.Add(toInsert.[0]) //toInsert.ForEach(w => result.Add(w));
-        result
+        result*)
+
+        let mutable simpList = new List<string>()
+        let mutable constructedWord = ""
+        let mutable toInsert = ""
+        let mutable resultList = new List<Word>()
+        for curr in sentence do
+            let wordToCheck = constructedWord + curr.ToString()
+            if allDetailedWords.ContainsKey(wordToCheck) then
+                toInsert <- allDetailedWords.[wordToCheck].Simplified
+                constructedWord <- wordToCheck
+            else
+                if toInsert <> "" then
+                    simpList.Add(toInsert)
+                    toInsert <- ""
+                toInsert <- curr.ToString()
+        if toInsert <> "" then
+            simpList.Add(toInsert)
+
+        for simp in simpList do
+            let words = allWords |> Seq.filter (fun w -> w.Simplified = simp)
+            for word in words do
+                resultList.Add(word)
+        resultList
+
+        //allDetailedWords.V
+
+
+
 
         

@@ -18,23 +18,13 @@ type DetailedWord = {
     Definition: string
 }
 
-type WordAvecFrequency = {
+type Word = {
     Traditional: string
     Simplified: string
     Pinyin: string
     Definitions: string
     Frequency: int
 }
-
-
-type Word = {
-    mutable Rank: int
-    Traditional: string
-    Simplified: string
-    Pronounciation: string
-    Definitions: string
-}
-
 
 type KangxiRadical = {
     Symbol: char
