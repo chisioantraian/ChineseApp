@@ -79,16 +79,19 @@ namespace WPF_program.Logic
         public static List<Word> GetCharactersWithComponent(string text)
         {
             char ch = text[0];
-            List<char> simplifiedComponentsFound = new List<char>();
-            foreach (var decompositionTuple in basicDict)
-            {
-                List<char> componentList = decompositionTuple.Value;
-                if (componentList.Contains(ch))
-                    simplifiedComponentsFound.Add(decompositionTuple.Key);
-            }
+            //List<char> simplifiedComponentsFound = new List<char>();
+            //foreach (var decompositionTuple in basicDict)
+            //{
+            //    List<char> componentList = decompositionTuple.Value;
+            //    if (componentList.Contains(ch))
+            //        simplifiedComponentsFound.Add(decompositionTuple.Key);
+            //}
+            var simplifiedComponentsFound =
+                basicDict.Where(dTuple => dTuple.Value.Contains(ch))
+                         .ToDictionary(dTuple => dTuple.Key);
 
             bool ComputedSimplifiedIsFound(Word w) =>
-                w.Simplified.Length == 1 && simplifiedComponentsFound.Contains(w.Simplified[0]);
+                w.Simplified.Length == 1 && simplifiedComponentsFound.ContainsKey(w.Simplified[0]);
             return ChineseService.GetAllWords()
                                  .Where(ComputedSimplifiedIsFound)
                                  .ToList();
