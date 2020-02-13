@@ -19,7 +19,6 @@ namespace WPF_program.Logic
         {
             BuildAllWords();
             BuildAllDetailedWords();
-            Decomposition.BuildDecompositionDict();
         }
 
         public static List<Word> GetAllWords() => allWords;
@@ -28,8 +27,8 @@ namespace WPF_program.Logic
         private static void BuildAllWords()
         {
             allWords = File.ReadAllLines(wordsPath)
-                           .Select(getWordFromLine)
                            .AsParallel()
+                           .Select(getWordFromLine)
                            .ToList();
 
             Word getWordFromLine(string line)
@@ -49,6 +48,7 @@ namespace WPF_program.Logic
         private static void BuildAllDetailedWords()
         {
             allDetailedWords = File.ReadAllLines(detailedPath)
+                                   .AsParallel()
                                    .Select(getDetailedWordFromLine)
                                    .ToDictionary(w => w.Simplified);
 
@@ -85,13 +85,15 @@ namespace WPF_program.Logic
 
         public static List<Word> GetEnglishResult(string text)
         {
-            return allWords.Where(w => w.Definitions.Contains(text))
+            return allWords.AsParallel()
+                           .Where(w => w.Definitions.Contains(text))
                            .SortByFrequency();
         }
 
         public static List<Word> SearchBySimplified(string text)
         {
-            return allWords.Where(w => w.Simplified.Contains(text))
+            return allWords.AsParallel()
+                           .Where(w => w.Simplified.Contains(text))
                            .SortByFrequency();
         }
 
@@ -112,7 +114,8 @@ namespace WPF_program.Logic
                 }
                 return true;
             }
-            return allWords.Where(CheckIfPinyinMatches)
+            return allWords.AsParallel()
+                           .Where(CheckIfPinyinMatches)
                            .SortByFrequency();
         }
 

@@ -17,6 +17,7 @@ namespace WpfApp2
             InitializeComponent();
             Console.WriteLine("test 9");
             ChineseService.InitializeData();
+            Decomposition.BuildDecompositionDict();
             Controller.setWindow(this);
             Controller.InitializeSentenceExamples();
             Controller.ShowSomeRandomWords();

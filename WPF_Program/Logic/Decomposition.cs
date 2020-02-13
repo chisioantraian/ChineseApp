@@ -84,6 +84,7 @@ namespace WPF_program.Logic
             bool ComputedSimplifiedIsFound(Word w) => w.Simplified.Length == 1 && 
                                                       simplifiedComponentsFound.ContainsKey(w.Simplified[0]);
             return ChineseService.GetAllWords()
+                                 .AsParallel()
                                  .Where(ComputedSimplifiedIsFound)
                                  .ToList();
         }
