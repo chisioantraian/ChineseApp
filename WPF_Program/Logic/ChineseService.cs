@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using WPF_program.Models;
 
 namespace WPF_program.Logic
@@ -20,8 +19,8 @@ namespace WPF_program.Logic
 
     public static partial class ChineseService
     {
-        const string detailedPath = @"C:\Users\chisi\Desktop\work\ChineseApp\FSharp_Library\SUBTLEX.utf8";
-        const string wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\FSharp_Library\allWords.utf8";
+        const string detailedPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\SUBTLEX.utf8";
+        const string wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allWords.utf8";
 
         static List<Word> allWords = new List<Word>();
         static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
@@ -38,12 +37,15 @@ namespace WPF_program.Logic
 
         private static void BuildAllWords()
         {
-            foreach (string line in File.ReadAllLines(wordsPath))
-            {
-                var word = getWordFrom(line);
-                allWords.Add(word);
-            }
-            Word getWordFrom(string line)
+            //foreach (string line in File.ReadAllLines(wordsPath))
+            //{
+            //    var word = getWordFrom(line);
+            //    allWords.Add(word);
+            //}
+            allWords = File.ReadAllLines(wordsPath)
+                           .Select(getWordFromLine)
+                           .ToList();
+            Word getWordFromLine(string line)
             {
                 string[] tokens = line.Split('\t');
                 return new Word
@@ -153,7 +155,6 @@ namespace WPF_program.Logic
             return resultList;
         }
 
-        //other vesrion?
         public static List<string> GetSimplifiedWordsFromSentence(string sentence)
         {
             List<string> simpList = new List<string>();
@@ -163,10 +164,9 @@ namespace WPF_program.Logic
             {
                 Console.WriteLine($"curr = {curr}");
                 string wordToCheck = constructedWord + curr.ToString();
-                //if (allDetailedWords.ContainsKey(wordToCheck))
                 if (WordExists(wordToCheck))
                 {
-                    toInsert = allDetailedWords[wordToCheck].Simplified;
+                    toInsert = wordToCheck;
                     constructedWord = wordToCheck;
                 }
                 else
@@ -176,32 +176,17 @@ namespace WPF_program.Logic
                         simpList.Add(toInsert);
                         toInsert = "";
                     }
-                    //if (allDetailedWords.ContainsKey(curr.ToString()))
                     if (WordExists(curr.ToString()))
                         toInsert = curr.ToString();
                     else
                         toInsert = "";
-                    constructedWord = curr.ToString(); // ???
+                    constructedWord = curr.ToString();
                 }
             }
             if (toInsert != "")
             {
                 simpList.Add(toInsert);
             }
-            Console.Write("Added: ");
-            //foreach (string simp in simpList)
-            //{
-            //    Console.Write($"{simp} - ");
-                //IEnumerable<Word> words = allWords.Where(w => w.Simplified == simp);
-                //Console.Write("added: ");
-                //foreach (Word word in words)
-                //{
-                    //Console.Write($"{word.Simplified} - ");
-                //    resultList.Add(word);
-                //}
-                //Console.WriteLine("");
-            //}
-            //Console.WriteLine("");
             return simpList;
         }
 

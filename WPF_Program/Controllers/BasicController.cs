@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Diagnostics;
-using System.Threading;
 
 using WpfApp2;
 using WPF_program.Models;
