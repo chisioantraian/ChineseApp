@@ -128,7 +128,7 @@ namespace WPF_program.Logic
                 int index = random.Next(allWords.Count);
                 result.Add(allWords[index]);
             }
-            return result;
+            return result.SortByFrequency();
         }
 
         private static bool WordExists(string simplOfWord)
@@ -138,14 +138,15 @@ namespace WPF_program.Logic
 
         public static List<Word> GetAllWordsFrom(List<string> simpList)
         {
-            List<Word> resultList = new List<Word>();
+            /*List<Word> resultList = new List<Word>();
             foreach (string simp in simpList)
             {
                 IEnumerable<Word> words = allWords.Where(w => w.Simplified == simp);
                 foreach (Word w in words)
                     resultList.Add(w);
             }
-            return resultList;
+            return resultList;*/
+            return simpList.SelectMany(simp => allWords.Where(w => w.Simplified == simp)).ToList();
         }
 
         public static List<string> GetSimplifiedWordsFromSentence(string sentence)
