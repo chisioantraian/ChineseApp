@@ -86,14 +86,12 @@ namespace WPF_program.Logic
                 if (componentList.Contains(ch))
                     simplifiedComponentsFound.Add(decompositionTuple.Key);
             }
-            List<Word> filteredWords = new List<Word>();
-            foreach (Word word in ChineseService.GetAllWords())
-            {
-                if (word.Simplified.Length == 1)
-                    if (simplifiedComponentsFound.Contains(word.Simplified[0]))
-                        filteredWords.Add(word);
-            }
-            return filteredWords;
+
+            bool ComputedSimplifiedIsFound(Word w) =>
+                w.Simplified.Length == 1 && simplifiedComponentsFound.Contains(w.Simplified[0]);
+            return ChineseService.GetAllWords()
+                                 .Where(ComputedSimplifiedIsFound)
+                                 .ToList();
         }
 
     }

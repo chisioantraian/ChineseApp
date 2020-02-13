@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 using WPF_program.Models;
 
 namespace WPF_program.Logic
@@ -17,7 +17,7 @@ namespace WPF_program.Logic
         }
     }
 
-    public static partial class ChineseService
+    public static class ChineseService
     {
         const string detailedPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allDetailedWords.utf8";
         const string wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allWords.utf8";
@@ -39,7 +39,9 @@ namespace WPF_program.Logic
         {
             allWords = File.ReadAllLines(wordsPath)
                            .Select(getWordFromLine)
+                           .AsParallel()
                            .ToList();
+
             Word getWordFromLine(string line)
             {
                 string[] tokens = line.Split('\t');

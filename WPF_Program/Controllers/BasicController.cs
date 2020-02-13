@@ -29,6 +29,8 @@ namespace WPF_program.Controllers
             //if (lastEnteredKey != Key.Enter)
             //    return;
             ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
+            if (mainWindow.SearchBar.Text.Length == 0)
+                return;
 
             switch (typeItem.Content.ToString())
             {
