@@ -8,7 +8,7 @@ using WPF_program.Models;
 
 namespace WPF_program.Logic
 {
-    public static partial class Decomposition
+    public static class Decomposition
     {
         const string decompPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt";
         static Dictionary<char, List<char>> basicDict = new Dictionary<char, List<char>>();
@@ -38,60 +38,42 @@ namespace WPF_program.Logic
             }
         }
 
-        public static Dictionary<char, List<char>> GetCharacterDecomposition()
-        {
-            var resultDict = new Dictionary<char, List<char>>();
-            var kangxiRadicals = Kangxi.GetRadicals();
-
-            foreach (char character in basicDict.Keys)
-            {
-                bool foundRadical = false;
-                foreach (KangxiRadical radical in kangxiRadicals)
-                    if (radical.Symbol == character)
-                        foundRadical = true;
-                if (!foundRadical)
-                    resultDict.Add(character, basicDict[character]);
-            }
-            return resultDict;
-        }
-
         public static string DecomposeCharToRadicals(char topChar)
         {
             if (!basicDict.ContainsKey(topChar))
                 return "cannot find decomposition";
-            string decompositionText = "";
-            Queue<char> chars = new Queue<char>();
             if (Kangxi.CheckIfKangxiRadical(topChar))
-                decompositionText = topChar.ToString() + " - Kangxi Radical\n";
-            else
+                return topChar.ToString() + " - Kangxi Radical\n";
+
+            StringBuilder decompositionText = new StringBuilder();
+            Queue<char> chars = new Queue<char>();
+
+            foreach (char c in basicDict[topChar])
             {
-                foreach (char c in basicDict[topChar])
-                {
-                    decompositionText += " " + c.ToString();
-                    chars.Enqueue(c);
-                }
-                decompositionText += "\n";
+                decompositionText.Append(c.ToString());
+                chars.Enqueue(c);
             }
+            decompositionText.Append("\n");
+
             while (chars.Count > 0)
             {
                 char firstChar = chars.Dequeue();
-                decompositionText += firstChar.ToString() + " : ";
+                decompositionText.Append(firstChar.ToString() + " : ");
                 if (Kangxi.CheckIfKangxiRadical(firstChar))
-                    decompositionText += " - Kangxi Radical\n";
+                    decompositionText.Append(" - Kangxi Radical\n");
                 else if (basicDict.ContainsKey(firstChar))
                 {
                     foreach (char c in basicDict[firstChar])
                     {
-                        decompositionText += " " + c.ToString();
+                        decompositionText.Append(" " + c.ToString());
                         chars.Enqueue(c);
                     }
-                    decompositionText += "\n";
+                    decompositionText.Append("\n");
                 }
                 else
-                    decompositionText += " Stroke / Unencoded\n";
+                    decompositionText.Append(" Stroke / Unencoded\n");
             }
-
-            return decompositionText;
+            return decompositionText.ToString();
         }
 
         public static List<Word> GetCharactersWithComponent(string text)
