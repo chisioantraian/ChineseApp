@@ -8,6 +8,8 @@ namespace WPF_program.Logic
 {
     public static class SentenceExamples
     {
+        public static List<string> Examples() => sentences;
+
         private static readonly List<string> sentences = new List<string>()
         {
             "你喝茶",
@@ -55,6 +57,5 @@ namespace WPF_program.Logic
             "昨天我没有吃"
         };
 
-        public static List<string> Examples() => sentences;
     }
 }

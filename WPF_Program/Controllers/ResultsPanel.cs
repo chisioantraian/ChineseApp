@@ -9,17 +9,6 @@ using WPF_program.Models;
 
 namespace WPF_program.Controllers
 {
-    public class SPPair
-    {
-        public char ChineseCharacter { get; set; }
-        public string Pinyin { get; set; } 
-    }
-    public class ResultWord
-    {
-        public List<SPPair> sPPairs { get; set; }// = new List<SPPair>();
-        public string Definitions { get; set; }
-    }
-
     public static partial class Controller
     {
         internal static void ShowChineseResult()
@@ -37,42 +26,37 @@ namespace WPF_program.Controllers
             ChineseService.SearchByPinyin(mainWindow.SearchBar.Text).UpdateShownWords();
         }
 
-        internal static void UpdateShownWords(this List<Word> filteredWords)
+        internal static void ShowSomeRandomWords()
         {
-            SPPair makeSPP(char chn, string pron) => new SPPair { ChineseCharacter = chn, Pinyin = pron };
-            List<ResultWord> resultedWords = new List<ResultWord>();
-            foreach (var word in filteredWords)
-            {
-                List<SPPair> sPPairs = new List<SPPair>();
-                List<char> singleChar = word.Simplified.ToList();
-                List<string> singlePron = word.Pinyin.Split(" ").ToList();
-                //for (int i = 0; i < singleChar.Count && i < singlePron.Count; i++)
-                //{
-                //    SPPair sPair = new SPPair { ChineseCharacter = singleChar[i], Pinyin = singlePron[i] };
-                //    sPPairs.Add(sPair);
-                //}
-                sPPairs = singleChar.Zip(singlePron, makeSPP).ToList();
-
-                var rWord = new ResultWord
-                {
-                    sPPairs = sPPairs,
-                    Definitions = word.Definitions
-                };
-                resultedWords.Add(rWord);
-            }
-
-            mainWindow.WordsList.ItemsSource = resultedWords;
+            ChineseService.GetRandomWords().UpdateShownWords();
         }
 
         internal static void ShowWordWithThisCharacter(char character)
         {
             ShowCharacterDecomposition(character);
         }
-        
-        internal static void ShowSomeRandomWords()
+
+        internal static void UpdateShownWords(this List<Word> filteredWords)
         {
-            List<Word> randomWords = ChineseService.GetRandomWords();
-            UpdateShownWords(randomWords);
+            SPPair makeSPP(char chn, string pron) => new SPPair { ChineseCharacter = chn, Pinyin = pron };
+            List<ResultWord> resultedWords = new List<ResultWord>();
+            foreach (var word in filteredWords)
+            {
+                IEnumerable<char> singleChar = word.Simplified;
+                IEnumerable<string> singlePron = word.Pinyin.Split(" ");
+
+                IEnumerable<SPPair> sPPairs = singleChar.Zip(singlePron, makeSPP);
+
+                var resultedWord = new ResultWord
+                {
+                    sPPairs = sPPairs,
+                    Definitions = word.Definitions
+                };
+                resultedWords.Add(resultedWord);
+            }
+
+            mainWindow.WordsList.ItemsSource = resultedWords;
         }
+
     }
 }

@@ -48,26 +48,18 @@ namespace WPF_program.Controllers
         // From a single character, show all other chinese characters which contain it as a component
         private static void ShowComposeResult()
         {
-            List<Word> filteredWords = Decomposition.GetCharactersWithComponent(mainWindow.SearchBar.Text);
-            UpdateShownWords(filteredWords);
+            Decomposition.GetCharactersWithComponent(mainWindow.SearchBar.Text).UpdateShownWords();
         }
 
         // Split a sentence into words, show these words and analyze the sentence
         private static void ShowDecomposed(string sentence)
         {
-            Stopwatch stopWatch = new StopWatch();
-            stopWatch.Start();
             List<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
-            List<Word> wordsList = ChineseService.GetAllWordsFrom(simplifiedList);
-            stopWatch.Stop();
-            mainWindow.SearchBar.Text = $"ms: {stopWatch.Elapsed.TotalMilliseconds}";
-            UpdateShownWords(wordsList);
-
+            ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords();
 
             mainWindow.MiddleWordBox.Children.Clear();
             foreach (string simp in simplifiedList)
             {
-                //DetailedWord? detailedWord = allDetailedWords.Find(dw => dw.Simplified == w.Simplified);
                 if (allDetailedWords.ContainsKey(simp))
                 {
                     DetailedWord detailedWord = allDetailedWords[simp];
@@ -136,7 +128,4 @@ namespace WPF_program.Controllers
 
     }
 
-    internal class StopWatch : Stopwatch
-    {
-    }
 }
