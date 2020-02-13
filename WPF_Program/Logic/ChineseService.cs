@@ -84,8 +84,6 @@ namespace WPF_program.Logic
             }
         }
 
-
-
         public static List<Word> GetEnglishResult(string text)
         {
             return allWords.Where(w => w.Definitions.Contains(text))

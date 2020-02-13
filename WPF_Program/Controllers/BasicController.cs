@@ -16,22 +16,18 @@ namespace WPF_program.Controllers
     public static partial class Controller
     {
         private static MainWindow mainWindow;
-        private static List<Word> allWords;
         private static Dictionary<string,DetailedWord> allDetailedWords;
-        private static Dictionary<char, List<char>> dict;
 
         public static void setWindow(MainWindow window)
         {
             mainWindow = window;
-            allWords = ChineseService.GetAllWords().ToList();
             allDetailedWords = ChineseService.GetAllDetailedWords();
-            dict = Decomposition.GetCharacterDecomposition();
         }
 
         public static void ShowResult(Key lastEnteredKey = Key.Enter)
         {
-            if (lastEnteredKey != Key.Enter)
-                return;
+            //if (lastEnteredKey != Key.Enter)
+            //    return;
             ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
 
             switch (typeItem.Content.ToString())
