@@ -19,7 +19,7 @@ namespace WPF_program.Logic
 
     public static partial class ChineseService
     {
-        const string detailedPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\SUBTLEX.utf8";
+        const string detailedPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allDetailedWords.utf8";
         const string wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allWords.utf8";
 
         static List<Word> allWords = new List<Word>();
@@ -37,11 +37,6 @@ namespace WPF_program.Logic
 
         private static void BuildAllWords()
         {
-            //foreach (string line in File.ReadAllLines(wordsPath))
-            //{
-            //    var word = getWordFrom(line);
-            //    allWords.Add(word);
-            //}
             allWords = File.ReadAllLines(wordsPath)
                            .Select(getWordFromLine)
                            .ToList();
@@ -61,13 +56,11 @@ namespace WPF_program.Logic
 
         private static void BuildAllDetailedWords()
         {
-            foreach (string line in File.ReadAllLines(detailedPath))
-            {
-                var dw = getDetailedWordFrom(line);
-                if (!allDetailedWords.ContainsKey(dw.Simplified))
-                    allDetailedWords.Add(dw.Simplified, dw);
-            }
-            DetailedWord getDetailedWordFrom(string line)
+            allDetailedWords = File.ReadAllLines(detailedPath)
+                                   .Select(getDetailedWordFromLine)
+                                   .ToDictionary(w => w.Simplified);
+
+            DetailedWord getDetailedWordFromLine(string line)
             {
                 string[] tokens = line.Split('\t');
                 return new DetailedWord
