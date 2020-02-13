@@ -1,12 +1,11 @@
-﻿using Chinese;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-
-using static MyTypes;
+using WPF_program.Logic;
+using WPF_program.Models;
 
 namespace WPF_program.Controllers
 {
@@ -25,19 +24,19 @@ namespace WPF_program.Controllers
     {
         internal static void ShowChineseResult()
         {
-            List<Word> filteredWords = ChineseService.searchBySimplified(mainWindow.SearchBar.Text).ToList();
+            List<Word> filteredWords = ChineseService.SearchBySimplified(mainWindow.SearchBar.Text).ToList();
             UpdateShownWords(filteredWords);
         }
 
         internal static void ShowEnglishResult()
         {
-            List<Word> filteredWords = ChineseService.getEnglishResult(mainWindow.SearchBar.Text).ToList();
+            List<Word> filteredWords = ChineseService.GetEnglishResult(mainWindow.SearchBar.Text).ToList();
             UpdateShownWords(filteredWords);
         }
 
         internal static void ShowPronounciationResult()
         {
-            List<Word> filteredWords = ChineseService.searchByPinyin(mainWindow.SearchBar.Text).ToList();
+            List<Word> filteredWords = ChineseService.SearchByPinyin(mainWindow.SearchBar.Text).ToList();
             UpdateShownWords(filteredWords);
         }
 
@@ -75,7 +74,7 @@ namespace WPF_program.Controllers
         
         internal static void ShowSomeRandomWords()
         {
-            List<Word> randomWords = ChineseService.getRandomWords();
+            List<Word> randomWords = ChineseService.GetRandomWords();
             UpdateShownWords(randomWords);
         }
     }

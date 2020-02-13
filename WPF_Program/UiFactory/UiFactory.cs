@@ -1,13 +1,14 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static MyTypes;
+
+using WPF_program.Models;
 
 namespace WPF_program.Ui_Factory
 {
     public static class UiFactory
     {
-        public static Border CreateWordBox((SolidColorBrush, string) posTuple, Word w)
+        public static Border CreateWordBox((SolidColorBrush, string) posTuple, string simp)
         {
             TextBlock wBlock = new TextBlock
             {
@@ -15,7 +16,7 @@ namespace WPF_program.Ui_Factory
                 Foreground = posTuple.Item1,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(5),
-                Text = w.Traditional,
+                Text = simp,
             };
             Border wordBorder = new Border
             {

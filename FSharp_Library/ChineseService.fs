@@ -6,17 +6,17 @@ open System.IO
 open MySql.Data.MySqlClient
 open System.Collections.Generic
 
-open MyTypes
+//open MyTypes
 
-module ChineseService =
+//module ChineseService =
 
-    let filePath = @"C:\Users\chisi\Desktop\work\ChineseApp\FSharp_Library\SUBTLEX.utf8"
-    let wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\FSharp_Library\allWords.utf8"
+    //let filePath = @"C:\Users\chisi\Desktop\work\ChineseApp\FSharp_Library\SUBTLEX.utf8"
+    //let wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\FSharp_Library\allWords.utf8"
 
-    let allDetailedWords = new Dictionary<string, DetailedWord>()
-    let all = new 
+    //let allDetailedWords = new Dictionary<string, DetailedWord>()
 
-    let getDetailedWordFromLine (line:string) =
+
+    (*let getDetailedWordFromLine (line:string) =
         let tokens = line.Split('\t')
         {
             Simplified = tokens.[0];
@@ -41,43 +41,43 @@ module ChineseService =
         for line in File.ReadAllLines(filePath) do
             let detailedWord = getDetailedWordFromLine(line)
             if not (allDetailedWords.ContainsKey(detailedWord.Simplified)) then
-                allDetailedWords.Add(detailedWord.Simplified, detailedWord)
+                allDetailedWords.Add(detailedWord.Simplified, detailedWord)*)
 
     
-    let allWords =
-        let buildWordFromLine (line:string) =
-            let token = line.Split('\t')
-            {
-                Traditional = token.[0];
-                Simplified = token.[1];
-                Pinyin = token.[2];
-                Definitions = token.[3];
-                Frequency = token.[4] |> int
-            }
-        File.ReadAllLines(wordsPath) |> Seq.map buildWordFromLine
+    //let allWords =
+    //    let buildWordFromLine (line:string) =
+    //        let token = line.Split('\t')
+    //        {
+    //            Traditional = token.[0];
+    //            Simplified = token.[1];
+    //            Pinyin = token.[2];
+    //            Definitions = token.[3];
+    //            Frequency = token.[4] |> int
+    //        }
+    //    File.ReadAllLines(wordsPath) |> Seq.map buildWordFromLine
 
-    let getAllDetailedWords() =
-        buildAllDetailedWords()
-        allDetailedWords
+    //let getAllDetailedWords() =
+    //    buildAllDetailedWords()
+    //    allDetailedWords
 
-    let getAllWords() =
-        allWords
+    //let getAllWords() =
+    //    allWords
 
-    let getSortedByFrequency filteredWords =
-        filteredWords |> Seq.sortBy (fun w -> w.Frequency) |> Seq.rev
+    //let getSortedByFrequency filteredWords =
+    //    filteredWords |> Seq.sortBy (fun w -> w.Frequency) |> Seq.rev
     
-    let getEnglishResult (text:string) =
-        allWords
-        |> Seq.filter (fun w -> w.Definitions.Contains(text))
-        |> getSortedByFrequency
+    //let getEnglishResult (text:string) =
+    //    allWords
+    //   |> Seq.filter (fun w -> w.Definitions.Contains(text))
+    //   |> getSortedByFrequency
 
-    let searchBySimplified (text:string) =
-        allWords
-        |> Seq.filter (fun w -> w.Simplified.Contains(text))
-        |> getSortedByFrequency
+    //let searchBySimplified (text:string) =
+    //    allWords
+    //    |> Seq.filter (fun w -> w.Simplified.Contains(text))
+    //    |> getSortedByFrequency
 
     //TODO too C#-like
-    let searchByPinyin (text:string) =
+    (*let searchByPinyin (text:string) =
         let prons = text.Split(' ')
 
         let checkIfPinyinMatches (word:Word) =
@@ -94,19 +94,19 @@ module ChineseService =
                 toInsert
         allWords
         |> Seq.filter checkIfPinyinMatches
-        |> getSortedByFrequency
+        |> getSortedByFrequency*)
 
-    let getRandomWords() =
-        let random = new Random()
-        let result = new List<Word>()
+    //let getRandomWords() =
+    //    let random = new Random()
+    //    let result = new List<Word>()
         //for i in 0 .. 20 do
         //    let index = random.Next(allWordsAvecFrequency.Count)
         //    result.Add (allWordsAvecFrequency.[index])
-        result
+    //    result
 
-    let getResultedWord (simpl:string) = 
-        allWords
-        |> Seq.filter (fun w -> w.Simplified = simpl)
+    //let getResultedWord (simpl:string) = 
+    //    allWords
+    //    |> Seq.filter (fun w -> w.Simplified = simpl)
 
     //todo clarify
     let getWordsFromSentence (sentence:string) =
@@ -127,6 +127,7 @@ module ChineseService =
             result.Add(toInsert.[0]) //toInsert.ForEach(w => result.Add(w));
         result*)
 
+        
         let mutable simpList = new List<string>()
         let mutable constructedWord = ""
         let mutable toInsert = ""
@@ -149,8 +150,8 @@ module ChineseService =
             for word in words do
                 resultList.Add(word)
         resultList
-
-        //allDetailedWords.V
+        
+       
 
 
 

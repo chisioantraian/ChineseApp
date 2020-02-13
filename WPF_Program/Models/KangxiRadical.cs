@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WPF_program.Models
 {
-    class KangxiRadical
+    public class KangxiRadical
     {
         public char Symbol { get; set; }
         public int Number { get; set; }

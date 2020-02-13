@@ -1,16 +1,16 @@
-﻿using Chinese;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using WpfApp2;
-
-using static MyTypes;
-using WPF_program.Ui_Factory;
 using System.Diagnostics;
 using System.Threading;
+
+using WpfApp2;
+using WPF_program.Models;
+using WPF_program.Ui_Factory;
+using WPF_program.Logic;
 
 namespace WPF_program.Controllers
 {
@@ -24,9 +24,9 @@ namespace WPF_program.Controllers
         public static void setWindow(MainWindow window)
         {
             mainWindow = window;
-            allWords = ChineseService.getAllWords().ToList();
-            allDetailedWords = ChineseService.getAllDetailedWords();
-            dict = Decomposition.getCharacterDecomposition();
+            allWords = ChineseService.GetAllWords().ToList();
+            allDetailedWords = ChineseService.GetAllDetailedWords();
+            dict = Decomposition.GetCharacterDecomposition();
         }
 
         public static void ShowResult(Key lastEnteredKey = Key.Enter)
@@ -46,14 +46,14 @@ namespace WPF_program.Controllers
 
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
-            string decompositionText = Decomposition.decomposeCharToRadicals(characterToBeDecomposed);
+            string decompositionText = Decomposition.DecomposeCharToRadicals(characterToBeDecomposed);
             mainWindow.DecompositionBlock.Text = $"{decompositionText} ";
         }
 
         // From a single character, show all other chinese characters which contain it as a component
         private static void ShowComposeResult()
         {
-            List<Word> filteredWords = Decomposition.getCharactersWithComponent(mainWindow.SearchBar.Text);
+            List<Word> filteredWords = Decomposition.GetCharactersWithComponent(mainWindow.SearchBar.Text);
             UpdateShownWords(filteredWords);
         }
 
@@ -63,22 +63,24 @@ namespace WPF_program.Controllers
         {
             Stopwatch stopWatch = new StopWatch();
             stopWatch.Start();
-            List<Word> result = ChineseService.getWordsFromSentence(sentence);
+            //List<Word> result = ChineseService.GetWordsFromSentence(sentence);
+            List<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
+            List<Word> wordsList = ChineseService.GetAllWordsFrom(simplifiedList);
             stopWatch.Stop();
             mainWindow.SearchBar.Text = $"ms: {stopWatch.Elapsed.TotalMilliseconds}";
-            UpdateShownWords(result);
+            UpdateShownWords(wordsList);
 
 
             mainWindow.MiddleWordBox.Children.Clear();
-            foreach (Word w in result)
+            foreach (string simp in simplifiedList)
             {
                 //DetailedWord? detailedWord = allDetailedWords.Find(dw => dw.Simplified == w.Simplified);
-                if (allDetailedWords.ContainsKey(w.Simplified))
+                if (allDetailedWords.ContainsKey(simp))
                 {
-                    DetailedWord detailedWord = allDetailedWords[w.Simplified];
+                    DetailedWord detailedWord = allDetailedWords[simp];
                     (SolidColorBrush, string) posTuple = GetPosInfo(detailedWord);
 
-                    var wordBorder = UiFactory.CreateWordBox(posTuple, w);
+                    var wordBorder = UiFactory.CreateWordBox(posTuple, simp);
                     mainWindow.MiddleWordBox.Children.Add(wordBorder);
                 }
             }

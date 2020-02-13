@@ -8,6 +8,7 @@ namespace WpfApp2
     using System.Windows.Documents;
     using System.Windows.Input;
     using WPF_program.Controllers;
+    using WPF_program.Logic;
 
     public partial class MainWindow : Window
     {
@@ -15,6 +16,7 @@ namespace WpfApp2
         {
             InitializeComponent();
             Console.WriteLine("test 8");
+            ChineseService.InitializeData();
             Controller.setWindow(this);
             Controller.InitializeSentenceExamples();
             Controller.ShowSomeRandomWords();

@@ -3,16 +3,16 @@
 open System.Collections.Generic;
 open System.IO;
 
-open MyTypes
-open Kangxi
+//open MyTypes
+//open Kangxi
 
-module Decomposition =
-    let inputPath =  @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt"
-    let basicDict = new Dictionary<char, List<char>>()
+//module Decomposition =
+    //let inputPath =  @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt"
+    //let basicDict = new Dictionary<char, List<char>>()
     //let allWords = ChineseService.allWords
     //let kangxiRadicals = Kangxi.getRadicals() |> Seq.toList
 
-    let analyzeLine (line:string) =
+    (*let analyzeLine (line:string) =
         let character = line.Split(':').[0].[0]
         let afterParan = line.Split('(').[1]
         let components = new List<char>()
@@ -31,9 +31,9 @@ module Decomposition =
         inputPath |> File.ReadAllLines
                   |> Seq.skip 10640
                   |> Seq.iter analyzeLine
-        basicDict
+        basicDict*)
     
-    let getCharacterDecomposition() =
+    (*let getCharacterDecomposition() =
         let basicDict = getDecompositionRules()
         let resultDict = new Dictionary<char, List<char>>()
         let kangxiRadicals = Kangxi.getRadicals()
@@ -46,19 +46,19 @@ module Decomposition =
             if not foundRadical then
                 resultDict.Add(dictKey, basicDict.[dictKey])
 
-        resultDict
+        resultDict *)
 
 
-    let getDefinition(character:char) =
+    (*let getDefinition(character:char) =
 
         let mutable result = " - "
         for w in ChineseService.allWords do
             if w.Simplified = character.ToString() then
                 result <- w.Definitions
-        result
+        result*)
 
     //TODO rename variables, refactor
-    let decomposeCharToRadicals (topChar:char) =
+    (*let decomposeCharToRadicals (topChar:char) =
         if not (basicDict.ContainsKey(topChar)) then
             "cannot find decomposition"
         else
@@ -86,10 +86,10 @@ module Decomposition =
                         //decompositionText <- decompositionText + "   *** " + getDefinition(firstChar) + "\n"
                 else
                     decompositionText <- decompositionText + " STROKE / unencoded\n"
-            decompositionText
+            decompositionText*)
 
 
-    let getCharactersWithComponent (text:string) = 
+    (*let getCharactersWithComponent (text:string) = 
         let ch = text.[0]
         let simplifiedComponentsFound = new List<char>()
         for decompositionTuple in basicDict do
@@ -104,4 +104,4 @@ module Decomposition =
             if word.Simplified.Length = 1 then 
                 if simplifiedComponentsFound.Contains(word.Simplified.[0]) then
                     filteredWords.Add(word)
-        filteredWords
+        filteredWords*)

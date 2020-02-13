@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WPF_program.Models
 {
-    class Word
+    public class Word
     {
         public string? Traditional { get; set; }
         public string? Simplified { get; set; }

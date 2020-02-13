@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using WPF_program.Logic;
 
 namespace WPF_program.Controllers
 {
@@ -7,7 +8,7 @@ namespace WPF_program.Controllers
         // Add some sentences to the app, which will be used as examples
         public static void InitializeSentenceExamples()
         {
-            foreach (string sentence in Chinese.SentenceExamples.getAllSentences())
+            foreach (string sentence in SentenceExamples.Examples())
             {
                 ListBoxItem item = new ListBoxItem
                 {
