@@ -7,16 +7,6 @@ using WPF_program.Models;
 
 namespace WPF_program.Logic
 {
-    public static class WordListExtension
-    {
-        public static List<Word> SortByFrequency(this IEnumerable<Word> words)
-        {
-            return words.OrderBy(w => w.Frequency)
-                        .Reverse()
-                        .ToList();
-        }
-    }
-
     public static class ChineseService
     {
         const string detailedPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allDetailedWords.utf8";
@@ -84,6 +74,13 @@ namespace WPF_program.Logic
                     Definition = tokens[14]
                 };
             }
+        }
+
+        public static List<Word> SortByFrequency(this IEnumerable<Word> words)
+        {
+            return words.OrderBy(w => w.Frequency)
+                        .Reverse()
+                        .ToList();
         }
 
         public static List<Word> GetEnglishResult(string text)
