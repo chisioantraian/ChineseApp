@@ -52,13 +52,11 @@ namespace WPF_program.Controllers
             UpdateShownWords(filteredWords);
         }
 
-        static int i = 0;
         // Split a sentence into words, show these words and analyze the sentence
         private static void ShowDecomposed(string sentence)
         {
             Stopwatch stopWatch = new StopWatch();
             stopWatch.Start();
-            //List<Word> result = ChineseService.GetWordsFromSentence(sentence);
             List<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
             List<Word> wordsList = ChineseService.GetAllWordsFrom(simplifiedList);
             stopWatch.Stop();

@@ -24,37 +24,34 @@ namespace WPF_program.Controllers
     {
         internal static void ShowChineseResult()
         {
-            List<Word> filteredWords = ChineseService.SearchBySimplified(mainWindow.SearchBar.Text).ToList();
-            UpdateShownWords(filteredWords);
+            ChineseService.SearchBySimplified(mainWindow.SearchBar.Text).UpdateShownWords();
         }
 
         internal static void ShowEnglishResult()
         {
-            List<Word> filteredWords = ChineseService.GetEnglishResult(mainWindow.SearchBar.Text).ToList();
-            UpdateShownWords(filteredWords);
+            ChineseService.GetEnglishResult(mainWindow.SearchBar.Text).UpdateShownWords();
         }
 
         internal static void ShowPronounciationResult()
         {
-            List<Word> filteredWords = ChineseService.SearchByPinyin(mainWindow.SearchBar.Text).ToList();
-            UpdateShownWords(filteredWords);
+            ChineseService.SearchByPinyin(mainWindow.SearchBar.Text).UpdateShownWords();
         }
 
-        internal static void UpdateShownWords(List<Word> filteredWords)
+        internal static void UpdateShownWords(this List<Word> filteredWords)
         {
-            //mainWindow.ResultCountBlock.Text = $"{filteredWords.Count} words found";
-            //mainWindow.WordsList.Items.Add(mainWindow.ResultCountBlock);
+            SPPair makeSPP(char chn, string pron) => new SPPair { ChineseCharacter = chn, Pinyin = pron };
             List<ResultWord> resultedWords = new List<ResultWord>();
             foreach (var word in filteredWords)
             {
                 List<SPPair> sPPairs = new List<SPPair>();
                 List<char> singleChar = word.Simplified.ToList();
                 List<string> singlePron = word.Pinyin.Split(" ").ToList();
-                for (int i = 0; i < singleChar.Count && i < singlePron.Count; i++)
-                {
-                    SPPair sPair = new SPPair { ChineseCharacter = singleChar[i], Pinyin = singlePron[i] };
-                    sPPairs.Add(sPair);
-                }
+                //for (int i = 0; i < singleChar.Count && i < singlePron.Count; i++)
+                //{
+                //    SPPair sPair = new SPPair { ChineseCharacter = singleChar[i], Pinyin = singlePron[i] };
+                //    sPPairs.Add(sPair);
+                //}
+                sPPairs = singleChar.Zip(singlePron, makeSPP).ToList();
 
                 var rWord = new ResultWord
                 {
