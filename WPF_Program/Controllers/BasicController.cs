@@ -53,6 +53,7 @@ namespace ChineseAppWPF.Controllers
         {
             List<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
             ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords();
+            string myText = sentence + "\n";
 
             mainWindow.MiddleWordBox.Children.Clear();
             foreach (string simp in simplifiedList)
@@ -61,11 +62,13 @@ namespace ChineseAppWPF.Controllers
                 {
                     DetailedWord detailedWord = allDetailedWords[simp];
                     (SolidColorBrush, string) posTuple = GetPosInfo(detailedWord);
-
+                    myText += $"{simp}_{detailedWord.DominantPos}\t";
                     var wordBorder = UiFactory.BoxFactory.CreateWordBox(posTuple, simp);
                     mainWindow.MiddleWordBox.Children.Add(wordBorder);
                 }
             }
+            myText += "\n";
+            mainWindow.SearchBar.Text = myText;
         }
 
         // From a word(DetailedWord) pos tag, get its full pos name , and also return a color which is unique to it

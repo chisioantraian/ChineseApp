@@ -3,79 +3,60 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp2"
+        xmlns:local="clr-namespace:ChineseAppWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920">
-
+        Title="Window1" Height="1080" Width="1920">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="8*" />
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="8*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Name="RandomButton"
+                    Click="RandomButton_Click"
+                    Grid.Column="0" 
+                    Content="Random"
+                    FontSize="20"
+                    Margin="15"/>
 
 
+                <TextBox 
+                    Grid.Column="1"
+                    Name="SearchBar" FontSize="20" 
+                    Padding="15" Margin="15" 
+                    KeyUp="SearchBar_KeyUp"/>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="8*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Button
-                Name="RandomButton"
-                Click="RandomButton_Click"
-                Grid.Column="0" 
-                Content="Random"
-                FontSize="20"
-                Margin="15"/>
-            
-            <TextBox 
-                Grid.Column="1"
-                Name="SearchBar" FontSize="20" 
-                Padding="15" Margin="15" 
-                KeyUp="SearchBar_KeyUp"/>
-
-            <Button 
-                Name="SearchButton"
-                Click="SearchButton_Click"
-                Grid.Column="2" 
-                Content="Search" 
-                FontSize="20"
-                Margin="15"/>
-
-            <ComboBox 
-                Name="InputComboBox" 
-                Grid.Column="3"
-                Margin="15"
-                Padding="15"
-                FontSize="16"
-                SelectedIndex="0">
-                <ComboBoxItem>English</ComboBoxItem>
-                <ComboBoxItem>Chinese</ComboBoxItem>
-                <ComboBoxItem>Pronounciation</ComboBoxItem>
-                <ComboBoxItem>Compose</ComboBoxItem>
-            </ComboBox>
-            
-
-        </Grid>
-
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+                <ComboBox 
+                    Name="InputComboBox" 
+                    Grid.Column="2"
+                    Margin="15"
+                    Padding="15"
+                    FontSize="16"
+                    SelectedIndex="0">
+                    <ComboBoxItem>English</ComboBoxItem>
+                    <ComboBoxItem>Chinese</ComboBoxItem>
+                    <ComboBoxItem>Pronounciation</ComboBoxItem>
+                    <ComboBoxItem>Compose</ComboBoxItem>
+                </ComboBox>
+            </Grid>
 
             <ListBox Name="WordsList" 
-                     Grid.Column="0" 
+                     Grid.Row="1" 
                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                      HorizontalContentAlignment="Stretch">
-                
-                <!-- <TextBlock Name="ResultCountBlock"
-                       Margin="10"
-                       FontSize="24" /> -->
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Black"
@@ -115,13 +96,13 @@
                                                              />
                                                     </TextBlock.Inlines>
                                                 </TextBlock>
- 
+
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
 
                                 </ItemsControl>
-                                    
+
                                 <TextBlock Text="{Binding Definitions}" 
                                        FontSize="16"
                                        Foreground="Brown"/>
@@ -129,17 +110,21 @@
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-                
-            </ListBox>
 
-            <Grid Grid.Column="1">
+            </ListBox>
+        </Grid>
+
+        <TabControl Name="MyTabControl"
+                    Grid.Column="1">
+            <TabItem Header="Words">
+
+
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
-                <WrapPanel Grid.Row="0" Name="MiddleWordBox" />
-                
+
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -148,31 +133,43 @@
 
                     <Border BorderThickness="2" BorderBrush="Black" Grid.Column="0">
                         <TextBlock 
-                            Name="ZoomedCharacterBox"
-                            FontSize="200" />
+                        Name="ZoomedCharacterBox"
+                        FontSize="200" />
                     </Border>
 
                     <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1">
                         <TextBlock 
-                            Name="DecompositionBlock"
-                            FontSize="16" />
+                        Name="DecompositionBlock"
+                        FontSize="16" />
                     </Border>
 
                 </Grid>
-                
-            </Grid>
 
+             </Grid>
+            </TabItem>
 
+            <TabItem Header="Grammar Analysis">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-            <ListBox Name="ExamplesList"
-                     Grid.Column="2" >
-                <StackPanel Name="StatisticsBox">
-                    <TextBlock Name="DecompositionBlock2"
+                    <WrapPanel Name="MiddleWordBox" Grid.Column="0" />
+
+                    <ListBox Name="ExamplesList"
+                             Grid.Column="1" >
+                        <StackPanel Name="StatisticsBox">
+                            <TextBlock Name="DecompositionBlock2"
                            FontSize="20"
                            Margin="10" />
-                </StackPanel>
-            </ListBox>
-        </Grid>
+                        </StackPanel>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Decomposition" />
+
+        </TabControl>
     </Grid>
-    
 </Window>
