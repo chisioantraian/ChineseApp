@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using WPF_program.Models;
 
-namespace WPF_program.Logic
+using ChineseAppWPF.Models;
+
+namespace ChineseAppWPF.Logic
 {
     public static class ChineseService
     {
-        const string detailedPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allDetailedWords.utf8";
-        const string wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allWords.utf8";
+        private const string detailedPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allDetailedWords.utf8";
+        private const string wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allWords.utf8";
 
-        static List<Word> allWords = new List<Word>();
-        static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
+        private static List<Word> allWords = new List<Word>();
+        private static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
 
         public static void InitializeData()
         {
@@ -31,7 +31,7 @@ namespace WPF_program.Logic
                            .Select(getWordFromLine)
                            .ToList();
 
-            Word getWordFromLine(string line)
+            static Word getWordFromLine(string line)
             {
                 string[] tokens = line.Split('\t');
                 return new Word
@@ -52,7 +52,7 @@ namespace WPF_program.Logic
                                    .Select(getDetailedWordFromLine)
                                    .ToDictionary(w => w.Simplified);
 
-            DetailedWord getDetailedWordFromLine(string line)
+            static DetailedWord getDetailedWordFromLine(string line)
             {
                 string[] tokens = line.Split('\t');
                 return new DetailedWord
@@ -64,8 +64,8 @@ namespace WPF_program.Logic
                     WCount = tokens[4],
                     WMillion = tokens[5],
                     Log10W = tokens[6],
-                    W_CD = tokens[7],
-                    W_CD_Percent = tokens[8],
+                    Wcd = tokens[7],
+                    WcdPercent = tokens[8],
                     Log10CD = tokens[9],
                     DominantPos = tokens[10],
                     DominantPosFreq = tokens[11],
@@ -99,6 +99,8 @@ namespace WPF_program.Logic
 
         public static List<Word> SearchByPinyin(string text)
         {
+            if (string.IsNullOrEmpty(text))
+                return new List<Word>();
             string[] prons = text.Split(' ');
             bool CheckIfPinyinMatches(Word word)
             {
@@ -138,25 +140,17 @@ namespace WPF_program.Logic
 
         public static List<Word> GetAllWordsFrom(List<string> simpList)
         {
-            /*List<Word> resultList = new List<Word>();
-            foreach (string simp in simpList)
-            {
-                IEnumerable<Word> words = allWords.Where(w => w.Simplified == simp);
-                foreach (Word w in words)
-                    resultList.Add(w);
-            }
-            return resultList;*/
-            return simpList.SelectMany(simp => allWords.Where(w => w.Simplified == simp)).ToList();
+            return simpList.SelectMany(simp => allWords.Where(w => w.Simplified == simp))
+                           .ToList();
         }
 
         public static List<string> GetSimplifiedWordsFromSentence(string sentence)
         {
             List<string> simpList = new List<string>();
             string constructedWord = "";
-            string toInsert = "";
+            string toInsert = string.Empty;
             foreach (char curr in sentence)
             {
-                Console.WriteLine($"curr = {curr}");
                 string wordToCheck = constructedWord + curr.ToString();
                 if (WordExists(wordToCheck))
                 {
@@ -165,24 +159,22 @@ namespace WPF_program.Logic
                 }
                 else
                 {
-                    if (toInsert != "")
+                    if (toInsert.Length != 0)
                     {
                         simpList.Add(toInsert);
-                        toInsert = "";
                     }
                     if (WordExists(curr.ToString()))
                         toInsert = curr.ToString();
                     else
-                        toInsert = "";
+                        toInsert = string.Empty;
                     constructedWord = curr.ToString();
                 }
             }
-            if (toInsert != "")
+            if (toInsert.Length != 0)
             {
                 simpList.Add(toInsert);
             }
             return simpList;
         }
-
     }
 }

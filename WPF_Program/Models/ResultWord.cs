@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace WPF_program.Models
+namespace ChineseAppWPF.Models
 {
     public class ResultWord
     {
-        public IEnumerable<SPPair> sPPairs { get; set; }
+        public IEnumerable<SPPair> SimplifiedPinyinPairs { get; set; }
         public string Definitions { get; set; }
     }
 }

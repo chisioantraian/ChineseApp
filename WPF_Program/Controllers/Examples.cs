@@ -1,11 +1,10 @@
 ﻿using System.Windows.Controls;
-using WPF_program.Logic;
+using ChineseAppWPF.Logic;
 
-namespace WPF_program.Controllers
+namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
-        // Add some sentences to the app, which will be used as examples
         public static void InitializeSentenceExamples()
         {
             foreach (string sentence in SentenceExamples.Examples())
@@ -18,6 +17,5 @@ namespace WPF_program.Controllers
                 mainWindow.ExamplesList.Items.Add(item);
             }
         }
-
     }
 }

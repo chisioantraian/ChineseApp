@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace WPF_program.Logic
+namespace ChineseAppWPF.Logic
 {
     public static class SentenceExamples
     {
@@ -56,6 +52,5 @@ namespace WPF_program.Logic
             "他们在上汉语课呢",
             "昨天我没有吃"
         };
-
     }
 }

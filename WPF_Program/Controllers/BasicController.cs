@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Diagnostics;
 
-using WpfApp2;
-using WPF_program.Models;
-using WPF_program.Ui_Factory;
-using WPF_program.Logic;
+using ChineseAppWPF.Models;
+using ChineseAppWPF.UiFactory;
+using ChineseAppWPF.Logic;
 
-namespace WPF_program.Controllers
+namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
         private static MainWindow mainWindow;
         private static Dictionary<string,DetailedWord> allDetailedWords;
 
-        public static void setWindow(MainWindow window)
+        public static void SetWindow(MainWindow window)
         {
             mainWindow = window;
             allDetailedWords = ChineseService.GetAllDetailedWords();
         }
 
-        public static void ShowResult(Key lastEnteredKey = Key.Enter)
+        public static void ShowResult()
         {
-            //if (lastEnteredKey != Key.Enter)
-            //    return;
-            ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
-            if (mainWindow.SearchBar.Text.Length == 0)
+            if (string.IsNullOrEmpty(mainWindow.SearchBar.Text))
+            {
+                //UpdateShownWords(new List<Word>());
                 return;
-
+            }
+            ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
             switch (typeItem.Content.ToString())
             {
                 case "Chinese": ShowChineseResult(); break;
@@ -67,17 +62,15 @@ namespace WPF_program.Controllers
                     DetailedWord detailedWord = allDetailedWords[simp];
                     (SolidColorBrush, string) posTuple = GetPosInfo(detailedWord);
 
-                    var wordBorder = UiFactory.CreateWordBox(posTuple, simp);
+                    var wordBorder = UiFactory.BoxFactory.CreateWordBox(posTuple, simp);
                     mainWindow.MiddleWordBox.Children.Add(wordBorder);
                 }
             }
         }
 
         // From a word(DetailedWord) pos tag, get its full pos name , and also return a color which is unique to it
-        private static (SolidColorBrush, string) GetPosInfo(DetailedWord? detailedWord)
+        private static (SolidColorBrush, string) GetPosInfo(DetailedWord detailedWord)
         {
-            if (detailedWord == null)
-                return (Brushes.Gray, "_");
             return detailedWord.DominantPos switch
             {
                 "a" => (Brushes.Purple, "adjective"),
@@ -127,7 +120,5 @@ namespace WPF_program.Controllers
                 _ => (Brushes.Gray, "_")
             };
         }
-
     }
-
 }

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using WPF_program.Models;
 
-namespace WPF_program.Logic
+using ChineseAppWPF.Models;
+
+namespace ChineseAppWPF.Logic
 {
     public static class Decomposition
     {
-        const string decompPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt";
-        static Dictionary<char, List<char>> basicDict = new Dictionary<char, List<char>>();
+        private const string decompPath = @"C:\Users\chisi\Desktop\work\ChineseApp\Csharp_scripts\cjk-decomp.txt";
+        private readonly static Dictionary<char, List<char>> basicDict = new Dictionary<char, List<char>>();
 
         public static void BuildDecompositionDict()
         {
@@ -19,7 +18,7 @@ namespace WPF_program.Logic
                 .Skip(10640)
                 .ToList()
                 .ForEach(AnalyzeLine);
-            void AnalyzeLine(string line)
+            static void AnalyzeLine(string line)
             {
                 char character = line.Split(':')[0][0];
                 string afterParan = line.Split('(')[1];
@@ -32,7 +31,9 @@ namespace WPF_program.Logic
                                              .Split(')')[0][0]);
                 }
                 else
+                {
                     components.Add(afterParan.Split(')')[0][0]);
+                }
                 if (!basicDict.ContainsKey(character))
                     basicDict.Add(character, components);
             }
@@ -58,20 +59,24 @@ namespace WPF_program.Logic
             while (chars.Count > 0)
             {
                 char firstChar = chars.Dequeue();
-                decompositionText.Append(firstChar.ToString() + " : ");
+                decompositionText.Append(firstChar.ToString()).Append(" : ");
                 if (Kangxi.CheckIfKangxiRadical(firstChar))
+                {
                     decompositionText.Append(" - Kangxi Radical\n");
+                }
                 else if (basicDict.ContainsKey(firstChar))
                 {
                     foreach (char c in basicDict[firstChar])
                     {
-                        decompositionText.Append(" " + c.ToString());
+                        decompositionText.Append(" ").Append(c.ToString());
                         chars.Enqueue(c);
                     }
                     decompositionText.Append("\n");
                 }
                 else
+                {
                     decompositionText.Append(" Stroke / Unencoded\n");
+                }
             }
             return decompositionText.ToString();
         }
@@ -81,13 +86,12 @@ namespace WPF_program.Logic
             char ch = text[0];
             var simplifiedComponentsFound = basicDict.Where(dTuple => dTuple.Value.Contains(ch))
                                                      .ToDictionary(dTuple => dTuple.Key);
-            bool ComputedSimplifiedIsFound(Word w) => w.Simplified.Length == 1 && 
+            bool ComputedSimplifiedIsFound(Word w) => w.Simplified.Length == 1 &&
                                                       simplifiedComponentsFound.ContainsKey(w.Simplified[0]);
             return ChineseService.GetAllWords()
                                  .AsParallel()
                                  .Where(ComputedSimplifiedIsFound)
                                  .ToList();
         }
-
     }
 }

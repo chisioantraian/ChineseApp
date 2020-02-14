@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-using WPF_program.Logic;
-using WPF_program.Models;
 
-namespace WPF_program.Controllers
+using ChineseAppWPF.Logic;
+using ChineseAppWPF.Models;
+
+namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
@@ -38,7 +35,7 @@ namespace WPF_program.Controllers
 
         internal static void UpdateShownWords(this List<Word> filteredWords)
         {
-            SPPair makeSPP(char chn, string pron) => new SPPair { ChineseCharacter = chn, Pinyin = pron };
+            static SPPair makeSPP(char chn, string pron) => new SPPair { ChineseCharacter = chn, Pinyin = pron };
             List<ResultWord> resultedWords = new List<ResultWord>();
             foreach (var word in filteredWords)
             {
@@ -49,7 +46,7 @@ namespace WPF_program.Controllers
 
                 var resultedWord = new ResultWord
                 {
-                    sPPairs = sPPairs,
+                    SimplifiedPinyinPairs = sPPairs,
                     Definitions = word.Definitions
                 };
                 resultedWords.Add(resultedWord);
@@ -57,6 +54,5 @@ namespace WPF_program.Controllers
 
             mainWindow.WordsList.ItemsSource = resultedWords;
         }
-
     }
 }

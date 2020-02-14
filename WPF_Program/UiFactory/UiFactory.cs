@@ -2,11 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-using WPF_program.Models;
-
-namespace WPF_program.Ui_Factory
+namespace ChineseAppWPF.UiFactory
 {
-    public static class UiFactory
+    public static class BoxFactory
     {
         public static Border CreateWordBox((SolidColorBrush, string) posTuple, string simp)
         {

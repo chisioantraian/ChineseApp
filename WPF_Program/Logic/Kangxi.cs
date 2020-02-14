@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WPF_program.Models;
 
-namespace WPF_program.Logic
+using ChineseAppWPF.Models;
+
+namespace ChineseAppWPF.Logic
 {
     public static class Kangxi
     {
-        private static List<KangxiRadical> kangxiRadicals = BuildRadicalList();
+        private static readonly List<KangxiRadical> kangxiRadicals = BuildRadicalList();
+
         public static bool CheckIfKangxiRadical(char character)
         {
             return kangxiRadicals.Any(kr => kr.Symbol == character);

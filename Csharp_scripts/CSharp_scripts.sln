@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp_scripts", "CSharp_scripts.csproj", "{83303279-DE9F-4B58-B20A-8EA0F939A27D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPF_program", "..\WPF_Program\WPF_program.csproj", "{82FAAA12-0CF3-489F-8F39-9B77B937D0F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChineseAppWPF", "..\WPF_Program\ChineseAppWPF.csproj", "{82FAAA12-0CF3-489F-8F39-9B77B937D0F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
