@@ -5,6 +5,8 @@ using System.Windows.Media;
 using ChineseAppWPF.Models;
 using ChineseAppWPF.UiFactory;
 using ChineseAppWPF.Logic;
+using System.IO;
+using System;
 
 namespace ChineseAppWPF.Controllers
 {
@@ -12,7 +14,7 @@ namespace ChineseAppWPF.Controllers
     {
         private static MainWindow mainWindow;
         private static Dictionary<string,DetailedWord> allDetailedWords;
-
+        private const string testsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\testSentences.utf8";
         public static void SetWindow(MainWindow window)
         {
             mainWindow = window;
@@ -49,10 +51,11 @@ namespace ChineseAppWPF.Controllers
         }
 
         // Split a sentence into words, show these words and analyze the sentence
-        private static void ShowDecomposed(string sentence)
+        internal static void ShowGrammarAnalysis()
         {
+            string sentence = mainWindow.TestSentenceInputBox.Text;
             List<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
-            ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords();
+            ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords(); //todo maybe separate functions?
             string myText = sentence + "\n";
 
             mainWindow.MiddleWordBox.Children.Clear();
@@ -67,8 +70,93 @@ namespace ChineseAppWPF.Controllers
                     mainWindow.MiddleWordBox.Children.Add(wordBorder);
                 }
             }
+            myText = myText.Remove(myText.Length - 1);
             myText += "\n";
-            mainWindow.SearchBar.Text = myText;
+            mainWindow.TestSentenceResultBox.Text = myText;
+        }
+
+        internal static void AddSentenceDecompositionToFile()
+        {
+            string textToAdd = mainWindow.TestSentenceResultBox.Text;
+            using (StreamWriter sw = File.AppendText(testsPath))
+            {
+                sw.Write(textToAdd);
+            }
+        }
+
+        private static List<(string, string)> GetTupleListFrom(string line)
+        {
+            string[] simplPosList = line.Split('\t');
+            List<(string, string)> result = new List<(string, string)>();
+            foreach (string sp in simplPosList)
+            {
+                string[] token = sp.Split("_");
+                result.Add( (token[0], token[1]) );
+            }
+            return result;
+        }
+
+        internal static void UpdateStatistics()
+        {
+            var sentences = new List<string>();
+            var correctList = new List<List<(string, string)>>();
+            var noAlgList = new List<List<string>>();
+
+            using (var sr = new StreamReader(testsPath))
+            {
+                while (! sr.EndOfStream)
+                {
+                    string sentence = sr.ReadLine();
+                    string fileDecomposition = sr.ReadLine();
+                    Console.WriteLine($"{sentence} {fileDecomposition}");
+                    List<(string, string)> correctDecomposition = GetTupleListFrom(fileDecomposition);
+                    List<string> noAlgDecomposition = ChineseService.GetSimplifiedWordsFromSentence(sentence);
+
+                    sentences.Add(sentence);
+                    correctList.Add(correctDecomposition);
+                    noAlgList.Add(noAlgDecomposition);
+                }
+            }
+
+            int correctSentencesByNoAlg = 0;
+            int wrongNumberOfWords = 0;
+            int wrongDecompositionFound = 0;
+            for (int i = 0; i < correctList.Count; i++)
+            {
+                if (correctList[i].Count != noAlgList[i].Count)
+                {
+                    wrongNumberOfWords++;
+                    break;
+                }
+                int correctForThisSentence = 0;
+                for (int j = 0; j < correctList[i].Count; j++)
+                {
+                    if (correctList[i][j].Item1 != noAlgList[i][j])
+                    {
+                        wrongDecompositionFound++;
+                        break;
+                    }
+                    if (allDetailedWords.ContainsKey(noAlgList[i][j]))
+                    {
+                        if (allDetailedWords[noAlgList[i][j]].DominantPos == correctList[i][j].Item2)
+                        {
+                            correctForThisSentence++;
+                        }
+                    }
+                }
+                if (correctForThisSentence == correctList[i].Count)
+                    correctSentencesByNoAlg++;
+
+            }
+            string stats = "Statistics: \n\n";
+            stats += $"{sentences.Count} total sentences\n\n";
+            stats += $"{wrongNumberOfWords} - Sentences with wrong number of words detected\n\n";
+            stats += $"{wrongDecompositionFound} - Sentences with wrong words detected\n\n";
+            stats += $"{correctSentencesByNoAlg} - Correct sentences with no algorithm (by default)\n\n";
+            stats += $"{((double)correctSentencesByNoAlg / sentences.Count) * 100}% - precision by default\n\n";
+            stats += "...algorithm to be done\n\n";
+            stats += "just simple sentences (no punctuations/phrases/etc\n\n";
+            mainWindow.AnalysisStatisticsBox.Text = stats;
         }
 
         // From a word(DetailedWord) pos tag, get its full pos name , and also return a color which is unique to it

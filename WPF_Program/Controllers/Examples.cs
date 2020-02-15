@@ -13,7 +13,11 @@ namespace ChineseAppWPF.Controllers
                 {
                     Content = sentence,
                 };
-                item.MouseLeftButtonUp += (s, e) => ShowDecomposed(sentence);
+                item.MouseLeftButtonUp += (s, e) =>
+                {
+                    mainWindow.TestSentenceInputBox.Text = sentence;
+                    ShowGrammarAnalysis();
+                };
                 mainWindow.ExamplesList.Items.Add(item);
             }
         }

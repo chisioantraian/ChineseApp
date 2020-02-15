@@ -117,15 +117,7 @@
         <TabControl Name="MyTabControl"
                     Grid.Column="1">
             <TabItem Header="Words">
-
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="1">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -133,29 +125,96 @@
 
                     <Border BorderThickness="2" BorderBrush="Black" Grid.Column="0">
                         <TextBlock 
-                        Name="ZoomedCharacterBox"
-                        FontSize="200" />
+                            Name="ZoomedCharacterBox"
+                            TextAlignment="Center"
+                            FontSize="300" />
                     </Border>
 
                     <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1">
                         <TextBlock 
-                        Name="DecompositionBlock"
-                        FontSize="16" />
+                            Name="DecompositionBlock"
+                            FontSize="16" />
                     </Border>
-
                 </Grid>
-
-             </Grid>
             </TabItem>
 
-            <TabItem Header="Grammar Analysis">
+            <TabItem Header="Grammar Analysis" Height="20" VerticalAlignment="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
+                    
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
+                        <WrapPanel Name="MiddleWordBox" Grid.Row="0" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2*" />
+                                    <RowDefinition Height="2*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBox Name="TestSentenceInputBox"
+                                         Grid.Row="0"
+                                         Margin="10" />
+                                <TextBox Name="TestSentenceResultBox"
+                                         Grid.Row="1"
+                                         Margin="10" />
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                    <WrapPanel Name="MiddleWordBox" Grid.Column="0" />
+                                    <Button Grid.Column="0"
+                                            Click="AnalyseSentence_Click"
+                                            Content="Analyse sentence"
+                                            Margin="25" />
+                                    <Button Grid.Column="1"
+                                            Click="AddToFile_Click"
+                                            Content="Add to file"
+                                            Margin="25" />
+
+                                </Grid>
+
+                            </Grid>
+
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="4*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Name="AnalysisStatisticsBox"
+                                           Grid.Row="0" />
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0"
+                                            Click="UpdateStatistics_Click"
+                                            Content="Update statistics"
+                                            Margin="20"/>
+                                    <Button Grid.Column="1"
+                                            Content="Hide words"
+                                            Margin="20"/>
+                                    <Button Grid.Column="2"
+                                            Content="Hide examples"
+                                            Margin="20"/>
+
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
 
                     <ListBox Name="ExamplesList"
                              Grid.Column="1" >

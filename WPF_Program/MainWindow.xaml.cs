@@ -39,5 +39,20 @@ namespace ChineseAppWPF
             SearchBar.Text = textBlock.Text;
             Controller.ShowChineseResult();
         }
+
+        private void AnalyseSentence_Click(object sender, RoutedEventArgs e)
+        {
+            Controller.ShowGrammarAnalysis();
+        }
+
+        private void AddToFile_Click(object sender, RoutedEventArgs e)
+        {
+            Controller.AddSentenceDecompositionToFile();
+        }
+
+        private void UpdateStatistics_Click(object sender, RoutedEventArgs e)
+        {
+            Controller.UpdateStatistics();
+        }
     }
 }
