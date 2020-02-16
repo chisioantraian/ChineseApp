@@ -25,7 +25,6 @@ namespace ChineseAppWPF.Controllers
         {
             if (string.IsNullOrEmpty(mainWindow.SearchBar.Text))
             {
-                //UpdateShownWords(new List<Word>());
                 return;
             }
             ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
