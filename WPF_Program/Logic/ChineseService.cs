@@ -133,8 +133,18 @@ namespace ChineseAppWPF.Logic
             return result.SortByFrequency();
         }
 
-        private static bool WordExists(string simplOfWord)
+        internal static bool IsPunctuation(string word)
         {
+            return word == "," || word == "，" ||
+                   word == "." || word == "。" ||
+                   word == "?" || word == "？";
+        }
+
+        internal static bool WordExists(string simplOfWord)
+        {
+
+            if (IsPunctuation(simplOfWord))
+                return true;
             return allWords.Any(w => w.Simplified == simplOfWord);
         }
 
@@ -144,8 +154,14 @@ namespace ChineseAppWPF.Logic
                            .ToList();
         }
 
+        /// <summary>
+        /// Simplified + punctuation
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <returns></returns>
         public static List<string> GetSimplifiedWordsFromSentence(string sentence)
         {
+            //Console.WriteLine($"GetSimplifiedWordsFromSentence: {sentence}");
             List<string> simpList = new List<string>();
             string constructedWord = "";
             string toInsert = string.Empty;

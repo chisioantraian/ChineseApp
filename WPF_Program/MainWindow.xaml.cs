@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,11 +13,14 @@ namespace ChineseAppWPF
         public MainWindow()
         {
             InitializeComponent();
-            Console.WriteLine("test 9");
+            Console.WriteLine("test 10");
             ChineseService.InitializeData();
             Decomposition.BuildDecompositionDict();
             Controller.SetWindow(this);
+
+            Controller.InitializeStatistics();
             Controller.InitializeSentenceExamples();
+
             Controller.ShowSomeRandomWords();
         }
 
@@ -45,14 +49,20 @@ namespace ChineseAppWPF
             Controller.ShowGrammarAnalysis();
         }
 
-        private void AddToFile_Click(object sender, RoutedEventArgs e)
+        private void SaveSentence_Click(object sender, RoutedEventArgs e)
         {
-            Controller.AddSentenceDecompositionToFile();
+            Controller.AddSentenceBreakdownToTests();
         }
 
         private void UpdateStatistics_Click(object sender, RoutedEventArgs e)
         {
             Controller.UpdateStatistics();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Console.WriteLine("bye bye");
+            Controller.SaveTestSentences();
         }
     }
 }

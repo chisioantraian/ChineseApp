@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChineseAppWPF"
         mc:Ignorable="d"
+        Closing="Window_Closing"
         Title="Window1" Height="1080" Width="1920">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -179,8 +180,8 @@
                                             Content="Analyse sentence"
                                             Margin="25" />
                                     <Button Grid.Column="1"
-                                            Click="AddToFile_Click"
-                                            Content="Add to file"
+                                            Click="SaveSentence_Click"
+                                            Content="Save sentence"
                                             Margin="25" />
 
                                 </Grid>

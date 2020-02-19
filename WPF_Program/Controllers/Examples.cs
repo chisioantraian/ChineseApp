@@ -1,5 +1,7 @@
 ﻿using System.Windows.Controls;
+using System.Linq;
 using ChineseAppWPF.Logic;
+using System.Collections.Generic;
 
 namespace ChineseAppWPF.Controllers
 {
@@ -7,7 +9,8 @@ namespace ChineseAppWPF.Controllers
     {
         public static void InitializeSentenceExamples()
         {
-            foreach (string sentence in SentenceExamples.Examples())
+            //foreach (string sentence in SentenceExamples.Examples())
+            foreach (string sentence in sentences.Select(sent => sent.Text))
             {
                 ListBoxItem item = new ListBoxItem
                 {

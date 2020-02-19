@@ -6,7 +6,7 @@ namespace ChineseAppWPF.UiFactory
 {
     public static class BoxFactory
     {
-        public static Border CreateWordBox((SolidColorBrush, string) posTuple, string simp)
+        public static Border CreateWordBox((SolidColorBrush, string) posTuple, string simp, string details)
         {
             TextBlock wBlock = new TextBlock
             {
@@ -29,7 +29,8 @@ namespace ChineseAppWPF.UiFactory
                 Foreground = posTuple.Item1,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, -5, 0, 0),
-                Text = $"{posTuple.Item2}"
+                Text = $"{posTuple.Item2}\n{details}"
+                //Text = $"{posTuple.Item2}"
                 //Text = $"{posTuple.Item2} \n {detailedWord.AllPos} \n {detailedWord.AllPosFreq}", //modify
             };
             StackPanel wordPanel = new StackPanel
