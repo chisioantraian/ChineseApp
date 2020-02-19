@@ -201,10 +201,6 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0"
-                                            Click="UpdateStatistics_Click"
-                                            Content="Update statistics"
-                                            Margin="20"/>
                                     <Button Grid.Column="1"
                                             Content="Hide words"
                                             Margin="20"/>

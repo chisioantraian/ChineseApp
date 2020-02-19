@@ -54,15 +54,10 @@ namespace ChineseAppWPF
             Controller.AddSentenceBreakdownToTests();
         }
 
-        private void UpdateStatistics_Click(object sender, RoutedEventArgs e)
-        {
-            Controller.UpdateStatistics();
-        }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Console.WriteLine("bye bye");
             Controller.SaveTestSentences();
+            Console.WriteLine("Saved sentences to file");
         }
     }
 }

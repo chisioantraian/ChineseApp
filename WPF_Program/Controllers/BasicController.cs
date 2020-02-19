@@ -11,36 +11,12 @@ using System.Linq;
 
 namespace ChineseAppWPF.Controllers
 {
-    /*public class SentenceBreakdown
-    {
-        public string Sentence { get; set; }
-        public List<(string, string)> Breakdown { get; set; }
-    }*/
-
-    public class Breakdown
-    {
-        public string Part { get; set; }
-        public string Description { get; set; }
-    }
-
-    public class Sentence
-    {
-        public string Text { get; set; }
-        public List<Breakdown> Correct { get; set; } = null;
-        public List<Breakdown> NoAlgorithm { get; set; } = null;
-    }
-
     public static partial class Controller
     {
         private static MainWindow mainWindow;
         private static Dictionary<string,DetailedWord> allDetailedWords;
         private const string testsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\testSentences.utf8";
-
-        //private static List<SentenceBreakdown> correctList = new List<SentenceBreakdown>();
-        //private static List<List<string>> noAlgList = new List<List<string>>();
-        //private static List<string> sentenceExamples = new List<string>();
-        internal static List<Sentence> sentences = new List<Sentence>(); // ? 
-        
+        private static List<Sentence> sentences = new List<Sentence>();
         private static int correctSentencesByNoAlg = 0;
         private static int wrongNumberOfWords = 0;
         private static int wrongDecompositionFound = 0;
@@ -73,7 +49,6 @@ namespace ChineseAppWPF.Controllers
             mainWindow.DecompositionBlock.Text = $"{decompositionText} ";
         }
 
-        // From a single character, show all other chinese characters which contain it as a component
         private static void ShowComposeResult()
         {
             Decomposition.GetCharactersWithComponent(mainWindow.SearchBar.Text).UpdateShownWords();
@@ -121,94 +96,38 @@ namespace ChineseAppWPF.Controllers
             };
         }
 
+        private static void UpdateStatistics(Sentence sentence)
+        {
+            if (sentence.NoAlgorithm.Count != sentence.Correct.Count)
+            {
+                wrongNumberOfWords++;
+                return;
+            }
+            int correctWordsFoundForThisSentence = 0;
+            for (int i = 0; i < sentence.NoAlgorithm.Count; i++)
+            {
+                if (sentence.NoAlgorithm[i].Part != sentence.Correct[i].Part)
+                {
+                    wrongDecompositionFound++;
+                    break;
+                }
+                if (sentence.NoAlgorithm[i].Description == sentence.Correct[i].Description || 
+                    ChineseService.IsPunctuation(sentence.NoAlgorithm[i].Part))
+                {
+                    correctWordsFoundForThisSentence++;
+                }
+            }
+            if (correctWordsFoundForThisSentence == sentence.Correct.Count)
+                correctSentencesByNoAlg++;
+        }
+
         internal static void InitializeStatistics()
         {
-            //todo maybe use streams. 
-            /*using (var sr = new StreamReader(testsPath))
-            {
-                while (!sr.EndOfStream)
-                {
-                    string sentence = sr.ReadLine();
-                    string sentenceBreakdownLine = sr.ReadLine();
-
-                    List<(string, string)> correctBreakdown = GetTupleListFrom(sentenceBreakdownLine);
-                    List<string> noAlgBreakdown = ChineseService.GetSimplifiedWordsFromSentence(sentence);
-
-                    correctList.Add(new SentenceBreakdown
-                    {
-                        Sentence = sentence,
-                        Breakdown = correctBreakdown
-                    });
-
-                    noAlgList.Add(noAlgBreakdown);
-                }
-            }*/
             sentences = File.ReadAllLines(testsPath)
                             .Select(GetSentenceBreakdownFromLine)
                             .ToList();
-            
-            foreach (Sentence sentence in sentences)
-            {
-                if (sentence.Correct.Count != sentence.NoAlgorithm.Count)
-                {
-                    wrongNumberOfWords++;
-                    continue;
-                }
-                int correctWordsFoundForThisSentence = 0;
-                for (int i = 0; i < sentence.Correct.Count; i++)
-                {
-                    if (sentence.Correct[i].Part != sentence.NoAlgorithm[i].Part)
-                    {
-                        wrongDecompositionFound++;
-                        break;
-                    }
-                    if (sentence.Correct[i].Description == sentence.NoAlgorithm[i].Description ||
-                            ChineseService.IsPunctuation(sentence.NoAlgorithm[i].Part))
-                    { 
-                        correctWordsFoundForThisSentence++; 
-                    }
-                }
-                if (correctWordsFoundForThisSentence == sentence.Correct.Count)
-                    correctSentencesByNoAlg++;
-            }
+            sentences.ForEach(UpdateStatistics);
             ModifyStatisticsBox();
-            //
-            //
-            //
-            /*for (int i = 0; i < correctList.Count; i++)
-            {
-                if (correctList[i].Breakdown.Count != noAlgList[i].Count)
-                {
-                    wrongNumberOfWords++;
-                    sentenceExamples.Add(correctList[i].Sentence);
-                    break;
-                }
-                int correctWordsFoundForThisSentence = 0;
-                for (int j = 0; j < correctList[i].Breakdown.Count; j++)
-                {
-                    if (correctList[i].Breakdown[j].Item1 != noAlgList[i][j])
-                    {
-                        wrongDecompositionFound++;
-                        sentenceExamples.Add(correctList[i].Sentence);
-                        break;
-                    }
-                    if (allDetailedWords.ContainsKey(noAlgList[i][j]))
-                    {
-                        if (allDetailedWords[noAlgList[i][j]].DominantPos == correctList[i].Breakdown[j].Item2)
-                        {
-                            correctWordsFoundForThisSentence++;
-                        }
-                    }
-                    if (ChineseService.IsPunctuation(correctList[i].Breakdown[j].Item1))
-                    {
-                        correctWordsFoundForThisSentence++;
-                    }
-
-                }
-                if (correctWordsFoundForThisSentence == correctList[i].Breakdown.Count)
-                    correctSentencesByNoAlg++;
-            }
-            ModifyStatisticsBox();*/
         }
 
         internal static List<(string, string, string)> GetDescription(List<string> simplifiedList)
@@ -229,17 +148,12 @@ namespace ChineseAppWPF.Controllers
                         "," => "engComma",
                         "？" => "chnQmark",
                         "。" => "chnDot",
-                        "，" => "chnComma", //more to come
+                        "，" => "chnComma", //todo more to come
                         _ => "other",
                     };
                     result.Add((simp, punctuation, ""));
                 }
             }
-
-            ///
-            // Here algorithm
-            ///
-
             return result;
         }
 
@@ -263,87 +177,15 @@ namespace ChineseAppWPF.Controllers
             }
 
             myText = myText.Remove(myText.Length - 1);
-            //myText += "\n";
             mainWindow.TestSentenceResultBox.Text = myText;  
         }
 
         internal static void AddSentenceBreakdownToTests()
         {
-            //string resultText = mainWindow.TestSentenceResultBox.Text;
-            //string sentence = resultText.Split('\n')[0];
-            /*List<(string, string)> breakdown = GetTupleListFrom(resultText.Split('\n')[1]);
-            correctList.Add(new SentenceBreakdown
-            {
-                Sentence = sentence,
-                Breakdown = breakdown
-            });*/
-            //List<Breakdown> correctBreakdown = Get
-            //List<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
             Sentence sentence = GetSentenceBreakdownFromLine(mainWindow.TestSentenceResultBox.Text);
-
-            if (sentence.Correct.Count != sentence.NoAlgorithm.Count)
-            {
-                wrongNumberOfWords++;
-            }
-            else
-            {
-                int correctWordsFoundForThisSentence = 0;
-                for (int i = 0; i < sentence.Correct.Count; i++)
-                {
-                    if (sentence.Correct[i].Part != sentence.NoAlgorithm[i].Part)
-                    {
-                        wrongDecompositionFound++;
-                        break;
-                    }
-                    if (sentence.Correct[i].Description == sentence.NoAlgorithm[i].Description || 
-                        ChineseService.IsPunctuation(sentence.NoAlgorithm[i].Part))
-                    {
-                        correctWordsFoundForThisSentence++;
-                    }
-                }
-                if (correctWordsFoundForThisSentence == sentence.Correct.Count)
-                    correctSentencesByNoAlg++;
-            }
             sentences.Add(sentence);
+            UpdateStatistics(sentence);
             ModifyStatisticsBox();
-            /*if (breakdown.Count != simplifiedList.Count)
-            {
-                Console.WriteLine($"sentence = {sentence}");
-                Console.WriteLine("%%%");
-                Console.WriteLine($"{breakdown.Count} - {simplifiedList.Count} sga");
-                foreach (string s in simplifiedList)
-                    Console.Write($"{s} : ");
-                Console.WriteLine(",.,.");
-                wrongNumberOfWords++;
-            }
-            else
-            {
-
-
-                for (int j = 0; j < breakdown.Count; j++)
-                {
-                    if (breakdown[j].Item1 != simplifiedList[j])
-                    {
-                        Console.WriteLine($"wrong decomposition found {breakdown[j].Item1}");
-                        wrongDecompositionFound++;
-                        break;
-                    }
-                    if (allDetailedWords.ContainsKey(simplifiedList[j]))
-                    {
-                        if (allDetailedWords[simplifiedList[j]].DominantPos == breakdown[j].Item2)
-                        {
-                            correctWordsFoundForThisSentence++;
-                        }
-                    }
-                    if (ChineseService.IsPunctuation(breakdown[j].Item1))
-                    {
-                        correctWordsFoundForThisSentence++;
-                    }
-                }
-                if (correctWordsFoundForThisSentence == breakdown.Count)
-                    correctSentencesByNoAlg++;
-            }
-            ModifyStatisticsBox();*/
         }
 
         internal static void ModifyStatisticsBox()
@@ -352,7 +194,7 @@ namespace ChineseAppWPF.Controllers
             stats += $"{sentences.Count} total sentences\n\n";
             stats += $"{wrongNumberOfWords} - Sentences with wrong number of words detected\n\n";
             stats += $"{wrongDecompositionFound} - Sentences with wrong words detected\n\n";
-            stats += $"{sentences.Count - correctSentencesByNoAlg} - Sentences with wrong POS assigned\n\n";
+            stats += $"{sentences.Count - correctSentencesByNoAlg - wrongNumberOfWords} - Sentences with wrong POS assigned\n\n";
             stats += $"{correctSentencesByNoAlg} - Correct sentences with no algorithm (by default)\n\n";
             stats += $"{((double)correctSentencesByNoAlg / sentences.Count) * 100}% - precision by default\n\n";
             stats += "...algorithm to be done\n\n";
@@ -360,14 +202,10 @@ namespace ChineseAppWPF.Controllers
             mainWindow.AnalysisStatisticsBox.Text = stats;
         }
 
-
-
         internal static void SaveTestSentences()
         {
             using (StreamWriter sw = new StreamWriter(testsPath))
             {
-
-                //foreach (SentenceBreakdown sent in correctList.OrderBy(sb => sb.Sentence.Length))//.Distinct((SentenceBreakdown sb1, SentenceBreakdown sb2) => sb1.Equals(sb2)))
                 foreach (Sentence sentence in sentences)
                 {
                     sw.Write(sentence.Text + "\t");
@@ -382,16 +220,9 @@ namespace ChineseAppWPF.Controllers
             }
         }
 
-
-        internal static void UpdateStatistics()
+        private static (SolidColorBrush, string) GetPosInfo(string description)
         {
-
-        }
-
-        // From a word(DetailedWord) pos tag, get its full pos name , and also return a color which is unique to it
-        private static (SolidColorBrush, string) GetPosInfo(string description)//(DetailedWord detailedWord)
-        {
-            return description switch //.DominantPos switch
+            return description switch
             {
                 "a" => (Brushes.Purple, "adjective"),
                 "ad" => (Brushes.Purple, "adj as adv"),
@@ -445,7 +276,6 @@ namespace ChineseAppWPF.Controllers
                 "chnComma" => (Brushes.BlueViolet, "chinese comma"),
                 _ => (Brushes.Gray, "_")
             };
-
 
         }
     }
