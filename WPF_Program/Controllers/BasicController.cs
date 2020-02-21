@@ -152,28 +152,31 @@ namespace ChineseAppWPF.Controllers
                 wrongNumberOfWords++;
                 wrongSentences.Add(sentence);
                 Console.WriteLine($"no-alg: nw {sentence.Text}");
-                return;
             }
-            int correctWordsFoundForThisSentence = 0;
-            for (int i = 0; i < sentence.NoAlgorithm.Count; i++)
-            {
-                if (sentence.NoAlgorithm[i].Part != sentence.Correct[i].Part)
-                {
-                    wrongDecompositionFound++;
-                    wrongSentences.Add(sentence);
-                    Console.WriteLine($"no-alg: wd {sentence.Text}");
-                    break;
-                }
-                if (sentence.NoAlgorithm[i].Description == sentence.Correct[i].Description || 
-                    ChineseService.IsPunctuation(sentence.NoAlgorithm[i].Part))
-                {
-                    correctWordsFoundForThisSentence++;
-                }
-            }
-            if (correctWordsFoundForThisSentence == sentence.Correct.Count)
-                correctSentencesByNoAlg++;
             else
-                wrongSentences.Add(sentence);
+            {
+                int correctWordsFoundForThisSentence = 0;
+                for (int i = 0; i < sentence.NoAlgorithm.Count; i++)
+                {
+                    if (sentence.NoAlgorithm[i].Part != sentence.Correct[i].Part)
+                    {
+                        wrongDecompositionFound++;
+                        wrongSentences.Add(sentence);
+                        Console.WriteLine($"no-alg: wd {sentence.Text}");
+                        break;
+                    }
+                    if (sentence.NoAlgorithm[i].Description == sentence.Correct[i].Description ||
+                        ChineseService.IsPunctuation(sentence.NoAlgorithm[i].Part))
+                    {
+                        correctWordsFoundForThisSentence++;
+                    }
+                }
+                if (correctWordsFoundForThisSentence == sentence.Correct.Count)
+                    correctSentencesByNoAlg++;
+                else
+                    wrongSentences.Add(sentence);
+            }
+
             //
             // split later
             //
@@ -181,27 +184,30 @@ namespace ChineseAppWPF.Controllers
             {
                 wrongNumberOfWordsAfterAlg++;
                 Console.WriteLine($"alg: nw {sentence.Text}");
-                return;
+                //return;
             }
-            correctWordsFoundForThisSentence = 0;
-            Console.WriteLine($"alg count : {sentence.Algorithm.Count}");
-            for (int i = 0; i < sentence.Algorithm.Count; i++)
+            else
             {
-                if (sentence.Algorithm[i].Part != sentence.Correct[i].Part)
+                int correctWordsFoundForThisSentence = 0;
+                Console.WriteLine($"alg count : {sentence.Algorithm.Count}");
+                for (int i = 0; i < sentence.Algorithm.Count; i++)
                 {
-                    wrongDecompositionFoundAfterAlg++;
-                    Console.WriteLine($"alg: wd {sentence.Text}");
-                    break;
+                    if (sentence.Algorithm[i].Part != sentence.Correct[i].Part)
+                    {
+                        wrongDecompositionFoundAfterAlg++;
+                        Console.WriteLine($"alg: wd {sentence.Text}");
+                        break;
+                    }
+                    if (sentence.Algorithm[i].Description == sentence.Correct[i].Description ||
+                        ChineseService.IsPunctuation(sentence.Algorithm[i].Part))
+                    {
+                        correctWordsFoundForThisSentence++;
+                    }
                 }
-                if (sentence.Algorithm[i].Description == sentence.Correct[i].Description || 
-                    ChineseService.IsPunctuation(sentence.Algorithm[i].Part))
-                {
-                    correctWordsFoundForThisSentence++;
-                }
+                if (correctWordsFoundForThisSentence == sentence.Correct.Count)
+                    correctSentencesByAlg++;
             }
-            if (correctWordsFoundForThisSentence == sentence.Correct.Count)
-                correctSentencesByAlg++;
-            
+
         }
 
         internal static void InitializeStatistics()
