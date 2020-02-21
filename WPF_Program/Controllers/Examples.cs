@@ -2,6 +2,8 @@
 using System.Linq;
 using ChineseAppWPF.Logic;
 using System.Collections.Generic;
+using ChineseAppWPF.Models;
+using System;
 
 namespace ChineseAppWPF.Controllers
 {
@@ -10,15 +12,19 @@ namespace ChineseAppWPF.Controllers
         public static void InitializeSentenceExamples()
         {
             //foreach (string sentence in SentenceExamples.Examples())
-            foreach (string sentence in sentences.Select(sent => sent.Text))
+            foreach (Sentence sentence in wrongSentences)
             {
                 ListBoxItem item = new ListBoxItem
                 {
-                    Content = sentence,
+                    Content = sentence.Text,
                 };
                 item.MouseLeftButtonUp += (s, e) =>
                 {
-                    mainWindow.TestSentenceInputBox.Text = sentence;
+                    mainWindow.TestSentenceInputBox.Text = sentence.Text;
+                    foreach (Breakdown sen in sentence.Correct)
+                    {
+                        Console.WriteLine(sen.Part + " " + sen.Description);
+                    }
                     ShowGrammarAnalysis();
                 };
                 mainWindow.ExamplesList.Items.Add(item);

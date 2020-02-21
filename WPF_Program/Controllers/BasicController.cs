@@ -17,9 +17,15 @@ namespace ChineseAppWPF.Controllers
         private static Dictionary<string,DetailedWord> allDetailedWords;
         private const string testsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\testSentences.utf8";
         private static List<Sentence> sentences = new List<Sentence>();
-        private static int correctSentencesByNoAlg = 0;
-        private static int wrongNumberOfWords = 0;
-        private static int wrongDecompositionFound = 0;
+        private static List<Sentence> wrongSentences = new List<Sentence>();
+
+        private static int correctSentencesByNoAlg;
+        private static int wrongNumberOfWords;
+        private static int wrongDecompositionFound;
+
+        private static int correctSentencesByAlg;
+        private static int wrongNumberOfWordsAfterAlg;
+        private static int wrongDecompositionFoundAfterAlg;
 
         public static void SetWindow(MainWindow window)
         {
@@ -80,19 +86,62 @@ namespace ChineseAppWPF.Controllers
             return result;
         }
 
+        public static bool CanApply(Rule rule, List<Breakdown> bd, int i)
+        {
+            if (bd[i].Part == rule.Current)
+                if (bd[i].Description == rule.Tag1)
+                    if (rule.Cond == "nextTag")
+                        if (bd[i + 1].Description == rule.Tag3)
+                            return true;
+            return false;
+        }
+
+        public static List<Breakdown> GetAlgBreakdown(List<Breakdown> noAlg)
+        {
+            List<Breakdown> algList = new List<Breakdown>();
+            
+            foreach (Breakdown bd in noAlg)
+            {
+                algList.Add(new Breakdown
+                {
+                    Part = bd.Part,
+                    Description = bd.Description
+                });
+            }
+            //foreach (Breakdown bd in algList)
+            for (int i = 0; i < algList.Count; i++)
+            {
+                foreach (Rule rule in rules)
+                {
+                    if (CanApply(rule, algList, i))
+                    {
+                        algList[i].Description = rule.Tag2;
+                        Console.WriteLine($"can apply ： {algList[i].Part} --> {algList[i].Description}");
+                    }
+                    //else
+                    //    Console.WriteLine("can not apply");
+                }
+            }
+
+            return algList;
+        }
+
         private static Sentence GetSentenceBreakdownFromLine(string line)
         {
             string[] token = line.Split("\t", 2);
             string sentence = token[0];
             string breakdownLine = token[1];
+
             List<Breakdown> correctBreakdown = GetTupleListFrom(breakdownLine);
             List<Breakdown> noAlgBreakdown = GetNoAlgBreakdown(sentence);
+            List<Breakdown> algBreakdown = GetAlgBreakdown(noAlgBreakdown);
 
             return new Sentence
             {
                 Text = sentence,
                 Correct = correctBreakdown,
-                NoAlgorithm = noAlgBreakdown
+                NoAlgorithm = noAlgBreakdown,
+                Algorithm = algBreakdown
             };
         }
 
@@ -101,6 +150,8 @@ namespace ChineseAppWPF.Controllers
             if (sentence.NoAlgorithm.Count != sentence.Correct.Count)
             {
                 wrongNumberOfWords++;
+                wrongSentences.Add(sentence);
+                Console.WriteLine($"no-alg: nw {sentence.Text}");
                 return;
             }
             int correctWordsFoundForThisSentence = 0;
@@ -109,6 +160,8 @@ namespace ChineseAppWPF.Controllers
                 if (sentence.NoAlgorithm[i].Part != sentence.Correct[i].Part)
                 {
                     wrongDecompositionFound++;
+                    wrongSentences.Add(sentence);
+                    Console.WriteLine($"no-alg: wd {sentence.Text}");
                     break;
                 }
                 if (sentence.NoAlgorithm[i].Description == sentence.Correct[i].Description || 
@@ -119,6 +172,36 @@ namespace ChineseAppWPF.Controllers
             }
             if (correctWordsFoundForThisSentence == sentence.Correct.Count)
                 correctSentencesByNoAlg++;
+            else
+                wrongSentences.Add(sentence);
+            //
+            // split later
+            //
+            if (sentence.Algorithm.Count != sentence.Correct.Count)
+            {
+                wrongNumberOfWordsAfterAlg++;
+                Console.WriteLine($"alg: nw {sentence.Text}");
+                return;
+            }
+            correctWordsFoundForThisSentence = 0;
+            Console.WriteLine($"alg count : {sentence.Algorithm.Count}");
+            for (int i = 0; i < sentence.Algorithm.Count; i++)
+            {
+                if (sentence.Algorithm[i].Part != sentence.Correct[i].Part)
+                {
+                    wrongDecompositionFoundAfterAlg++;
+                    Console.WriteLine($"alg: wd {sentence.Text}");
+                    break;
+                }
+                if (sentence.Algorithm[i].Description == sentence.Correct[i].Description || 
+                    ChineseService.IsPunctuation(sentence.Algorithm[i].Part))
+                {
+                    correctWordsFoundForThisSentence++;
+                }
+            }
+            if (correctWordsFoundForThisSentence == sentence.Correct.Count)
+                correctSentencesByAlg++;
+            
         }
 
         internal static void InitializeStatistics()
@@ -192,31 +275,38 @@ namespace ChineseAppWPF.Controllers
         {
             string stats = "Statistics: \n\n";
             stats += $"{sentences.Count} total sentences\n\n";
-            stats += $"{wrongNumberOfWords} - Sentences with wrong number of words detected\n\n";
-            stats += $"{wrongDecompositionFound} - Sentences with wrong words detected\n\n";
-            stats += $"{sentences.Count - correctSentencesByNoAlg - wrongNumberOfWords} - Sentences with wrong POS assigned\n\n";
-            stats += $"{correctSentencesByNoAlg} - Correct sentences with no algorithm (by default)\n\n";
-            stats += $"{((double)correctSentencesByNoAlg / sentences.Count) * 100}% - precision by default\n\n";
-            stats += "...algorithm to be done\n\n";
-            stats += "just simple sentences (no punctuations/phrases/etc\n\n";
+
+            stats += $"{wrongNumberOfWords} - Sentences with wrong number of words detected\n";
+            stats += $"{wrongNumberOfWordsAfterAlg} --//-- After Algorithm\n\n";
+
+            stats += $"{wrongDecompositionFound} - Sentences with wrong words detected\n";
+            stats += $"{wrongDecompositionFoundAfterAlg} --//-- After Algorithm\n\n";
+
+            stats += $"{sentences.Count - correctSentencesByNoAlg - wrongNumberOfWords} - Sentences with wrong POS assigned\n";
+            stats += $"{sentences.Count - correctSentencesByAlg - wrongNumberOfWordsAfterAlg} --//-- After Algorithm\n\n";
+
+            stats += $"{correctSentencesByNoAlg} - Correct sentences with no algorithm (by default)\n";
+            stats += $"{correctSentencesByAlg} --//-- After Algorithm\n\n";
+            
+            stats += $"{((double)correctSentencesByNoAlg / sentences.Count) * 100}% - precision by default\n";
+            stats += $"{((double)correctSentencesByAlg / sentences.Count) * 100}% - precision by using algorithm\n";
+
             mainWindow.AnalysisStatisticsBox.Text = stats;
         }
 
         internal static void SaveTestSentences()
         {
-            using (StreamWriter sw = new StreamWriter(testsPath))
+            using StreamWriter sw = new StreamWriter(testsPath);
+            foreach (Sentence sentence in sentences)
             {
-                foreach (Sentence sentence in sentences)
+                sw.Write(sentence.Text + "\t");
+                string breakdownText = "";
+                foreach (var breakdown in sentence.Correct)
                 {
-                    sw.Write(sentence.Text + "\t");
-                    string breakdownText = "";
-                    foreach (var breakdown in sentence.Correct)
-                    {
-                        breakdownText += $"{breakdown.Part}_{breakdown.Description}\t";
-                    }
-                    breakdownText = breakdownText.Remove(breakdownText.Length - 1);
-                    sw.WriteLine(breakdownText);
+                    breakdownText += $"{breakdown.Part}_{breakdown.Description}\t";
                 }
+                breakdownText = breakdownText.Remove(breakdownText.Length - 1);
+                sw.WriteLine(breakdownText);
             }
         }
 

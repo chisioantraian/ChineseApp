@@ -150,8 +150,12 @@ namespace ChineseAppWPF.Logic
 
         public static List<Word> GetAllWordsFrom(List<string> simpList)
         {
-            return simpList.SelectMany(simp => allWords.Where(w => w.Simplified == simp))
-                           .ToList();
+            //return simpList.SelectMany(simp => allWords.Where(w => w.Simplified == simp))
+            //               .ToList();
+            return (from simp in simpList
+                   from w in allWords
+                   where w.Simplified == simp
+                   select w).ToList();
         }
 
         /// <summary>

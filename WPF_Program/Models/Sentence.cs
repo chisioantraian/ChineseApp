@@ -9,5 +9,6 @@ namespace ChineseAppWPF.Models
         public string Text { get; set; }
         public List<Breakdown> Correct { get; set; } = null;
         public List<Breakdown> NoAlgorithm { get; set; } = null;
+        public List<Breakdown> Algorithm { get; set; } = null;
     }
 }
