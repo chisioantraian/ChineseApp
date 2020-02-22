@@ -207,7 +207,6 @@ namespace ChineseAppWPF.Controllers
                 if (correctWordsFoundForThisSentence == sentence.Correct.Count)
                     correctSentencesByAlg++;
             }
-
         }
 
         internal static void InitializeStatistics()
