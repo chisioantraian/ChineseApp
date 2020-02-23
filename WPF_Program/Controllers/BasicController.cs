@@ -60,17 +60,16 @@ namespace ChineseAppWPF.Controllers
             Decomposition.GetCharactersWithComponent(mainWindow.SearchBar.Text).UpdateShownWords();
         }
 
-        private static List<Breakdown> GetTupleListFrom(string line)
+        private static Breakdown BreakdownFromString(string simplPOS)
         {
-            string[] simplPosList = line.Split('\t');
-            List<Breakdown> result = new List<Breakdown>();
-            foreach (string sp in simplPosList)
-            {
-                string[] token = sp.Split("_");
-                result.Add(new Breakdown { Part = token[0], Description = token[1] });
-            }
-            return result;
+            string[] token = simplPOS.Split("_");
+            return new Breakdown { Part = token[0], Description = token[1] };
         }
+
+        private static List<Breakdown> GetTupleListFrom(string line) =>
+            line.Split('\t')
+                .Select(BreakdownFromString)
+                .ToList();
 
         public static List<Breakdown> GetNoAlgBreakdown(string sentence)
         {
@@ -86,29 +85,26 @@ namespace ChineseAppWPF.Controllers
             return result;
         }
 
-        public static bool CanApply(Rule rule, List<Breakdown> bd, int i)
-        {
-            if (bd[i].Part == rule.Current)
-                if (bd[i].Description == rule.Tag1)
-                    if (rule.Cond == "nextTag")
-                        if (bd[i + 1].Description == rule.Tag3)
-                            return true;
-            return false;
-        }
+        //split into more functions
+        public static bool CanApply(Rule rule, List<Breakdown> bd, int i) =>
+            (bd[i].Part == rule.Current &&
+            bd[i].Description == rule.Tag1 &&
+            rule.Cond == "nextTag" &&
+            bd[i + 1].Description == rule.Tag3) ||
+
+            (bd[i].Part == rule.Current &&
+            bd[i].Description == rule.Tag1 &&
+            rule.Cond == "prevTag" &&
+            bd[i - 1].Description == rule.Tag3);
 
         public static List<Breakdown> GetAlgBreakdown(List<Breakdown> noAlg)
         {
             List<Breakdown> algList = new List<Breakdown>();
-            
             foreach (Breakdown bd in noAlg)
             {
-                algList.Add(new Breakdown
-                {
-                    Part = bd.Part,
-                    Description = bd.Description
-                });
+                algList.Add(new Breakdown { Part = bd.Part, Description = bd.Description } );
             }
-            //foreach (Breakdown bd in algList)
+            
             for (int i = 0; i < algList.Count; i++)
             {
                 foreach (Rule rule in rules)
@@ -116,10 +112,7 @@ namespace ChineseAppWPF.Controllers
                     if (CanApply(rule, algList, i))
                     {
                         algList[i].Description = rule.Tag2;
-                        Console.WriteLine($"can apply ： {algList[i].Part} --> {algList[i].Description}");
                     }
-                    //else
-                    //    Console.WriteLine("can not apply");
                 }
             }
 
@@ -145,13 +138,13 @@ namespace ChineseAppWPF.Controllers
             };
         }
 
+
         private static void UpdateStatistics(Sentence sentence)
         {
             if (sentence.NoAlgorithm.Count != sentence.Correct.Count)
             {
                 wrongNumberOfWords++;
                 wrongSentences.Add(sentence);
-                Console.WriteLine($"no-alg: nw {sentence.Text}");
             }
             else
             {
@@ -162,7 +155,6 @@ namespace ChineseAppWPF.Controllers
                     {
                         wrongDecompositionFound++;
                         wrongSentences.Add(sentence);
-                        Console.WriteLine($"no-alg: wd {sentence.Text}");
                         break;
                     }
                     if (sentence.NoAlgorithm[i].Description == sentence.Correct[i].Description ||
@@ -183,19 +175,16 @@ namespace ChineseAppWPF.Controllers
             if (sentence.Algorithm.Count != sentence.Correct.Count)
             {
                 wrongNumberOfWordsAfterAlg++;
-                Console.WriteLine($"alg: nw {sentence.Text}");
                 //return;
             }
             else
             {
                 int correctWordsFoundForThisSentence = 0;
-                Console.WriteLine($"alg count : {sentence.Algorithm.Count}");
                 for (int i = 0; i < sentence.Algorithm.Count; i++)
                 {
                     if (sentence.Algorithm[i].Part != sentence.Correct[i].Part)
                     {
                         wrongDecompositionFoundAfterAlg++;
-                        Console.WriteLine($"alg: wd {sentence.Text}");
                         break;
                     }
                     if (sentence.Algorithm[i].Description == sentence.Correct[i].Description ||
@@ -234,9 +223,11 @@ namespace ChineseAppWPF.Controllers
                         "?" => "engQmark",
                         "." => "engDot",
                         "," => "engComma",
+                        "!" => "engExcl",
                         "？" => "chnQmark",
                         "。" => "chnDot",
-                        "，" => "chnComma", //todo more to come
+                        "，" => "chnComma",
+                        "！" => "chnExcl",
                         _ => "other",
                     };
                     result.Add((simp, punctuation, ""));
@@ -302,7 +293,13 @@ namespace ChineseAppWPF.Controllers
         internal static void SaveTestSentences()
         {
             using StreamWriter sw = new StreamWriter(testsPath);
-            foreach (Sentence sentence in sentences)
+            List<Sentence> listResult =
+                sentences.GroupBy(s => s.Text)
+                         .Select(g => g.First())
+                         .OrderBy(s => s.Text)
+                         .ToList();
+            
+            foreach (Sentence sentence in listResult)
             {
                 sw.Write(sentence.Text + "\t");
                 string breakdownText = "";
@@ -313,6 +310,7 @@ namespace ChineseAppWPF.Controllers
                 breakdownText = breakdownText.Remove(breakdownText.Length - 1);
                 sw.WriteLine(breakdownText);
             }
+            Console.WriteLine("Saved sentences to file");
         }
 
         private static (SolidColorBrush, string) GetPosInfo(string description)
@@ -366,9 +364,11 @@ namespace ChineseAppWPF.Controllers
                 "engQmark" => (Brushes.BlueViolet, "english qMark"),
                 "engDot" => (Brushes.BlueViolet, "english dot"),
                 "engComma" => (Brushes.BlueViolet, "english comma"),
+                "engExcl" => (Brushes.BlueViolet, "english exclamation"),
                 "chnQmark" => (Brushes.BlueViolet, "chinese qMark"),
                 "chnDot" => (Brushes.BlueViolet, "chinese dot"),
                 "chnComma" => (Brushes.BlueViolet, "chinese comma"),
+                "chnExcl" => (Brushes.BlueViolet, "chinese exclamation"),
                 _ => (Brushes.Gray, "_")
             };
 

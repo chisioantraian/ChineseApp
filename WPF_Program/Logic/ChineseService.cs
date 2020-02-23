@@ -137,7 +137,8 @@ namespace ChineseAppWPF.Logic
         {
             return word == "," || word == "，" ||
                    word == "." || word == "。" ||
-                   word == "?" || word == "？";
+                   word == "?" || word == "？" ||
+                   word == "!" || word == "！";
         }
 
         internal static bool WordExists(string simplOfWord)

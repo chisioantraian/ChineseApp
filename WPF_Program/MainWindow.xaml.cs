@@ -45,20 +45,10 @@ namespace ChineseAppWPF
             Controller.ShowChineseResult();
         }
 
-        private void AnalyseSentence_Click(object sender, RoutedEventArgs e)
-        {
-            Controller.ShowGrammarAnalysis();
-        }
+        private void AnalyseSentence_Click(object sender, RoutedEventArgs e) => Controller.ShowGrammarAnalysis();
 
-        private void SaveSentence_Click(object sender, RoutedEventArgs e)
-        {
-            Controller.AddSentenceBreakdownToTests();
-        }
+        private void SaveSentence_Click(object sender, RoutedEventArgs e) => Controller.AddSentenceBreakdownToTests();
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            Controller.SaveTestSentences();
-            Console.WriteLine("Saved sentences to file");
-        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Controller.SaveTestSentences();
     }
 }
