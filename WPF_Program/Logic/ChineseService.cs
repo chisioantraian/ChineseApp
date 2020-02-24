@@ -76,19 +76,15 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-        public static List<Word> SortByFrequency(this IEnumerable<Word> words)
-        {
-            return words.OrderBy(w => w.Frequency)
-                        .Reverse()
-                        .ToList();
-        }
+        public static List<Word> SortByFrequency(this IEnumerable<Word> words) =>
+            words.OrderBy(w => w.Frequency)
+                 .Reverse()
+                 .ToList();
 
-        public static List<Word> GetEnglishResult(string text)
-        {
-            return allWords.AsParallel()
-                           .Where(w => w.Definitions.Contains(text))
-                           .SortByFrequency();
-        }
+        public static List<Word> GetEnglishResult(string text) =>
+            allWords.AsParallel()
+                    .Where(w => w.Definitions.Contains(text))
+                    .SortByFrequency();
 
         public static List<Word> SearchBySimplified(string text)
         {
