@@ -21,10 +21,6 @@ namespace ChineseAppWPF.Controllers
                 item.MouseLeftButtonUp += (s, e) =>
                 {
                     mainWindow.TestSentenceInputBox.Text = sentence.Text;
-                    foreach (Breakdown sen in sentence.Correct)
-                    {
-                        Console.WriteLine(sen.Part + " " + sen.Description);
-                    }
                     ShowGrammarAnalysis();
                 };
                 mainWindow.ExamplesList.Items.Add(item);

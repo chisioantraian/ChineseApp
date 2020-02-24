@@ -9,15 +9,7 @@ namespace ChineseAppWPF.Logic
     {
         private static readonly List<KangxiRadical> kangxiRadicals = BuildRadicalList();
 
-        public static bool CheckIfKangxiRadical(char character)
-        {
-            return kangxiRadicals.Any(kr => kr.Symbol == character);
-        }
-
-        public static List<KangxiRadical> GetRadicals()
-        {
-            return kangxiRadicals;
-        }
+        public static bool CheckIfKangxiRadical(char character) => kangxiRadicals.Any(kr => kr.Symbol == character);
 
         private static List<KangxiRadical> BuildRadicalList()
         {

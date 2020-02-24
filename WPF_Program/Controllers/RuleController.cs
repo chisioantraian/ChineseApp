@@ -19,7 +19,7 @@ namespace ChineseAppWPF.Controllers
                         .Select(GetRuleFromLine)
                         .ToList();
 
-            Console.WriteLine("Finieshed reading rules from file");
+            Console.WriteLine("Finished reading rules from file");
 
             static Rule GetRuleFromLine(string line)
             {

@@ -22,6 +22,7 @@ namespace ChineseAppWPF.Logic
         }
 
         public static List<Word> GetAllWords() => allWords;
+
         public static Dictionary<string, DetailedWord> GetAllDetailedWords() => allDetailedWords;
 
         private static void BuildAllWords()
@@ -76,24 +77,22 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-        public static List<Word> SortByFrequency(this IEnumerable<Word> words) =>
+        public static IEnumerable<Word> SortByFrequency(this IEnumerable<Word> words) =>
             words.OrderBy(w => w.Frequency)
-                 .Reverse()
-                 .ToList();
+                 .Reverse();
+                 //.ToList();
 
-        public static List<Word> GetEnglishResult(string text) =>
+        public static IEnumerable<Word> GetEnglishResult(string text) =>
             allWords.AsParallel()
                     .Where(w => w.Definitions.Contains(text))
                     .SortByFrequency();
 
-        public static List<Word> SearchBySimplified(string text)
-        {
-            return allWords.AsParallel()
-                           .Where(w => w.Simplified.Contains(text))
-                           .SortByFrequency();
-        }
+        public static IEnumerable<Word> SearchBySimplified(string text) =>
+            allWords.AsParallel()
+                    .Where(w => w.Simplified.Contains(text))
+                    .SortByFrequency();
 
-        public static List<Word> SearchByPinyin(string text)
+        public static IEnumerable<Word> SearchByPinyin(string text)
         {
             if (string.IsNullOrEmpty(text))
                 return new List<Word>();
@@ -117,7 +116,7 @@ namespace ChineseAppWPF.Logic
                            .SortByFrequency();
         }
 
-        public static List<Word> GetRandomWords()
+        public static IEnumerable<Word> GetRandomWords()
         {
             Random random = new Random();
             List<Word> result = new List<Word>();
@@ -145,14 +144,14 @@ namespace ChineseAppWPF.Logic
             return allWords.Any(w => w.Simplified == simplOfWord);
         }
 
-        public static List<Word> GetAllWordsFrom(List<string> simpList)
+        public static IEnumerable<Word> GetAllWordsFrom(IEnumerable<string> simpList)
         {
             //return simpList.SelectMany(simp => allWords.Where(w => w.Simplified == simp))
             //               .ToList();
-            return (from simp in simpList
+            return from simp in simpList
                    from w in allWords
                    where w.Simplified == simp
-                   select w).ToList();
+                   select w;
         }
 
         /// <summary>
@@ -160,10 +159,10 @@ namespace ChineseAppWPF.Logic
         /// </summary>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        public static List<string> GetSimplifiedWordsFromSentence(string sentence)
+        //public static List<string> GetSimplifiedWordsFromSentence(string sentence)
+        public static IEnumerable<string> GetSimplifiedWordsFromSentence(string sentence)
         {
-            //Console.WriteLine($"GetSimplifiedWordsFromSentence: {sentence}");
-            List<string> simpList = new List<string>();
+            /*List<string> simpList = new List<string>();
             string constructedWord = "";
             string toInsert = string.Empty;
             foreach (char curr in sentence)
@@ -191,7 +190,34 @@ namespace ChineseAppWPF.Logic
             {
                 simpList.Add(toInsert);
             }
-            return simpList;
+            return simpList;*/
+            string constructedWord = "";
+            string toInsert = string.Empty;
+            foreach (char curr in sentence)
+            {
+                string wordToCheck = constructedWord + curr.ToString();
+                if (WordExists(wordToCheck))
+                {
+                    toInsert = wordToCheck;
+                    constructedWord = wordToCheck;
+                }
+                else
+                {
+                    if (toInsert.Length != 0)
+                    {
+                        yield return toInsert;
+                    }
+                    if (WordExists(curr.ToString()))
+                        toInsert = curr.ToString();
+                    else
+                        toInsert = string.Empty;
+                    constructedWord = curr.ToString();
+                }
+            }
+            if (toInsert.Length != 0)
+            {
+                yield return toInsert;
+            }
         }
     }
 }

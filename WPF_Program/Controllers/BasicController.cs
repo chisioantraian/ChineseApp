@@ -71,18 +71,16 @@ namespace ChineseAppWPF.Controllers
                 .Select(BreakdownFromString)
                 .ToList();
 
-        public static List<Breakdown> GetNoAlgBreakdown(string sentence)
+        public static IEnumerable<Breakdown> GetNoAlgBreakdown(string sentence)
         {
-            List<string> wordParts = ChineseService.GetSimplifiedWordsFromSentence(sentence);
-            List<Breakdown> result = new List<Breakdown>();
+            IEnumerable<string> wordParts = ChineseService.GetSimplifiedWordsFromSentence(sentence);
             foreach (string part in wordParts)
             {
                 if (allDetailedWords.ContainsKey(part))
-                    result.Add(new Breakdown { Part = part, Description = allDetailedWords[part].DominantPos });
+                    yield return new Breakdown { Part = part, Description = allDetailedWords[part].DominantPos };
                 else
-                    result.Add(new Breakdown { Part = part, Description = "-" });
+                    yield return new Breakdown { Part = part, Description = "-" };
             }
-            return result;
         }
 
         //split into more functions
@@ -126,7 +124,7 @@ namespace ChineseAppWPF.Controllers
             string breakdownLine = token[1];
 
             List<Breakdown> correctBreakdown = GetTupleListFrom(breakdownLine);
-            List<Breakdown> noAlgBreakdown = GetNoAlgBreakdown(sentence);
+            List<Breakdown> noAlgBreakdown = GetNoAlgBreakdown(sentence).ToList();
             List<Breakdown> algBreakdown = GetAlgBreakdown(noAlgBreakdown);
 
             return new Sentence
@@ -207,14 +205,13 @@ namespace ChineseAppWPF.Controllers
             ModifyStatisticsBox();
         }
 
-        internal static List<(string, string, string)> GetDescription(List<string> simplifiedList)
+        internal static IEnumerable<(string, string, string)> GetDescription(IEnumerable<string> simplifiedList)
         {
-            List<(string, string, string)> result = new List<(string, string, string)>();
             foreach (string simp in simplifiedList)
             {
                 if (allDetailedWords.ContainsKey(simp))
                 {
-                    result.Add((simp, allDetailedWords[simp].DominantPos, allDetailedWords[simp].AllPos + "\n" + allDetailedWords[simp].AllPosFreq));
+                    yield return (simp, allDetailedWords[simp].DominantPos, allDetailedWords[simp].AllPos + "\n" + allDetailedWords[simp].AllPosFreq);
                 }
                 else
                 {
@@ -230,22 +227,21 @@ namespace ChineseAppWPF.Controllers
                         "！" => "chnExcl",
                         _ => "other",
                     };
-                    result.Add((simp, punctuation, ""));
+                    yield return (simp, punctuation, "");
                 }
             }
-            return result;
         }
 
         // Split a sentence into words, show these words and analyze the sentence
         internal static void ShowGrammarAnalysis()
         {
             string sentence = mainWindow.TestSentenceInputBox.Text;
-            List<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
+            IEnumerable<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
             ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords();
             string myText = sentence + "\t";
 
             mainWindow.MiddleWordBox.Children.Clear();
-            List<(string, string, string)> breadownDescription = GetDescription(simplifiedList);
+            IEnumerable<(string, string, string)> breadownDescription = GetDescription(simplifiedList);
             foreach ((string,string,string) bd in breadownDescription)
             {
                 (SolidColorBrush, string) posTuple = GetPosInfo(bd.Item2);
@@ -293,11 +289,11 @@ namespace ChineseAppWPF.Controllers
         internal static void SaveTestSentences()
         {
             using StreamWriter sw = new StreamWriter(testsPath);
-            List<Sentence> listResult =
+            IEnumerable<Sentence> listResult =
                 sentences.GroupBy(s => s.Text)
                          .Select(g => g.First())
-                         .OrderBy(s => s.Text)
-                         .ToList();
+                         .OrderBy(s => s.Text);
+                         //.ToList();
             
             foreach (Sentence sentence in listResult)
             {

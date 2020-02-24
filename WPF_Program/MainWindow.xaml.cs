@@ -13,7 +13,7 @@ namespace ChineseAppWPF
         public MainWindow()
         {
             InitializeComponent();
-            Console.WriteLine("test 11");
+            Console.WriteLine("test 12");
             ChineseService.InitializeData();
             Decomposition.BuildDecompositionDict();
             Controller.SetWindow(this);

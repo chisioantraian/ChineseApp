@@ -81,7 +81,7 @@ namespace ChineseAppWPF.Logic
             return decompositionText.ToString();
         }
 
-        public static List<Word> GetCharactersWithComponent(string text)
+        public static IEnumerable<Word> GetCharactersWithComponent(string text)
         {
             char ch = text[0];
             var simplifiedComponentsFound = basicDict.Where(dTuple => dTuple.Value.Contains(ch))
@@ -90,8 +90,7 @@ namespace ChineseAppWPF.Logic
                                                       simplifiedComponentsFound.ContainsKey(w.Simplified[0]);
             return ChineseService.GetAllWords()
                                  .AsParallel()
-                                 .Where(ComputedSimplifiedIsFound)
-                                 .ToList();
+                                 .Where(ComputedSimplifiedIsFound);
         }
     }
 }
