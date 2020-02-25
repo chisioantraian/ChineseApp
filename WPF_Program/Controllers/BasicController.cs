@@ -292,8 +292,7 @@ namespace ChineseAppWPF.Controllers
             IEnumerable<Sentence> listResult =
                 sentences.GroupBy(s => s.Text)
                          .Select(g => g.First())
-                         .OrderBy(s => s.Text);
-                         //.ToList();
+                         .OrderBy(s => s.Text.Length);
             
             foreach (Sentence sentence in listResult)
             {

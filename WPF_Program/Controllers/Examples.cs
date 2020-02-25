@@ -11,7 +11,6 @@ namespace ChineseAppWPF.Controllers
     {
         public static void InitializeSentenceExamples()
         {
-            //foreach (string sentence in SentenceExamples.Examples())
             foreach (Sentence sentence in wrongSentences)
             {
                 ListBoxItem item = new ListBoxItem
