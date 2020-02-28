@@ -173,7 +173,6 @@ namespace ChineseAppWPF.Controllers
             if (sentence.Algorithm.Count != sentence.Correct.Count)
             {
                 wrongNumberOfWordsAfterAlg++;
-                //return;
             }
             else
             {
