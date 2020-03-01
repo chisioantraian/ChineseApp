@@ -80,7 +80,6 @@ namespace ChineseAppWPF.Logic
         public static IEnumerable<Word> SortByFrequency(this IEnumerable<Word> words) =>
             words.OrderBy(w => w.Frequency)
                  .Reverse();
-                 //.ToList();
 
         public static IEnumerable<Word> GetEnglishResult(string text) =>
             allWords.AsParallel()
