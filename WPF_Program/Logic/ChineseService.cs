@@ -158,7 +158,6 @@ namespace ChineseAppWPF.Logic
         /// </summary>
         /// <param name="sentence"></param>
         /// <returns></returns>
-        //public static List<string> GetSimplifiedWordsFromSentence(string sentence)
         public static IEnumerable<string> GetSimplifiedWordsFromSentence(string sentence)
         {
             /*List<string> simpList = new List<string>();
