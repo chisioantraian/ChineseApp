@@ -1,9 +1,5 @@
 ﻿using System.Windows.Controls;
-using System.Linq;
-using ChineseAppWPF.Logic;
-using System.Collections.Generic;
 using ChineseAppWPF.Models;
-using System;
 
 namespace ChineseAppWPF.Controllers
 {
