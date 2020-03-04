@@ -93,7 +93,12 @@ namespace ChineseAppWPF.Controllers
             (bd[i].Part == rule.Current &&
             bd[i].Description == rule.Tag1 &&
             rule.Cond == "prevTag" &&
-            bd[i - 1].Description == rule.Tag3);
+            bd[i - 1].Description == rule.Tag3) ||
+
+            (bd[i].Part == rule.Current &&
+            bd[i].Description == rule.Tag1 &&
+            rule.Cond == "nextWord" && // modify Rule class
+            bd[i + 1].Part == rule.Tag3); 
 
         public static List<Breakdown> GetAlgBreakdown(List<Breakdown> noAlg)
         {

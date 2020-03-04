@@ -1,8 +1,12 @@
+请。	请_v	。_chnDot
 什么？	什么_r	？_chnQmark
 你好！	你好_v	！_chnExcl
 再见！	再见_v	！_chnExcl
 是我。	是_v	我_r	。_chnDot
 谢谢！	谢谢_v	！_chnExcl
+我冷。	我_r	冷_a	。_chnDot
+请坐。	请_v	坐_v	。_chnDot
+你呢？	你_r	呢_y	？_chnQmark
 下雨了。	下雨_v	了_y	。_chnDot
 不客气。	不客气_v	。_chnDot
 他来了！	他_r	来_v	了_y	！_chnExcl
@@ -21,6 +25,21 @@
 他是谁？	他_r	是_v	谁_r	？_chnQmark
 太小了。	太_d	小_a	了_y	。_chnDot
 吃了吗?	吃_v	了_y	吗_y	?_engQmark
+你是谁？	你_r	是_v	谁_r	？_chnQmark
+现在呢？	现在_t	呢_y	？_chnQmark
+在下雨。	在_p 下雨	。_chnDot
+太多了。	太_d	多_a	了_y	。_chnDot
+他来了。	他_r	来_v	了_y	。_chnDot
+开电视。	开_v	电视_n	。_chnDot
+你在吗？	你_r	在_p	吗_y	？_chnQmark
+我没说。	我_r	没_d	说_v	。_chnDot
+我爱她。	我_r	爱_v	她_r	。_chnDot
+想得好。	想_v	得_u	好_a	。_chnDot
+多少钱？	多少_r	钱_n	？_chnQmark
+我请你。	我_r	请_v	你_r	。_chnDot
+你有吗？	你_r	有_v	吗_y	？_chnQmark
+下午好。	下午_t	好_a	。_chnDot
+我想你。	我_r	想_v	你_r	。_chnDot
 三点半了。	三_m	点_qt	半_m	了_y	。_chnDot
 什么意思？	什么_r	意思_n	？_chnQmark
 他不了解。	他_r	不_d 了解	。_chnDot
@@ -44,6 +63,23 @@
 我没有猫。	我_r	没有_v	猫_n	。_chnDot
 你怎么样？	你_r	怎么样_r	？_chnQmark
 你去哪儿?	你_r	去_v	哪儿_r	?_engQmark
+你有多高？	你_r	有_v	多_d	高_a	？_chnQmark
+我喜欢茶。	我_r	喜欢_v	茶_n	。_chnDot
+你喜欢吗？	你_r	喜欢_v	吗_y	？_chnQmark
+看这本书。	看_v	这_r	本_q	书_n	。_chnDot
+少了什么？	少_a	了_y	什么_r	？_chnQmark
+你太漂亮。	你_r	太_d	漂亮_a	。_chnDot
+我喜欢他。	我_r	喜欢_v	他_r	。_chnDot
+想喝什么？	想_v	喝_v	什么_r	？_chnQmark
+她很漂亮。	她_r	很_d	漂亮_a	。_chnDot
+多少苹果?	多少_r	苹果_n	?_engQmark
+我喜欢你。	我_r	喜欢_v	你_r	。_chnDot
+我认识她。	我_r	认识_v	她_r	。_chnDot
+他上了车。	他_r	上_f	了_y	车_n	。_chnDot
+他在车上。	他_r	在_p	车_n	上_f	。_chnDot
+他下了车。	他_r	下_v	了_y	车_n	。_chnDot
+天气好冷。	天气_n	好_a	冷_a	。_chnDot
+我是对的。	我_r	是_v	对_a	的_u	。_chnDot
 他和我同岁。	他_r	和_cc	我_r	同_p	岁_qt	。_chnDot
 他在看电视。	他_r	在_p	看_v	电视_n	。_chnDot
 他是医生吗？	他_r	是_v	医生_n	吗_y	？_chnQmark
@@ -72,6 +108,41 @@
 他是个好人。	他_r	是_v	个_q	好_a	人_n	。_chnDot
 他怎么没来？	他_r	怎么_r	没_d	来_v	？_chnQmark
 你住在哪儿？	你_r	住_v	在_p	哪儿_r	？_chnQmark
+你喜欢什么？	你_r	喜欢_v	什么_r	？_chnQmark
+钱太多了吗？	钱_n	太_d	多_a	了_y	吗_y	？_chnQmark
+今天是几号？	今天_t	是_v	几_m	号_q	？_chnQmark
+你想吃什么？	你_r	想_v	吃_v	什么_r	？_chnQmark
+你想喝什么？	你_r	想_v	喝_v	什么_r	？_chnQmark
+你怎么没来？	你_r	怎么_r	没_d	来_v	？_chnQmark
+这个多少钱？	这个_r	多少_r	钱_n	？_chnQmark
+我明天能来.	我_r	明天_t	能_v	来_v	._engDot
+你认识她吗？	你_r	认识_v	她_r	吗_y	？_chnQmark
+他说了什么？	他_r	说_v	了_y	什么_r	？_chnQmark
+这是你的狗。	这_r	是_v	你_r	的_u	狗_n	。_chnDot
+我们去哪儿？	我们_r	去_v	哪儿_r	？_chnQmark
+你睡得好吗？	你_r	睡_v	得_u	好_a	吗_y	？_chnQmark
+他有很多钱。	他_r	有_v	很_d	多_a	钱_n	。_chnDot
+这是谁的书？	这_r	是_v	谁_r	的_u	书_n	？_chnQmark
+我在看电视。	我_r	在_p	看_v	电视_n	。_chnDot
+没有人来了。	没有_v	人_n	来_v	了_y	。_chnDot
+你又是岁吗？	你_r	又_d	是_v	岁_qt	吗_y	？_chnQmark
+我十六岁了。	我_r	十六_m	岁_qt	了_y	。_chnDot
+我们在哪儿？	我们_r	在_p	哪儿_r	？_chnQmark
+他在睡觉吗？	他_r	在_p	睡觉_v	吗_y	？_chnQmark
+我有很多书。	我_r	有_v	很_d	多_a	书_n	。_chnDot
+我叫他来的。	我_r	叫_v	他_r	来_v	的_u	。_chnDot
+你想怎么做？	你_r	想_v	怎么_r	做_v	？_chnQmark
+不，我没有。	不_d	，_chnComma	我_r	没有_v	。_chnDot
+是，我来了。	是_v	，_chnComma	我_r	来_v	了_y	。_chnDot
+我想没关系。	我_r	想_v	没关系_v	。_chnDot
+她不喜欢他。	她_r	不_d	喜欢_v	他_r	。_chnDot
+你想做什么？	你_r	想_v	做_v	什么_r	？_chnQmark
+他去了商店。	他_r	去_v	了_y	商店_n	。_chnDot
+他爸爸很高？	他_r	爸爸_n	很_d	高_a	？_chnQmark
+明天怎么样？	明天_t	怎么样_r	？_chnQmark
+他是老师吗？	他_r	是_v	老师_n	吗_y	？_chnQmark
+没有椅子坐。	没有_v	椅子_n	坐_v	。_chnDot
+他说九点了。	他_r	说_v	九_m	点_qt	了_y	。_chnDot
 今天天气很好。	今天_t	天气_n	很_d	好_a	。_chnDot
 他们帮助了我。	他们_r	帮助_v	了_y	我_r	。_chnDot
 他在学习汉语。	他_r	在_p	学习_v	汉语_nz	。_chnDot
@@ -110,6 +181,42 @@
 我在吃个苹果。	我_r	在_p	吃_v	个_q	苹果_n	。_chnDot
 我们不认识他。	我们_r	不_d	认识_v	他_r	。_chnDot
 你今天怎么样？	你_r	今天_t	怎么样_r	？_chnQmark
+他和我是老师。	他_r	和_cc	我_r	是_v	老师_n	。_chnDot
+我写了这本书。	我_r	写_v	了_y	这_r	本_q	书_n	。_chnDot
+哪本书是你的？	哪_r	本_q	书_n	是_v	你_r	的_u	？_chnQmark
+我有一个女儿。	我_r	有_v	一_m	个_q	女儿_n	。_chnDot
+有什么喝的吗？	有_v	什么_r	喝_v	的_u	吗_y	？_chnQmark
+我想喝点什么。	我_r	想_v	喝_	点_qt	什么_r	。_chnDot
+他有三个儿子。	他_r	有_v	三_m	个_q 儿子	。_chnDot
+你想喝点什么？	你_r	想_v	喝_	点_qt	什么_r	？_chnQmark
+我喜欢吃苹果。	我_r	喜欢_v	吃_v	苹果_n	。_chnDot
+我想吃点东西。	我_r	想_v	吃_v	点_qt	东西_n	。_chnDot
+今天天气很热。	今天_t	天气_n	很_d	热_a	。_chnDot
+你的狗在哪儿？	你_r	的_u	狗_n	在_p	哪儿_r	？_chnQmark
+看！ 他来了！	看_v	！_chnExcl	他_r	来_v	了_y	！_chnExcl
+现在他做什么？	现在_t	他_r	做_v	什么_r	？_chnQmark
+他是我的朋友。	他_r	是_v	我_r	的_u	朋友_n	。_chnDot
+我有一米九高。	我_r	有_v	一_m	米_q	九_m	高_a	。_chnDot
+我没有喜欢过。	我_r	没有_v	喜欢_v	过_u	。_chnDot
+你说的是什么？	你_r	说_v	的_u	是_v	什么_r	？_chnQmark
+他不喜欢我们。	他_r	不_d	喜欢_v	我们_r	。_chnDot
+他喝了三杯水。	他_r	喝_v	了_y	三_m	杯_q	水_n	。_chnDot
+我喜欢看电影。	我_r	喜欢_v	看_v	电影_n	。_chnDot
+他叫什么名字？	他_r	叫_v	什么_r	名字_n	？_chnQmark
+我家没有电脑。	我_r	家_n	没有_v	电脑_n	。_chnDot
+这是你的书吗？	这_r	是_v	你_r	的_u	书_n	吗_y	？_chnQmark
+我喜欢你的车。	我_r	喜欢_v	你_r	的_u	车_n	。_chnDot
+你喜欢吃什么？	你_r	喜欢_v	吃_v	什么_r	？_chnQmark
+你什么都没说。	你_r	什么_r	都_d	没_d	说_v	。_chnDot
+这本书是你的。	这_r	本_q	书_n	是_v	你_r	的_u	。_chnDot
+今天没昨天冷。	今天_t	没_d	昨天_t	冷_a	。_chnDot
+你有多少朋友？	你_r	有_v	多少_r	朋友_n	？_chnQmark
+谁是你的老师？	谁_r	是_v	你_r	的_u	老师_n	？_chnQmark
+这是你的车吗？	这_r	是_v	你_r	的_u	车_n	吗_y	？_chnQmark
+你说得太多了。	你_r	说_v	得_u	太_d	多_a	了_y	。_chnDot
+他回店里去了。	他_r	回_v	店_n	里_f	去_v	了_y	。_chnDot
+我妈妈很漂亮。	我_r	妈妈_n	很_d	漂亮_a	。_chnDot
+ 我有一本书。	我_r	有_v	一_m	本_q	书_n	。_chnDot
 今天是几月几号？	今天_t	是_v	几_m	月_n	几_m	号_n	？_chnQmark
 去年下了很多雪。	去年_t	下_v	了_y	很_d	多_a	雪_n	。_chnDot
 去看电影怎么样？	去_v	看_v	电影_n	怎么样_r	？_chnQmark
@@ -119,6 +226,20 @@
 你想去看电影吗？	你_r	想_v	去_v	看_v	电影_n	吗_y	？_chnQmark
 我现在三十岁了。	我_r	现在_t	三十_m	岁_qt	了_y	。_chnDot
 明天天气会好吗?	明天_t	天气_n	会_v	好_a	吗_y	?_engQmark
+你有很多朋友吗？	你_r	有_v	很_d	多_a	朋友_n	吗_y	？_chnQmark
+那你是怎么做的？	那_r	你_r	是_v	怎么_r	做_v	的_u	？_chnQmark
+在桌子上有本书。	在_p	桌子_n	上_f	有_v	本_q	书_n	。_chnDot
+昨天的天气很热。	昨天_t	的_u	天气_n	很_d	热_a	。_chnDot
+你现在在做什么？	你_r	现在_t	在_p	做_v	什么_r	？_chnQmark
+你去看医生了吗？	你_r	去_v	看_v	医生_n	了_y	吗_y	？_chnQmark
+我的工作是什么?	我_r	的_u	工作_vn	是_v	什么_r	?_engQmark
+我现在能去了吗？	我_r	现在_t	能_v	去_v	了_y	吗_y	？_chnQmark
+他想明天去看你。	他_r	想_v	明天_t	去_v	看_v	你_r	。_chnDot
+你想喝点东西吗？	你_r	想_v	喝_v	点_qt	东西_n	吗_y	？_chnQmark
+他今天下午会来。	他_r	今天_t	下午_t	会_v	来_v	。_chnDot
+我什么都没看见。	我_r	什么_r	都_d	没_d	看见_v	。_chnDot
+我们喜欢看电视。	我们_r	喜欢_v	看_v	电视_n	。_chnDot
+我的没有你的好。	我_r	的_u	没有_v	你_r	的_u	好_a	。_chnDot
 他三年写了三本书。	他_r	三_m	年_qt	写_v	了_y	三_m	本_q	书_n	。_chnDot
 他是我的一个邻居。	他_r	是_v	我_r	的_u	一_m	个_q	邻居_n	。_chnDot
 她会是他的好妻子。	她_r	会_v	是_v	他_r	的_u	好_a	妻子_n	。_chnDot
@@ -126,13 +247,27 @@
 昨天我帮了我爸爸。	昨天_t	我_r	帮_v	了_y	我_r	爸爸_n	。_chnDot
 桌子上有一个苹果。	桌子_n	上_f	有_v	一_m	个_q	苹果_n	。_chnDot
 没关系！ 我来做！	没关系_v	！_chnExcl	我_r	来_v	做_v	！_chnExcl
+我昨天买了这本书。	我_r	昨天_t	买_v	了_y	这_r	本_q	书_n	。_chnDot
+你是怎么认识他的？	你_r	是_v	怎么_r	认识_v	他_r	的_u	？_chnQmark
+我们三个都是学生。	我们_r	三_m	个_q	都_d	是_v	学生_n	。_chnDot
+今天下午会下雨吗？	今天_t	下午_t	会_v	下雨_v	吗_y	？_chnQmark
+认识他的人都爱他。	认识_v	他_r	的_u	人_n	都_d	爱_v	他_r	。_chnDot
 你可以选择你喜欢的。	你_r	可以_v	选择_v	你_r	喜欢_v	的_u	。_chnDot
 她的哥哥比我大两岁。	她_r	的_d 哥哥	比_p	我_r	大_a	两_m	岁_qt	。_chnDot
 我们看见孩子上了车。	我们_r	看见_v	孩子_n	上_f	了_y	车_n	。_chnDot
 我想你帮我做一件事。	我_r	想_v	你_r	帮_v	我_r	做_v	一_m	件_q	事_n	。_chnDot
 我想你读一读这本书。	我_r	想_v	你_r	读_v	一_m	读_v	这_r	本_q	书_n	。_chnDot
+你的朋友叫什么名字？	你_r	的_u	朋友_n	叫_v	什么_r	名字_n	？_chnQmark
+这本书的名字是什么？	这_r	本_q	书_n	的_u	名字_n	是_v	什么_r	？_chnQmark
+昨天我十点去睡觉了。	昨天_t	我_r	十_m	点_qt	去_v	睡觉_v	了_y	。_chnDot
+很多学生买了这本书。	很_d	多_a	学生_n	买_v	了_y	这_r	本_q	书_n	。_chnDot
+他昨天生了一个女儿。	他_r	昨天_t	生_v	了_y	一_m	个_q	女儿_n	。_chnDot
 奶奶送了我们一箱苹果。	奶奶_n	送_v	了_y	我们_r	一_m	箱_q	苹果_n	。_chnDot
 我不知道你喜不喜欢她。	我_r	不_d 知道	喜_v	不_d	喜欢_v	她_r	。_chnDot
+我住了一个星期的医院。	我_r	住_v	了_y	一_m	个_q	星期_n	的_u	医院_n	。_chnDot
+你的学校有多少个学生？	你_r	的_u	学校_n	有_v	多少_r	个_q	学生_n	？_chnQmark
+你昨天没来学校，是吗？	你_r	昨天_t	没_d	来_v	学校_n	，_chnComma	是_v	吗_y	？_chnQmark
 他会是我妹妹的好丈夫的。	他_r	会_v	是_v	我_r	妹妹_n	的_u	好_a	丈夫_n	的_u	。_chnDot
 踢球是我的最喜欢的运动。	踢_v	球_n	是_v	我_r	的_u	最_d	喜欢_v	的_u	运动_vn	。_chnDot
 这不是你的书，这是我的书。	这_r 不	是_v	你_r	的_u	书_n	，_chnComma	这_r	是_v	我_r	的_u	书_n	。_chnDot
+他在二十岁的时候写了这本书。	他_r	在_p	二十_m	岁_qt	的_u	时候_n	写_v	了_y	这_r	本_q	书_n	。_chnDot

@@ -145,8 +145,6 @@ namespace ChineseAppWPF.Logic
 
         public static IEnumerable<Word> GetAllWordsFrom(IEnumerable<string> simpList)
         {
-            //return simpList.SelectMany(simp => allWords.Where(w => w.Simplified == simp))
-            //               .ToList();
             return from simp in simpList
                    from w in allWords
                    where w.Simplified == simp
@@ -160,35 +158,6 @@ namespace ChineseAppWPF.Logic
         /// <returns></returns>
         public static IEnumerable<string> GetSimplifiedWordsFromSentence(string sentence)
         {
-            /*List<string> simpList = new List<string>();
-            string constructedWord = "";
-            string toInsert = string.Empty;
-            foreach (char curr in sentence)
-            {
-                string wordToCheck = constructedWord + curr.ToString();
-                if (WordExists(wordToCheck))
-                {
-                    toInsert = wordToCheck;
-                    constructedWord = wordToCheck;
-                }
-                else
-                {
-                    if (toInsert.Length != 0)
-                    {
-                        simpList.Add(toInsert);
-                    }
-                    if (WordExists(curr.ToString()))
-                        toInsert = curr.ToString();
-                    else
-                        toInsert = string.Empty;
-                    constructedWord = curr.ToString();
-                }
-            }
-            if (toInsert.Length != 0)
-            {
-                simpList.Add(toInsert);
-            }
-            return simpList;*/
             string constructedWord = "";
             string toInsert = string.Empty;
             foreach (char curr in sentence)
