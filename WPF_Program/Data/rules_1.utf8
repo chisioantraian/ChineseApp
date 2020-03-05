@@ -1,3 +1,6 @@
-﻿得	u	v	nextTag	v
-本	r	q	prevTag	m
-本	r	q	nextWord	书
+﻿nextTag	v	得	u	v
+nextTag	a	多	a	d
+prevTag	m	本	r	q
+nextWord	书	本	r	q
+betweenTags	m	m	米	n	q
+betweenWords	是	的	p	a

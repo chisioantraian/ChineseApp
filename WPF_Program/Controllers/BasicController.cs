@@ -84,21 +84,49 @@ namespace ChineseAppWPF.Controllers
         }
 
         //split into more functions
-        public static bool CanApply(Rule rule, List<Breakdown> bd, int i) =>
-            (bd[i].Part == rule.Current &&
-            bd[i].Description == rule.Tag1 &&
-            rule.Cond == "nextTag" &&
-            bd[i + 1].Description == rule.Tag3) ||
+        /*public static bool CanApply(Rule rule, List<Breakdown> bd, int i)
+        {
+            if (bd[i].Part == rule.Current && bd[i].Description == rule.Tag1)
+            {
+                if (rule.Cond == "nextTag" && bd[i + 1].Description == rule.Tag3)
+                    return true;
+                if (rule.Cond == "prevTag" && bd[i - 1].Description == rule.Tag3)
+                    return true;
+                if (rule.Cond == "nextWord" && bd[i + 1].Part == rule.Tag3) // change class
+                    return true;
+            }
+            return false;
+        }*/
 
-            (bd[i].Part == rule.Current &&
-            bd[i].Description == rule.Tag1 &&
-            rule.Cond == "prevTag" &&
-            bd[i - 1].Description == rule.Tag3) ||
-
-            (bd[i].Part == rule.Current &&
-            bd[i].Description == rule.Tag1 &&
-            rule.Cond == "nextWord" && // modify Rule class
-            bd[i + 1].Part == rule.Tag3); 
+        // todo remove duplicate code
+        public static void ApplyRule(Rule _rule, List<Breakdown> bd, int i)
+        {
+            switch (_rule)
+            {
+                case PrevTagRule rule:
+                    if (i > 0 && rule.PrevTag == bd[i - 1].Description && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                        bd[i].Description = rule.DesiredTag;
+                    break;
+                case NextTagRule rule:
+                    if (i < bd.Count-1 && rule.NextTag == bd[i + 1].Description && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                        bd[i].Description = rule.DesiredTag;
+                    break;
+                case NextWordRule rule:
+                    if (i < bd.Count-1 && rule.NextWord == bd[i + 1].Part && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                        bd[i].Description = rule.DesiredTag;
+                    break;
+                case BetweenTagsRule rule:
+                    if (i > 0 && i < bd.Count-1 &&
+                        rule.LeftTag == bd[i - 1].Description && rule.RightTag == bd[i + 1].Description &&
+                        rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                        bd[i].Description = rule.DesiredTag;
+                    break;
+                case BetweenWordsRule rule:
+                    if (i > 0 && i < bd.Count-1 && rule.LeftWord == bd[i - 1].Part && rule.RightWord == bd[i + 1].Part && rule.CurrentTag == bd[i].Part)
+                        bd[i].Description = rule.DesiredTag;
+                    break;
+            }
+        }
 
         public static List<Breakdown> GetAlgBreakdown(List<Breakdown> noAlg)
         {
@@ -112,10 +140,11 @@ namespace ChineseAppWPF.Controllers
             {
                 foreach (Rule rule in rules)
                 {
-                    if (CanApply(rule, algList, i))
+                    /*if (CanApply(rule, algList, i))
                     {
                         algList[i].Description = rule.Tag2;
-                    }
+                    }*/
+                    ApplyRule(rule, algList, i);
                 }
             }
 
@@ -147,7 +176,7 @@ namespace ChineseAppWPF.Controllers
             if (sentence.NoAlgorithm.Count != sentence.Correct.Count)
             {
                 wrongNumberOfWords++;
-                wrongSentences.Add(sentence);
+                //wrongSentences.Add(sentence);
             }
             else
             {
@@ -157,7 +186,7 @@ namespace ChineseAppWPF.Controllers
                     if (sentence.NoAlgorithm[i].Part != sentence.Correct[i].Part)
                     {
                         wrongDecompositionFound++;
-                        wrongSentences.Add(sentence);
+                        //wrongSentences.Add(sentence);
                         break;
                     }
                     if (sentence.NoAlgorithm[i].Description == sentence.Correct[i].Description ||
@@ -168,8 +197,8 @@ namespace ChineseAppWPF.Controllers
                 }
                 if (correctWordsFoundForThisSentence == sentence.Correct.Count)
                     correctSentencesByNoAlg++;
-                else
-                    wrongSentences.Add(sentence);
+                //else
+                //    wrongSentences.Add(sentence);
             }
 
             //
@@ -178,6 +207,7 @@ namespace ChineseAppWPF.Controllers
             if (sentence.Algorithm.Count != sentence.Correct.Count)
             {
                 wrongNumberOfWordsAfterAlg++;
+                wrongSentences.Add(sentence);
             }
             else
             {
@@ -187,6 +217,7 @@ namespace ChineseAppWPF.Controllers
                     if (sentence.Algorithm[i].Part != sentence.Correct[i].Part)
                     {
                         wrongDecompositionFoundAfterAlg++;
+                        wrongSentences.Add(sentence);
                         break;
                     }
                     if (sentence.Algorithm[i].Description == sentence.Correct[i].Description ||
@@ -197,6 +228,8 @@ namespace ChineseAppWPF.Controllers
                 }
                 if (correctWordsFoundForThisSentence == sentence.Correct.Count)
                     correctSentencesByAlg++;
+                else
+                    wrongSentences.Add(sentence);
             }
         }
 
