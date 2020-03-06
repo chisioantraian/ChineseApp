@@ -1,20 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using ChineseAppWPF.Logic;
+using ChineseAppWPF.Models;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
-
-using ChineseAppWPF.Models;
-using ChineseAppWPF.UiFactory;
-using ChineseAppWPF.Logic;
-using System.IO;
-using System;
-using System.Linq;
 
 namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
         private static MainWindow mainWindow;
-        private static Dictionary<string,DetailedWord> allDetailedWords;
+        private static Dictionary<string, DetailedWord> allDetailedWords;
         private const string testsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\testSentences.utf8";
         private static List<Sentence> sentences = new List<Sentence>();
         private static List<Sentence> wrongSentences = new List<Sentence>();
@@ -83,21 +81,6 @@ namespace ChineseAppWPF.Controllers
             }
         }
 
-        //split into more functions
-        /*public static bool CanApply(Rule rule, List<Breakdown> bd, int i)
-        {
-            if (bd[i].Part == rule.Current && bd[i].Description == rule.Tag1)
-            {
-                if (rule.Cond == "nextTag" && bd[i + 1].Description == rule.Tag3)
-                    return true;
-                if (rule.Cond == "prevTag" && bd[i - 1].Description == rule.Tag3)
-                    return true;
-                if (rule.Cond == "nextWord" && bd[i + 1].Part == rule.Tag3) // change class
-                    return true;
-            }
-            return false;
-        }*/
-
         // todo remove duplicate code
         public static void ApplyRule(Rule _rule, List<Breakdown> bd, int i)
         {
@@ -107,22 +90,26 @@ namespace ChineseAppWPF.Controllers
                     if (i > 0 && rule.PrevTag == bd[i - 1].Description && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
                         bd[i].Description = rule.DesiredTag;
                     break;
+
                 case NextTagRule rule:
-                    if (i < bd.Count-1 && rule.NextTag == bd[i + 1].Description && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                    if (i < bd.Count - 1 && rule.NextTag == bd[i + 1].Description && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
                         bd[i].Description = rule.DesiredTag;
                     break;
+
                 case NextWordRule rule:
-                    if (i < bd.Count-1 && rule.NextWord == bd[i + 1].Part && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                    if (i < bd.Count - 1 && rule.NextWord == bd[i + 1].Part && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
                         bd[i].Description = rule.DesiredTag;
                     break;
+
                 case BetweenTagsRule rule:
-                    if (i > 0 && i < bd.Count-1 &&
+                    if (i > 0 && i < bd.Count - 1 &&
                         rule.LeftTag == bd[i - 1].Description && rule.RightTag == bd[i + 1].Description &&
                         rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
                         bd[i].Description = rule.DesiredTag;
                     break;
+
                 case BetweenWordsRule rule:
-                    if (i > 0 && i < bd.Count-1 && rule.LeftWord == bd[i - 1].Part && rule.RightWord == bd[i + 1].Part && rule.CurrentTag == bd[i].Part)
+                    if (i > 0 && i < bd.Count - 1 && rule.LeftWord == bd[i - 1].Part && rule.RightWord == bd[i + 1].Part && rule.CurrentTag == bd[i].Part)
                         bd[i].Description = rule.DesiredTag;
                     break;
             }
@@ -133,17 +120,13 @@ namespace ChineseAppWPF.Controllers
             List<Breakdown> algList = new List<Breakdown>();
             foreach (Breakdown bd in noAlg)
             {
-                algList.Add(new Breakdown { Part = bd.Part, Description = bd.Description } );
+                algList.Add(new Breakdown { Part = bd.Part, Description = bd.Description });
             }
-            
+
             for (int i = 0; i < algList.Count; i++)
             {
                 foreach (Rule rule in rules)
                 {
-                    /*if (CanApply(rule, algList, i))
-                    {
-                        algList[i].Description = rule.Tag2;
-                    }*/
                     ApplyRule(rule, algList, i);
                 }
             }
@@ -169,7 +152,6 @@ namespace ChineseAppWPF.Controllers
                 Algorithm = algBreakdown
             };
         }
-
 
         private static void UpdateStatistics(Sentence sentence)
         {
@@ -279,7 +261,7 @@ namespace ChineseAppWPF.Controllers
 
             mainWindow.MiddleWordBox.Children.Clear();
             IEnumerable<(string, string, string)> breadownDescription = GetDescription(simplifiedList);
-            foreach ((string,string,string) bd in breadownDescription)
+            foreach ((string, string, string) bd in breadownDescription)
             {
                 (SolidColorBrush, string) posTuple = GetPosInfo(bd.Item2);
                 var wordBorder = UiFactory.BoxFactory.CreateWordBox(posTuple, bd.Item1, bd.Item3);
@@ -289,7 +271,7 @@ namespace ChineseAppWPF.Controllers
             }
 
             myText = myText.Remove(myText.Length - 1);
-            mainWindow.TestSentenceResultBox.Text = myText;  
+            mainWindow.TestSentenceResultBox.Text = myText;
         }
 
         internal static void AddSentenceBreakdownToTests()
@@ -316,7 +298,7 @@ namespace ChineseAppWPF.Controllers
 
             stats += $"{correctSentencesByNoAlg} - Correct sentences with no algorithm (by default)\n";
             stats += $"{correctSentencesByAlg} --//-- After Algorithm\n\n";
-            
+
             stats += $"{((double)correctSentencesByNoAlg / sentences.Count) * 100}% - precision by default\n";
             stats += $"{((double)correctSentencesByAlg / sentences.Count) * 100}% - precision by using algorithm\n";
 
@@ -330,7 +312,7 @@ namespace ChineseAppWPF.Controllers
                 sentences.GroupBy(s => s.Text)
                          .Select(g => g.First())
                          .OrderBy(s => s.Text.Length);
-            
+
             foreach (Sentence sentence in listResult)
             {
                 sw.Write(sentence.Text + "\t");
@@ -403,7 +385,6 @@ namespace ChineseAppWPF.Controllers
                 "chnExcl" => (Brushes.BlueViolet, "chinese exclamation"),
                 _ => (Brushes.Gray, "_")
             };
-
         }
     }
 }
