@@ -9,8 +9,8 @@ namespace ChineseAppWPF.Logic
 {
     public static class ChineseService
     {
-        private const string detailedPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allDetailedWords.utf8";
-        private const string wordsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\allWords.utf8";
+        private const string detailedPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\allDetailedWords.utf8";
+        private const string wordsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\allWords.utf8";
 
         private static List<Word> allWords = new List<Word>();
         private static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();

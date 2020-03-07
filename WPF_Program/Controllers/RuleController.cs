@@ -8,7 +8,7 @@ namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
-        private static string rulesPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\rules_1.utf8";
+        private static string rulesPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\rules_1.utf8";
 
         public static List<Rule> rules = null;
 

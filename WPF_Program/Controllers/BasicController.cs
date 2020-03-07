@@ -13,7 +13,7 @@ namespace ChineseAppWPF.Controllers
     {
         private static MainWindow mainWindow;
         private static Dictionary<string, DetailedWord> allDetailedWords;
-        private const string testsPath = @"C:\Users\chisi\Desktop\work\ChineseApp\WPF_Program\Data\testSentences.utf8";
+        private const string testsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\testSentences.utf8";
         private static List<Sentence> sentences = new List<Sentence>();
         private static List<Sentence> wrongSentences = new List<Sentence>();
 
