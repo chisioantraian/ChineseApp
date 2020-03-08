@@ -22,7 +22,7 @@ namespace ChineseAppWPF.Controllers
         {
             static SPPair makeSPP(char chn, string pron) => new SPPair { ChineseCharacter = chn, Pinyin = pron };
 
-            ResultWord ResultedWordFromWord(Word word)
+            static ResultWord ResultedWordFromWord(Word word)
             {
                 IEnumerable<char> singleChar = word.Simplified;
                 IEnumerable<string> singlePron = word.Pinyin.Split(" ");
