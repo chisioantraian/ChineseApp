@@ -15,7 +15,7 @@ namespace ChineseAppWPF.Controllers
         private static Dictionary<string, DetailedWord> allDetailedWords;
         private const string testsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\testSentences.utf8";
         private static List<Sentence> sentences = new List<Sentence>();
-        private static List<Sentence> wrongSentences = new List<Sentence>();
+        private static readonly List<Sentence> wrongSentences = new List<Sentence>();
 
         private static int correctSentencesByNoAlg;
         private static int wrongNumberOfWords;
