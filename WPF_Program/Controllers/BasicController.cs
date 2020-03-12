@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -24,6 +25,8 @@ namespace ChineseAppWPF.Controllers
         private static int correctSentencesByAlg;
         private static int wrongNumberOfWordsAfterAlg;
         private static int wrongDecompositionFoundAfterAlg;
+
+        private static bool IsShownWordsPanel = true;
 
         public static void SetWindow(MainWindow window)
         {
@@ -153,12 +156,25 @@ namespace ChineseAppWPF.Controllers
             };
         }
 
+        private static Sentence ComputeSentenceBreakdown(string sentence)
+        {
+            List<Breakdown> noAlgBreakdown = GetNoAlgBreakdown(sentence).ToList();
+            List<Breakdown> algBreakdown = GetAlgBreakdown(noAlgBreakdown);
+
+            return new Sentence
+            {
+                Text = sentence,
+                Correct = null,
+                NoAlgorithm = noAlgBreakdown,
+                Algorithm = algBreakdown
+            };
+        }
+
         private static void UpdateStatistics(Sentence sentence)
         {
             if (sentence.NoAlgorithm.Count != sentence.Correct.Count)
             {
                 wrongNumberOfWords++;
-                //wrongSentences.Add(sentence);
             }
             else
             {
@@ -168,7 +184,6 @@ namespace ChineseAppWPF.Controllers
                     if (sentence.NoAlgorithm[i].Part != sentence.Correct[i].Part)
                     {
                         wrongDecompositionFound++;
-                        //wrongSentences.Add(sentence);
                         break;
                     }
                     if (sentence.NoAlgorithm[i].Description == sentence.Correct[i].Description ||
@@ -179,8 +194,6 @@ namespace ChineseAppWPF.Controllers
                 }
                 if (correctWordsFoundForThisSentence == sentence.Correct.Count)
                     correctSentencesByNoAlg++;
-                //else
-                //    wrongSentences.Add(sentence);
             }
 
             //
@@ -228,6 +241,7 @@ namespace ChineseAppWPF.Controllers
         {
             foreach (string simp in simplifiedList)
             {
+                Console.WriteLine(simp);
                 if (allDetailedWords.ContainsKey(simp))
                 {
                     yield return (simp, allDetailedWords[simp].DominantPos, allDetailedWords[simp].AllPos + "\n" + allDetailedWords[simp].AllPosFreq);
@@ -248,6 +262,21 @@ namespace ChineseAppWPF.Controllers
                     };
                     yield return (simp, punctuation, "");
                 }
+            }
+        }
+
+        internal static void AnalyseSentence()
+        {
+            string sentenceText = mainWindow.SentenceAnalysisInputBox.Text;
+            Sentence st = ComputeSentenceBreakdown(sentenceText);
+            List<string> simpList = st.Algorithm.Select(b => b.Part).ToList();
+
+            mainWindow.SentenceAnalysisBox.Children.Clear();
+            foreach (Breakdown b in st.Algorithm)
+            {
+                (SolidColorBrush, string) posTuple = GetPosInfo(b.Description);
+                var wordBorder = UiFactory.BoxFactory.CreateAnalysisWordBox(posTuple, b.Part);
+                mainWindow.SentenceAnalysisBox.Children.Add(wordBorder);
             }
         }
 
@@ -273,6 +302,8 @@ namespace ChineseAppWPF.Controllers
             myText = myText.Remove(myText.Length - 1);
             mainWindow.TestSentenceResultBox.Text = myText;
         }
+
+
 
         internal static void AddSentenceBreakdownToTests()
         {
@@ -326,6 +357,18 @@ namespace ChineseAppWPF.Controllers
             }
             Console.WriteLine("Saved sentences to file");
         }
+
+        /*internal static void ToggleWordsPanel()
+        {
+            if (mainWindow.WordsPanel.IsVisible)
+            {
+                mainWindow.WordsPanel.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                mainWindow.WordsPanel.Visibility = System.Windows.Visibility.Visible;
+            }
+        }*/
 
         private static (SolidColorBrush, string) GetPosInfo(string description)
         {

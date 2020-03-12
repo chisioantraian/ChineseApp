@@ -12,7 +12,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
+        <Grid Grid.Column="0" Name="WordsPanel">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="8*" />
@@ -28,8 +28,8 @@
                     Name="RandomButton"
                     Click="RandomButton_Click"
                     Grid.Column="0" 
-                    Content="Random"
-                    FontSize="20"
+                    Content="&#x1f3b2;"
+                    FontSize="16"
                     Margin="15"/>
 
 
@@ -139,7 +139,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Grammar Analysis" Height="20" VerticalAlignment="Top">
+            <TabItem Header="Gramm.Analysis.(temp)" Height="20" VerticalAlignment="Top">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*" />
@@ -224,6 +224,44 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Header="Analysis"  Height="20" VerticalAlignment="Top">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" />
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="SentenceAnalysisInputBox"
+                                         Grid.Column="0"
+                                         Margin="10" />
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Button Click="SentenceAnalysis_Click"
+                                        Grid.Row="0"
+                                        Margin="10"> 
+                                    Analyse 
+                                </Button>
+
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
+                </Grid>
+            </TabItem>
+            
             <TabItem Header="Decomposition" />
 
         </TabControl>

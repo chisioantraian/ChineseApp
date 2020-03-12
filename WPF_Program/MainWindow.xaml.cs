@@ -47,7 +47,11 @@ namespace ChineseAppWPF
 
         private void AnalyseSentence_Click(object sender, RoutedEventArgs e) => Controller.ShowGrammarAnalysis();
 
+        private void SentenceAnalysis_Click(object sender, RoutedEventArgs e) => Controller.AnalyseSentence();
+
         private void SaveSentence_Click(object sender, RoutedEventArgs e) => Controller.AddSentenceBreakdownToTests();
+
+        //private void ToggleWords_Click(object sender, RoutedEventArgs e) => Controller.ToggleWordsPanel();
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Controller.SaveTestSentences();
     }
