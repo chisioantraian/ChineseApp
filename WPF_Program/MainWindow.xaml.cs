@@ -45,6 +45,8 @@ namespace ChineseAppWPF
             Controller.ShowChineseResult();
         }
 
+        private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();
+
         private void AnalyseSentence_Click(object sender, RoutedEventArgs e) => Controller.ShowGrammarAnalysis();
 
         private void SentenceAnalysis_Click(object sender, RoutedEventArgs e) => Controller.AnalyseSentence();

@@ -1,5 +1,11 @@
-﻿using System.Windows;
+﻿using ChineseAppWPF.Controllers;
+using ChineseAppWPF.Logic;
+using ChineseAppWPF.Models;
+using System.Collections;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace ChineseAppWPF.UiFactory
@@ -46,7 +52,7 @@ namespace ChineseAppWPF.UiFactory
             return wordBorder;
         }
 
-        public static Border CreateAnalysisWordBox((SolidColorBrush, string) posTuple, string simp)
+        public static Border CreateAnalysisWordBox((SolidColorBrush, string) posTuple, string simp, MainWindow window)
         {
             TextBlock wBlock = new TextBlock
             {
@@ -74,6 +80,10 @@ namespace ChineseAppWPF.UiFactory
             StackPanel wordPanel = new StackPanel
             {
                 Orientation = Orientation.Vertical,
+            };
+            wordPanel.MouseEnter += (s, e) =>
+            {
+                ChineseService.GetAllWordsFrom(new List<string>() { simp }).UpdateShownWords();
             };
 
             wordPanel.Children.Add(wBlock);

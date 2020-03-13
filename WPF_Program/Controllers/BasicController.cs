@@ -79,8 +79,9 @@ namespace ChineseAppWPF.Controllers
             {
                 if (allDetailedWords.ContainsKey(part))
                     yield return new Breakdown { Part = part, Description = allDetailedWords[part].DominantPos };
+                    
                 else
-                    yield return new Breakdown { Part = part, Description = "-" };
+                    yield return new Breakdown { Part = part, Description = part }; // = "-"
             }
         }
 
@@ -112,8 +113,13 @@ namespace ChineseAppWPF.Controllers
                     break;
 
                 case BetweenWordsRule rule:
-                    if (i > 0 && i < bd.Count - 1 && rule.LeftWord == bd[i - 1].Part && rule.RightWord == bd[i + 1].Part && rule.CurrentTag == bd[i].Part)
+                    if ((i > 0) && (i < bd.Count - 1) &&
+                        (rule.LeftWord == bd[i - 1].Part) && (rule.RightWord == bd[i + 1].Part) && (rule.CurrentTag == bd[i].Part))
+                    {
                         bd[i].Description = rule.DesiredTag;
+                        //Console.WriteLine($"between words rule {rule.LeftWord} , {rule.RightWord}, {rule.DesiredTag} , {rule.CurrentTag}");
+                    }
+                    //Console.WriteLine($"outside bet rule {rule.LeftWord} , {rule.RightWord}, {rule.DesiredTag} , {rule.CurrentTag} ; {bd[i].Part}");
                     break;
             }
         }
@@ -269,15 +275,21 @@ namespace ChineseAppWPF.Controllers
         {
             string sentenceText = mainWindow.SentenceAnalysisInputBox.Text;
             Sentence st = ComputeSentenceBreakdown(sentenceText);
-            List<string> simpList = st.Algorithm.Select(b => b.Part).ToList();
+
+            //List<string> simpList = st.Algorithm.Select(b => b.Part).ToList();
+            //ChineseService.GetAllWordsFrom(simpList).UpdateShownWords();
 
             mainWindow.SentenceAnalysisBox.Children.Clear();
+            List<Border> cells = new List<Border>();
             foreach (Breakdown b in st.Algorithm)
             {
                 (SolidColorBrush, string) posTuple = GetPosInfo(b.Description);
-                var wordBorder = UiFactory.BoxFactory.CreateAnalysisWordBox(posTuple, b.Part);
-                mainWindow.SentenceAnalysisBox.Children.Add(wordBorder);
+                var wordBorder = UiFactory.BoxFactory.CreateAnalysisWordBox(posTuple, b.Part, mainWindow);
+                cells.Add(wordBorder); //mainWindow.SentenceAnalysisBox.Children.Add(wordBorder);
             }
+            foreach (Border cell in cells) //TODO remove this for
+                mainWindow.SentenceAnalysisBox.Children.Add(cell);
+            //mainWindow.SentenceAnalysisBox.Children.
         }
 
         // Split a sentence into words, show these words and analyze the sentence
@@ -358,18 +370,6 @@ namespace ChineseAppWPF.Controllers
             Console.WriteLine("Saved sentences to file");
         }
 
-        /*internal static void ToggleWordsPanel()
-        {
-            if (mainWindow.WordsPanel.IsVisible)
-            {
-                mainWindow.WordsPanel.Visibility = System.Windows.Visibility.Collapsed;
-            }
-            else
-            {
-                mainWindow.WordsPanel.Visibility = System.Windows.Visibility.Visible;
-            }
-        }*/
-
         private static (SolidColorBrush, string) GetPosInfo(string description)
         {
             return description switch
@@ -418,6 +418,7 @@ namespace ChineseAppWPF.Controllers
                 "x" => (Brushes.Gold, "unclassififed"),
                 "y" => (Brushes.Brown, "modal part."),
                 "z" => (Brushes.Honeydew, "descriptive"),
+
                 "engQmark" => (Brushes.BlueViolet, "english qMark"),
                 "engDot" => (Brushes.BlueViolet, "english dot"),
                 "engComma" => (Brushes.BlueViolet, "english comma"),
@@ -426,6 +427,16 @@ namespace ChineseAppWPF.Controllers
                 "chnDot" => (Brushes.BlueViolet, "chinese dot"),
                 "chnComma" => (Brushes.BlueViolet, "chinese comma"),
                 "chnExcl" => (Brushes.BlueViolet, "chinese exclamation"),
+
+                "?" => (Brushes.BlueViolet, "english qMark"),
+                "." => (Brushes.BlueViolet, "english dot"),
+                "," => (Brushes.BlueViolet, "english comma"),
+                "!" => (Brushes.BlueViolet, "english exclamation"),
+                "？" => (Brushes.BlueViolet, "chinese qMark"),
+                "。" => (Brushes.BlueViolet, "chinese dot"),
+                "，" => (Brushes.BlueViolet, "chinese comma"),
+                "！" => (Brushes.BlueViolet, "chinese exclamation"),
+
                 _ => (Brushes.Gray, "_")
             };
         }
