@@ -152,7 +152,7 @@ namespace ChineseAppWPF.Logic
         }
 
         /// <summary>
-        /// Simplified (first match) + punctuation
+        /// Simplified (first match) + punctuation;
         /// </summary>
         /// <param name="sentence"></param>
         /// <returns></returns>
