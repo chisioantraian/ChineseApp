@@ -292,7 +292,7 @@ namespace ChineseAppWPF.Controllers
             //mainWindow.SentenceAnalysisBox.Children.
         }
 
-        // Split a sentence into words, show these words and analyze the sentence
+        // Split a sentence into words, show these words and then, analyze the sentence
         internal static void ShowGrammarAnalysis()
         {
             string sentence = mainWindow.TestSentenceInputBox.Text;
