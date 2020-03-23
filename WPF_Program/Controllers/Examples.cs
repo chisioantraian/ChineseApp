@@ -16,7 +16,7 @@ namespace ChineseAppWPF.Controllers
                 item.MouseLeftButtonUp += (s, e) =>
                 {
                     mainWindow.TestSentenceInputBox.Text = sentence.Text;
-                    ShowGrammarAnalysis();
+                    AnalyseSentence_TestTab();
                 };
                 mainWindow.ExamplesList.Items.Add(item);
             }

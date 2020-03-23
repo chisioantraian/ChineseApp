@@ -14,6 +14,8 @@ namespace ChineseAppWPF.Controllers
 
         internal static void ShowPronounciationResult() => ChineseService.SearchByPinyin(mainWindow.SearchBar.Text).UpdateShownWords();
 
+        internal static void ShowComposeResult() => Decomposition.GetCharactersWithComponent(mainWindow.SearchBar.Text).UpdateShownWords();
+
         internal static void ShowSomeRandomWords() => ChineseService.GetRandomWords().UpdateShownWords();
 
         internal static void ShowWordWithThisCharacter(char character) => ShowCharacterDecomposition(character);

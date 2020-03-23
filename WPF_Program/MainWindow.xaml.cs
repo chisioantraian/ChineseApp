@@ -13,7 +13,7 @@ namespace ChineseAppWPF
         public MainWindow()
         {
             InitializeComponent();
-            Console.WriteLine("test 12");
+
             ChineseService.InitializeData();
             Decomposition.BuildDecompositionDict();
             Controller.SetWindow(this);
@@ -47,13 +47,9 @@ namespace ChineseAppWPF
 
         private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();
 
-        private void AnalyseSentence_Click(object sender, RoutedEventArgs e) => Controller.ShowGrammarAnalysis();
-
-        private void SentenceAnalysis_Click(object sender, RoutedEventArgs e) => Controller.AnalyseSentence();
+        private void AnalyseSentence_Click(object sender, RoutedEventArgs e) => Controller.AnalyseSentence_TestTab();
 
         private void SaveSentence_Click(object sender, RoutedEventArgs e) => Controller.AddSentenceBreakdownToTests();
-
-        //private void ToggleWords_Click(object sender, RoutedEventArgs e) => Controller.ToggleWordsPanel();
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Controller.SaveTestSentences();
     }

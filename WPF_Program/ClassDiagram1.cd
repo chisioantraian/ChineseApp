@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ChineseAppWPF.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAABAAAAAAABAAABIAASAAAAAAAAAAAABAAAAAEAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ChineseAppWPF.Controllers.Controller" Collapsed="true">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQIwEyoAAAAAIwUDIAEIASDEBAQUAAEAEACCAAoCAAI=</HashCode>
+      <FileName>Controllers\BasicController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Logic.ChineseService" Collapsed="true">
+    <Position X="16.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQIAEAABAAAAAAAggAAAAAEDAIACCAAAAKkAAAAgAAA=</HashCode>
+      <FileName>Logic\ChineseService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Logic.Decomposition" Collapsed="true">
+    <Position X="13" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAEAAAAAAAAAABAAAAAAAAAAgAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Logic\Decomposition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Logic.Kangxi">
+    <Position X="16.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAACAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logic\Kangxi.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.Breakdown" Collapsed="true">
+    <Position X="14.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Breakdown.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.DetailedWord" Collapsed="true">
+    <Position X="14.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEBAAAIAGACABAAAAAACBADAAAgAAggAACAAAAAQA=</HashCode>
+      <FileName>Models\DetailedWord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.KangxiRadical" Collapsed="true">
+    <Position X="18.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\KangxiRadical.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.ResultWord" Collapsed="true">
+    <Position X="14.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ResultWord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.Rule" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Rule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.NextTagRule" Collapsed="true">
+    <Position X="1.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAgAAAAAEAAAAAEAAAAAA=</HashCode>
+      <FileName>Models\Rule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.PrevTagRule" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAgAAAAAkAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Rule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.NextWordRule" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAABAAAAAAAAAAgAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Rule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.BetweenTagsRule" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAgAAgAAAAAEAAAAAQAAAAAA=</HashCode>
+      <FileName>Models\Rule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.BetweenWordsRule" Collapsed="true">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAABAAAAAAAAAAgAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Models\Rule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.Sentence" Collapsed="true">
+    <Position X="16.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAACAQIAAA=</HashCode>
+      <FileName>Models\Sentence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.SPPair" Collapsed="true">
+    <Position X="18.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAQCAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SPPair.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.Models.Word" Collapsed="true">
+    <Position X="13" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAACAAAIAAhAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Word.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ChineseAppWPF.UiFactory.BoxFactory" Collapsed="true">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>UiFactory\UiFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
