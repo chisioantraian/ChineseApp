@@ -26,8 +26,6 @@ namespace ChineseAppWPF.Controllers
         private static int wrongNumberOfWordsAfterAlg;
         private static int wrongDecompositionFoundAfterAlg;
 
-        private static bool IsShownWordsPanel = true;
-
         public static void SetWindow(MainWindow window)
         {
             mainWindow = window;
