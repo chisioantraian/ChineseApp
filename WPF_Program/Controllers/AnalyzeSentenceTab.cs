@@ -1,5 +1,6 @@
 ﻿using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
+using ChineseAppWPF.UiFactory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +20,15 @@ namespace ChineseAppWPF.Controllers
             string sentenceText = mainWindow.SentenceAnalysisInputBox.Text;
             Sentence st = ComputeSentenceBreakdown(sentenceText);
 
+            //TODO delete or separate thread
+            //List<string> simpList = st.Algorithm.Select(b => b.Part).ToList();	
+            //ChineseService.GetAllWordsFrom(simpList).UpdateShownWords();
+
             mainWindow.SentenceAnalysisBox.Children.Clear();
             foreach (Breakdown b in st.Algorithm)
             {
-                (SolidColorBrush, string) posTuple = PosInformation.GetPosInfo(b.Description);
-                var wordBorder = UiFactory.BoxFactory.CreateAnalysisWordBox(posTuple, b.Part, mainWindow);
+                var posTuple = PosInformation.GetPosInfo(b.Description);
+                var wordBorder = BoxFactory.CreateAnalysisWordBox(posTuple, b.Part, mainWindow);
                 mainWindow.SentenceAnalysisBox.Children.Add(wordBorder);
             }
         }

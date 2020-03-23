@@ -239,12 +239,13 @@
                         <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" />
 
                         <TextBox Name="SentenceAnalysisInputBox"
-                                     KeyUp="SentenceAnalysis_KeyUp"
-                                     Grid.Row="1"
-                                     Margin="10" />
+                                 KeyUp="SentenceAnalysis_KeyUp"
+                                 Grid.Row="1"
+                                 FontSize="16"
+                                 Margin="10" />
                     </Grid>
                     <WrapPanel Grid.Column="1"
-                               Background="AntiqueWhite"/>
+                               Background="LawnGreen"/>
                 </Grid>
             </TabItem>
             

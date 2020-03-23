@@ -14,11 +14,13 @@ namespace ChineseAppWPF.Logic
 
         private static List<Word> allWords = new List<Word>();
         private static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
+        private static HashSet<string> wordsSet = new HashSet<string>();
 
         public static void InitializeData()
         {
             BuildAllWords();
             BuildAllDetailedWords();
+            BuildAllWordsSet();
         }
 
         public static List<Word> GetAllWords() => allWords;
@@ -74,6 +76,14 @@ namespace ChineseAppWPF.Logic
                     AllPosFreq = tokens[13],
                     Definition = tokens[14]
                 };
+            }
+        }
+
+        private static void BuildAllWordsSet()
+        {
+            foreach (var word in allWords)
+            {
+                wordsSet.Add(word.Simplified);
             }
         }
 
@@ -140,7 +150,7 @@ namespace ChineseAppWPF.Logic
 
             if (IsPunctuation(simplOfWord))
                 return true;
-            return allWords.Any(w => w.Simplified == simplOfWord);
+            return wordsSet.Contains(simplOfWord);
         }
 
         public static IEnumerable<Word> GetAllWordsFrom(IEnumerable<string> simpList)
