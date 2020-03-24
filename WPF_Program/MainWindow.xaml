@@ -145,7 +145,7 @@
                         <ColumnDefinition Width="4*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    
+
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
@@ -231,24 +231,34 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="23*"/>
+                            <ColumnDefinition Width="89*"/>
+                            <ColumnDefinition Width="844*"/>
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="3*" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" />
+                        <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,-1,0" />
+
 
                         <TextBox Name="SentenceAnalysisInputBox"
                                  KeyUp="SentenceAnalysis_KeyUp"
                                  Grid.Row="1"
                                  FontSize="16"
-                                 Margin="10" />
+                                 Margin="10,10,9,10" Grid.ColumnSpan="3" />
                     </Grid>
-                    <WrapPanel Grid.Column="1"
-                               Background="LawnGreen"/>
+
+                    <Border BorderThickness="3" 
+                            BorderBrush="Black" 
+                            Grid.Column="1">
+                        <StackPanel Name="PatternsPanel" />
+                    </Border>
                 </Grid>
             </TabItem>
-            
+
             <TabItem Header="Decomposition" />
 
         </TabControl>
