@@ -132,9 +132,75 @@
                     </Border>
 
                     <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1">
-                        <TextBlock 
+                        
+                        <!--<TextBlock 
                             Name="DecompositionBlock"
-                            FontSize="16" />
+                            FontSize="16" /> -->
+
+
+                        <ListBox Name="DecompositionWordList" 
+                                 VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                 HorizontalContentAlignment="Stretch">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Black"
+                                            BorderThickness="1"
+                                            CornerRadius="8">
+                                        <StackPanel>
+                                            <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}">
+
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Vertical">
+                                                            <TextBlock
+                                                                Text="{Binding ChineseCharacter}"
+                                                                FontSize="48"
+                                                                HorizontalAlignment="Center"
+                                                                MouseUp="CharacterAndPinyin_MouseUp" />
+
+                                                            <TextBlock
+                                                                Name="caracterPronuntie"
+                                                                HorizontalAlignment="Center"
+                                                                Margin="-10" >
+                                                                <TextBlock.Inlines>
+                                                                    <Run Text="{Binding Pinyin}"
+                                                                         FontSize="12" 
+                                                                         FontWeight="Bold"
+                                                                         Foreground="DarkBlue" />
+                                                                </TextBlock.Inlines>
+                                                            </TextBlock>
+
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+
+                                            </ItemsControl>
+
+                                            <TextBlock 
+                                                Text="{Binding Definitions}" 
+                                                FontSize="16"
+                                                Foreground="Brown"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                        </ListBox>
+
+
+
+
+                        <!--<ListBox 
+                             Name="DecompositionWordList" 
+                             VirtualizingStackPanel.VirtualizationMode="Recycling"
+                             HorizontalContentAlignment="Stretch" /> -->
+
                     </Border>
                 </Grid>
             </TabItem>
