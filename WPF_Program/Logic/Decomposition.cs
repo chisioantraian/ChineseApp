@@ -39,6 +39,7 @@ namespace ChineseAppWPF.Logic
             }
         }
 
+        //todo delete
         public static string DecomposeCharToRadicals(char topChar)
         {
             if (!basicDict.ContainsKey(topChar))
