@@ -85,7 +85,6 @@ namespace ChineseAppWPF.Logic
         public static List<string> DecomposeCharToRadicals_2(char topChar)
         {
             if (!basicDict.ContainsKey(topChar))
-                //return "cannot find decomposition";
                 return new List<string>();
 
             if (Kangxi.CheckIfKangxiRadical(topChar))
