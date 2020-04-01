@@ -15,7 +15,7 @@ namespace ChineseAppWPF.Controllers
         private static int wrongNumberOfWords;
         private static int wrongDecompositionFound;
 
-        // Split a sentence into words, show these words and then, analyze the sentence
+        // Split a sentence into words, show these words and then, analyze the sentence.
         internal static void AnalyseSentence_TestTab()
         {
             string sentence = mainWindow.TestSentenceInputBox.Text;
