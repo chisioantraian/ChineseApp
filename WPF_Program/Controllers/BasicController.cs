@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace ChineseAppWPF.Controllers
 {
