@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChineseAppWPF"
         mc:Ignorable="d"
+        
         Closing="Window_Closing"
-        Title="Window1" Height="1080" Width="1920">
+        Title="Window1" Height="1080" Width="1920" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -117,7 +118,7 @@
 
         <TabControl Name="MyTabControl"
                     Grid.Column="1">
-            <TabItem Header="Words">
+            <TabItem Header="Words" FontSize="20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -205,7 +206,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Gramm.Analysis.(temp)" Height="20" VerticalAlignment="Top">
+            <TabItem Header="Gramm.Analysis.(temp)" FontSize="20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*" />
@@ -290,7 +291,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Analysis"  Height="20" VerticalAlignment="Top">
+            <TabItem Header="Analysis" FontSize="20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*" />
@@ -325,7 +326,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Decomposition" />
+            <TabItem Header="Decomposition" FontSize="20"/>
 
         </TabControl>
     </Grid>

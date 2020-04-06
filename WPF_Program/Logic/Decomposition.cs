@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 using ChineseAppWPF.Models;
 
@@ -39,50 +38,8 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-        //todo delete
-        public static string DecomposeCharToRadicals(char topChar)
-        {
-            if (!basicDict.ContainsKey(topChar))
-                return "cannot find decomposition";
-            if (Kangxi.CheckIfKangxiRadical(topChar))
-                return topChar.ToString() + " - Kangxi Radical\n";
 
-            StringBuilder decompositionText = new StringBuilder();
-            Queue<char> chars = new Queue<char>();
-
-            foreach (char c in basicDict[topChar])
-            {
-                decompositionText.Append(c.ToString());
-                chars.Enqueue(c);
-            }
-            decompositionText.Append("\n");
-
-            while (chars.Count > 0)
-            {
-                char firstChar = chars.Dequeue();
-                decompositionText.Append(firstChar.ToString()).Append(" : ");
-                if (Kangxi.CheckIfKangxiRadical(firstChar))
-                {
-                    decompositionText.Append(" - Kangxi Radical\n");
-                }
-                else if (basicDict.ContainsKey(firstChar))
-                {
-                    foreach (char c in basicDict[firstChar])
-                    {
-                        decompositionText.Append(" ").Append(c.ToString());
-                        chars.Enqueue(c);
-                    }
-                    decompositionText.Append("\n");
-                }
-                else
-                {
-                    decompositionText.Append(" Stroke / Unencoded\n");
-                }
-            }
-            return decompositionText.ToString();
-        }
-
-        public static List<string> DecomposeCharToRadicals_2(char topChar)
+        public static List<string> DecomposeCharToRadicals(char topChar)
         {
             if (!basicDict.ContainsKey(topChar))
                 return new List<string>();

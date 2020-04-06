@@ -17,7 +17,7 @@ namespace ChineseAppWPF.Controllers
 
             //mainWindow.DecompositionWordList.Items.Clear();
 
-            List<string> chars = Decomposition.DecomposeCharToRadicals_2(characterToBeDecomposed);
+            List<string> chars = Decomposition.DecomposeCharToRadicals(characterToBeDecomposed);
             List<Word> words = ChineseService.GetAllWordsFrom(chars).ToList();
 
             //foreach (Word w in words)
