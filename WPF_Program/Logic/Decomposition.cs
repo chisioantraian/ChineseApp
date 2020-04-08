@@ -9,7 +9,9 @@ namespace ChineseAppWPF.Logic
     public static class Decomposition
     {
         private const string decompPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\cjk-decomp.txt";
-        private readonly static Dictionary<char, List<char>> basicDict = new Dictionary<char, List<char>>();
+        private static Dictionary<char, List<char>> basicDict = new Dictionary<char, List<char>>();
+
+        internal static Dictionary<char, List<char>> GetBasicDict() => basicDict;
 
         public static void BuildDecompositionDict()
         {
@@ -45,46 +47,36 @@ namespace ChineseAppWPF.Logic
                 return new List<string>();
 
             if (Kangxi.CheckIfKangxiRadical(topChar))
-                //return topChar.ToString() + " - Kangxi Radical\n";
                 return new List<string> { topChar.ToString() };
 
             List<string> result = new List<string> { topChar.ToString() };
-            //StringBuilder decompositionText = new StringBuilder();
             Queue<char> chars = new Queue<char>();
 
             foreach (char c in basicDict[topChar])
             {
-                //decompositionText.Append(c.ToString());
                 chars.Enqueue(c);
             }
-            //decompositionText.Append("\n");
 
             while (chars.Count > 0)
             {
                 char firstChar = chars.Dequeue();
-                //decompositionText.Append(firstChar.ToString()).Append(" : ");
                 result.Add(firstChar.ToString());
+
                 if (Kangxi.CheckIfKangxiRadical(firstChar))
                 {
-                    //decompositionText.Append(" - Kangxi Radical\n");
-                    ;
                 }
                 else if (basicDict.ContainsKey(firstChar))
                 {
                     foreach (char c in basicDict[firstChar])
                     {
-                        //decompositionText.Append(" ").Append(c.ToString());
                         chars.Enqueue(c);
                     }
-                    //decompositionText.Append("\n");
                 }
                 else
                 {
                     //decompositionText.Append(" Stroke / Unencoded\n");
-                    ;
                 }
             }
-            //return decompositionText.ToString();
             return result;
         }
 

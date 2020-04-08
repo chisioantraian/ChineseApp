@@ -16,11 +16,13 @@ namespace ChineseAppWPF.Controllers
         private const string testsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\testSentences.utf8";
         private static List<Sentence> sentences = new List<Sentence>();
         private static readonly List<Sentence> wrongSentences = new List<Sentence>();
+        private static Dictionary<char, List<char>> basicDict;// = new Dictionary<char, List<char>>();
 
         public static void SetWindow(MainWindow window)
         {
             mainWindow = window;
             allDetailedWords = ChineseService.GetAllDetailedWords();
+            basicDict = Decomposition.GetBasicDict();
         }
 
         public static void ShowResult()

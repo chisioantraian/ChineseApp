@@ -34,7 +34,8 @@ namespace ChineseAppWPF
         private void CharacterAndPinyin_MouseEnter(object sender, MouseEventArgs e)
         {
             var textBlock = (TextBlock)sender;
-            ZoomedCharacterBox.Text = textBlock.Text;
+            //TODO zoom
+            //ZoomedCharacterBox.Text = textBlock.Text;
             Controller.ShowWordWithThisCharacter(textBlock.Text[0]);
         }
 

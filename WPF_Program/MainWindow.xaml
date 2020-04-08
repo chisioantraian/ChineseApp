@@ -120,24 +120,19 @@
                     Grid.Column="1">
             <TabItem Header="Words" FontSize="20">
                 <Grid>
-                    <Grid.ColumnDefinitions>
+                    <!--<Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                    </Grid.ColumnDefinitions>-->
 
-                    <Border BorderThickness="2" BorderBrush="Black" Grid.Column="0">
-                        <TextBlock 
-                            Name="ZoomedCharacterBox"
-                            TextAlignment="Center"
-                            FontSize="300" />
+                    <Border BorderThickness="2" BorderBrush="Black">
+
+                        <TreeView Name="tView" >
+                            
+                        </TreeView>
                     </Border>
 
-                    <Border BorderThickness="2" BorderBrush="Black" Grid.Column="1">
-                        
-                        <!--<TextBlock 
-                            Name="DecompositionBlock"
-                            FontSize="16" /> -->
-
+                    <!--<Border BorderThickness="2" BorderBrush="Black" Grid.Column="1">
 
                         <ListBox Name="DecompositionWordList" 
                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
@@ -191,18 +186,9 @@
                                     </Border>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
-
                         </ListBox>
-
-
-
-
-                        <!--<ListBox 
-                             Name="DecompositionWordList" 
-                             VirtualizingStackPanel.VirtualizationMode="Recycling"
-                             HorizontalContentAlignment="Stretch" /> -->
-
-                    </Border>
+                    </Border>-->
+                    
                 </Grid>
             </TabItem>
 
