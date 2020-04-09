@@ -18,7 +18,7 @@ namespace ChineseAppWPF.Controllers
 
         internal static void ShowSomeRandomWords() => ChineseService.GetRandomWords().UpdateShownWords();
 
-        internal static void ShowWordWithThisCharacter(char character) => ShowCharacterDecomposition(character);
+        internal static void ShowWordWithThisCharacter(char character) => ShowCharacterDecomposition(character.ToString());
 
         internal static void UpdateShownWords(this IEnumerable<Word> filteredWords)
         {
