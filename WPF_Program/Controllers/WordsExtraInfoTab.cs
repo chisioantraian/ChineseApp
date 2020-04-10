@@ -23,7 +23,7 @@ namespace ChineseAppWPF.Controllers
         {
 
 
-            if (ch.Length == 1 && Kangxi.CheckIfKangxiRadical(ch[0]))
+            if (ch.Length == 1 && (Kangxi.CheckIfKangxiRadical(ch[0]) || Kangxi.CheckIfStroke(ch[0])))
             {
                 return new TreeViewItem
                 {
@@ -44,6 +44,8 @@ namespace ChineseAppWPF.Controllers
             {
                 foreach (string c in basicDict[ch])
                 {
+                    //TreeViewItem child = GetTreeDecomposition(c, level + 1);
+                    //if (child.Header.)
                     item.Items.Add(GetTreeDecomposition(c, level + 1));
                 }
             }

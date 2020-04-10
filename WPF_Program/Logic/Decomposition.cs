@@ -47,46 +47,6 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-
-        /*public static List<string> DecomposeCharToRadicals(string topChar)
-        {
-            if (!basicDict.ContainsKey(topChar))
-                return new List<string>();
-
-            if (topChar.Length == 1 && Kangxi.CheckIfKangxiRadical(topChar[0]))
-                return new List<string> { topChar.ToString() };
-
-            List<string> result = new List<string> { topChar.ToString() };
-            Queue<char> chars = new Queue<char>();
-
-            foreach (char c in basicDict[topChar])
-            {
-                chars.Enqueue(c);
-            }
-
-            while (chars.Count > 0)
-            {
-                char firstChar = chars.Dequeue();
-                result.Add(firstChar.ToString());
-
-                if (Kangxi.CheckIfKangxiRadical(firstChar))
-                {
-                }
-                else if (basicDict.ContainsKey(firstChar))
-                {
-                    foreach (char c in basicDict[firstChar])
-                    {
-                        chars.Enqueue(c);
-                    }
-                }
-                else
-                {
-                    //decompositionText.Append(" Stroke / Unencoded\n");
-                }
-            }
-            return result;
-        }*/
-
         public static IEnumerable<Word> GetCharactersWithComponent(string component)
         {
             char ch = component[0];

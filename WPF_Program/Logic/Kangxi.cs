@@ -9,7 +9,27 @@ namespace ChineseAppWPF.Logic
     {
         private static readonly List<KangxiRadical> kangxiRadicals = BuildRadicalList();
 
+        //+ other components
+        private static List<char> strokes = new List<char>
+        {
+            '龶',
+            '㇒',
+            '㇎',
+            '㇓',
+            '㇂',
+            '⺆',
+            '㇌',
+            '㇓',
+            '㇈',
+            '㇆',
+            '㇇',
+            '㇗'
+        };
+
         public static bool CheckIfKangxiRadical(char character) => kangxiRadicals.Any(kr => kr.Symbol == character);
+
+        public static bool CheckIfStroke(char character) => strokes.Any(s => s == character);
+        
 
         private static List<KangxiRadical> BuildRadicalList()
         {
@@ -187,6 +207,7 @@ namespace ChineseAppWPF.Logic
                 new KangxiRadical { Symbol = '纟', Number = 120 },
                 new KangxiRadical { Symbol = '缶', Number = 121 },
                 new KangxiRadical { Symbol = '网', Number = 122 },
+                new KangxiRadical { Symbol = '罒', Number = 122 },
                 new KangxiRadical { Symbol = '⺲', Number = 122 },
                 new KangxiRadical { Symbol = '罓', Number = 122 },
                 new KangxiRadical { Symbol = '⺳', Number = 122 },
@@ -256,6 +277,7 @@ namespace ChineseAppWPF.Logic
                 new KangxiRadical { Symbol = '⻌', Number = 162 },
                 new KangxiRadical { Symbol = '⻍', Number = 162 },
                 new KangxiRadical { Symbol = '⻎', Number = 162 },
+                new KangxiRadical { Symbol = '辶', Number = 162 },
                 new KangxiRadical { Symbol = '邑', Number = 163 },
                 new KangxiRadical { Symbol = '⻏', Number = 163 },
                 new KangxiRadical { Symbol = '酉', Number = 164 },
