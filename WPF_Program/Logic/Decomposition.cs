@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -10,7 +11,6 @@ namespace ChineseAppWPF.Logic
     {
         private const string decompPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\cjk-decomp.txt";
         
-        //private static Dictionary<char, List<char>> basicDict = new Dictionary<char, List<char>>();
         private static Dictionary<string, List<string>> basicDict = new Dictionary<string, List<string>>();
 
         internal static Dictionary<string, List<string>> GetBasicDict() => basicDict;
@@ -18,12 +18,10 @@ namespace ChineseAppWPF.Logic
         public static void BuildDecompositionDict()
         {
             File.ReadAllLines(decompPath)
-                //.Skip(10640)
                 .ToList()
                 .ForEach(AnalyzeLine);
             static void AnalyzeLine(string line)
             {
-                //char character = line.Split(':')[0][0];
                 string toBeDecomposed = line.Split(':')[0];
 
                 string afterParan = line.Split('(')[1];
@@ -31,10 +29,7 @@ namespace ChineseAppWPF.Logic
 
                 if (afterParan.Contains(','))
                 {
-                    //components.Add(afterParan.Split(',')[0][0]);
                     components.Add(afterParan.Split(',')[0]);
-                    //components.Add(afterParan.Split(',')[1]
-                    //                         .Split(')')[0][0]);
                     components.Add(afterParan.Split(',')[1]
                                              .Split(')')[0]);
                 }
@@ -47,16 +42,31 @@ namespace ChineseAppWPF.Logic
             }
         }
 
+        private static bool IsComponentInTree(string simplified, string component)
+        {
+            if (simplified == component)
+                return true;
+
+            if (basicDict.ContainsKey(simplified))
+            {
+                foreach (string ch in basicDict[simplified])
+                {
+                    if (IsComponentInTree(ch, component))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         public static IEnumerable<Word> GetCharactersWithComponent(string component)
         {
-            char ch = component[0];
-            var simplifiedComponentsFound = basicDict.Where(dTuple => dTuple.Value.Contains(ch.ToString()))
-                                                     .ToDictionary(dTuple => dTuple.Key);
-            bool ComputedSimplifiedIsFound(Word w) => w.Simplified.Length == 1 &&
-                                                      simplifiedComponentsFound.ContainsKey(w.Simplified[0].ToString());
+            bool ComputedSimplifiedIsFound(Word w) => IsComponentInTree(w.Simplified, component);
+
             return ChineseService.GetAllWords()
                                  .AsParallel()
-                                 .Where(ComputedSimplifiedIsFound);
+                                 .Where(ComputedSimplifiedIsFound)
+                                 .SortByFrequency();
         }
     }
 }

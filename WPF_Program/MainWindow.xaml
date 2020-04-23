@@ -23,6 +23,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="8*"/>
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Button
@@ -52,6 +53,20 @@
                     <ComboBoxItem>Pronounciation</ComboBoxItem>
                     <ComboBoxItem>Compose</ComboBoxItem>
                 </ComboBox>
+
+                <ComboBox
+                    Name="SortingComboBox"
+                    Grid.Column="3"
+                    SelectionChanged="SortingComboBox_SelectionChanged"
+                    Margin="15"
+                    Padding="15"
+                    FontSize="16"
+                    SelectedIndex="0">
+                    <ComboBoxItem>Frequency</ComboBoxItem>
+                    <ComboBoxItem>Strokes</ComboBoxItem>
+                    <ComboBoxItem>Pinyin</ComboBoxItem>
+                </ComboBox>
+                    
             </Grid>
 
             <ListBox Name="WordsList" 

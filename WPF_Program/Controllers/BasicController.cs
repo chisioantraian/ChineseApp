@@ -42,6 +42,16 @@ namespace ChineseAppWPF.Controllers
         }
 
 
+        public static void SortResult()
+        {
+            ComboBoxItem sortItem = (ComboBoxItem)mainWindow.SortingComboBox.SelectedItem;
+            switch (sortItem.Content.ToString())
+            {
+                case "Frequency":
+                    currentWords = currentWords.SortByStrokes();
+            }
+        }
+
         public static IEnumerable<Breakdown> GetNoAlgBreakdown(string sentence)
         {
             IEnumerable<string> wordParts = ChineseService.GetSimplifiedWordsFromSentence(sentence);

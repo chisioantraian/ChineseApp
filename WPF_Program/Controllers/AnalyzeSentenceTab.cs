@@ -47,6 +47,12 @@ namespace ChineseAppWPF.Controllers
                     TextBlock patternBlock = new TextBlock { Text = "Possesive particle found: 的", FontSize = 16, Padding = new System.Windows.Thickness(5) };
                     mainWindow.PatternsPanel.Children.Add(patternBlock);
                 }
+
+                if (b.Part == "们")
+                {
+                    TextBlock patternBlock = new TextBlock { Text = "Plural particle found: 们", FontSize = 16, Padding = new System.Windows.Thickness(5) };
+                    mainWindow.PatternsPanel.Children.Add(patternBlock);
+                }
             }
         }
 

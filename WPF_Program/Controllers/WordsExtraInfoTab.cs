@@ -44,8 +44,6 @@ namespace ChineseAppWPF.Controllers
             {
                 foreach (string c in basicDict[ch])
                 {
-                    //TreeViewItem child = GetTreeDecomposition(c, level + 1);
-                    //if (child.Header.)
                     item.Items.Add(GetTreeDecomposition(c, level + 1));
                 }
             }
