@@ -17,9 +17,11 @@ namespace ChineseAppWPF.Controllers
         private static List<Sentence> sentences = new List<Sentence>();
         private static readonly List<Sentence> wrongSentences = new List<Sentence>();
         private static Dictionary<string, List<string>> basicDict;
-        
-        private static string sortingState = "Frequency";
+
         private static IEnumerable<Word> currentWords = new List<Word>();
+
+        private static string sortingState = "Frequency";
+        private static string writingState = "Simplified";
 
         public static void SetWindow(MainWindow window)
         {
@@ -56,6 +58,21 @@ namespace ChineseAppWPF.Controllers
             if (sortingState != selectedSorting)
             {
                 sortingState = selectedSorting;
+                currentWords.UpdateShownWords();
+            }
+        }
+
+        public static void ChangeWritingSystem()
+        {
+            if (mainWindow == null)
+                return;
+
+            ComboBoxItem item = (ComboBoxItem)mainWindow.WritingSystemComboBox.SelectedItem;
+            string selectedSystem = item.Content.ToString();
+
+            if (writingState != selectedSystem)
+            {
+                writingState = selectedSystem;
                 currentWords.UpdateShownWords();
             }
         }

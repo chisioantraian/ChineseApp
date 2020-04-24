@@ -55,5 +55,7 @@ namespace ChineseAppWPF
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Controller.SaveTestSentences();
 
         private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();
+
+        private void WritingSystemComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.ChangeWritingSystem();
     }
 }

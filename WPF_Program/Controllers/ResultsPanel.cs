@@ -26,7 +26,7 @@ namespace ChineseAppWPF.Controllers
 
             static ResultWord ResultedWordFromWord(Word word)
             {
-                IEnumerable<char> singleChar = word.Simplified;
+                IEnumerable<char> singleChar = writingState == "Simplified" ? word.Simplified : word.Traditional;
                 IEnumerable<string> singlePron = word.Pinyin.Split(" ");
                 IEnumerable<SPPair> sPPairs = singleChar.Zip(singlePron, makeSPP);
 
