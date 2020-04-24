@@ -37,7 +37,26 @@ namespace ChineseAppWPF.Controllers
                 };
             }
 
+            
+            switch (sortingState)
+            {
+                case "Frequency":
+                    filteredWords = filteredWords.SortByFrequency();
+                    break;
+
+                case "Strokes":
+                    filteredWords = filteredWords.SortByStrokesCount();
+                    break;
+
+                case "Pinyin":
+                    filteredWords = filteredWords.SortByPinyin();
+                    break;
+            }
+
             mainWindow.WordsList.ItemsSource = filteredWords.Select(ResultedWordFromWord);
+            mainWindow.WordsCount.Text = $"{filteredWords.Count()} words found";
+            //
+            currentWords = filteredWords;
         }
     }
 }

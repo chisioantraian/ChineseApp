@@ -11,16 +11,19 @@ namespace ChineseAppWPF.Logic
     {
         private const string detailedPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\allDetailedWords.utf8";
         private const string wordsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\allWords.utf8";
+        private const string strokesPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\ucs-strokes.txt";
 
         private static List<Word> allWords = new List<Word>();
         private static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
         private static HashSet<string> wordsSet = new HashSet<string>();
+        private static Dictionary<char, int> strokesDict = new Dictionary<char, int>();
 
         public static void InitializeData()
         {
             BuildAllWords();
             BuildAllDetailedWords();
             BuildAllWordsSet();
+            BuilStrokesDict();
         }
 
         public static List<Word> GetAllWords() => allWords;
@@ -87,19 +90,67 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-        public static IEnumerable<Word> SortByFrequency(this IEnumerable<Word> words) =>
-            words.OrderBy(w => w.Frequency)
-                 .Reverse();
+        private static void BuilStrokesDict()
+        {
+            foreach (string line in File.ReadAllLines(strokesPath))
+            {
+                if (line == "")
+                    continue;
+                string[] token = line.Split("	");
+                char character = token[1][0];
+                int count;
+                if (token[2].Contains(","))
+                {
+                    count = int.Parse(token[2].Split(",")[0]); //TODO modify
+                }
+                else
+                {
+                    count = int.Parse(token[2]);
+                }
+                if (!strokesDict.ContainsKey(character))
+                    strokesDict.Add(character, count);
+            }
+        }
 
-        public static IEnumerable<Word> GetEnglishResult(string text) =>
-            allWords.AsParallel()
-                    .Where(w => w.Definitions.Contains(text))
-                    .SortByFrequency();
+        public static IEnumerable<Word> SortByFrequency(this IEnumerable<Word> words)
+        {
+            return words.OrderBy(w => w.Frequency).Reverse();
+        }
 
-        public static IEnumerable<Word> SearchBySimplified(string text) =>
-            allWords.AsParallel()
-                    .Where(w => w.Simplified.Contains(text))
-                    .SortByFrequency();
+        public static IEnumerable<Word> SortByStrokesCount(this IEnumerable<Word> words)
+        {
+            return words.OrderBy(w => GetStrokeCount(w));
+        }
+
+        public static IEnumerable<Word> SortByPinyin(this IEnumerable<Word> words)
+        {
+            return words.OrderBy(w => w.Pinyin);
+        }
+
+        private static int GetStrokeCount(Word w) //modify to use traditional
+        {
+            int count = 0;
+            foreach (char c in w.Simplified)
+            {
+                if (strokesDict.ContainsKey(c))
+                    count += strokesDict[c];
+            }
+            return count;
+        }
+
+
+
+        public static IEnumerable<Word> GetEnglishResult(string text)
+        {
+            return allWords.AsParallel()
+                           .Where(w => w.Definitions.Contains(text));
+        }
+
+        public static IEnumerable<Word> SearchBySimplified(string text)
+        {
+            return allWords.AsParallel()
+                           .Where(w => w.Simplified.Contains(text));
+        }
 
         public static IEnumerable<Word> SearchByPinyin(string text)
         {
@@ -121,8 +172,7 @@ namespace ChineseAppWPF.Logic
                 return true;
             }
             return allWords.AsParallel()
-                           .Where(CheckIfPinyinMatches)
-                           .SortByFrequency();
+                           .Where(CheckIfPinyinMatches);
         }
 
         public static IEnumerable<Word> GetRandomWords()
@@ -134,7 +184,7 @@ namespace ChineseAppWPF.Logic
                 int index = random.Next(allWords.Count);
                 result.Add(allWords[index]);
             }
-            return result.SortByFrequency();
+            return result;
         }
 
         internal static bool IsPunctuation(string word)

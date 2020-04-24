@@ -17,6 +17,9 @@ namespace ChineseAppWPF.Controllers
         private static List<Sentence> sentences = new List<Sentence>();
         private static readonly List<Sentence> wrongSentences = new List<Sentence>();
         private static Dictionary<string, List<string>> basicDict;
+        
+        private static string sortingState = "Frequency";
+        private static IEnumerable<Word> currentWords = new List<Word>();
 
         public static void SetWindow(MainWindow window)
         {
@@ -44,11 +47,16 @@ namespace ChineseAppWPF.Controllers
 
         public static void SortResult()
         {
+            if (mainWindow == null)
+                return;
+
             ComboBoxItem sortItem = (ComboBoxItem)mainWindow.SortingComboBox.SelectedItem;
-            switch (sortItem.Content.ToString())
+            string selectedSorting = sortItem.Content.ToString();
+            
+            if (sortingState != selectedSorting)
             {
-                case "Frequency":
-                    currentWords = currentWords.SortByStrokes();
+                sortingState = selectedSorting;
+                currentWords.UpdateShownWords();
             }
         }
 
