@@ -20,7 +20,7 @@ namespace ChineseAppWPF.Controllers
         {
             string sentence = mainWindow.TestSentenceInputBox.Text;
             IEnumerable<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
-            ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords();
+            ChineseService.GetAllWordsFrom(simplifiedList, writingState).UpdateShownWords();
             string myText = sentence + "\t";
 
             mainWindow.MiddleWordBox.Children.Clear();

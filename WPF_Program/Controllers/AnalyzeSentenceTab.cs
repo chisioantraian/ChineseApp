@@ -32,7 +32,7 @@ namespace ChineseAppWPF.Controllers
             foreach (Breakdown b in st.Algorithm)
             {
                 var posTuple = PosInformation.GetPosInfo(b.Description);
-                var wordBorder = BoxFactory.CreateAnalysisWordBox(posTuple, b.Part, mainWindow);
+                var wordBorder = BoxFactory.CreateAnalysisWordBox(posTuple, b.Part, mainWindow, writingState);
                 mainWindow.SentenceAnalysisBox.Children.Add(wordBorder);
                 //
                 //

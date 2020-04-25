@@ -187,6 +187,18 @@ namespace ChineseAppWPF.Logic
             return result;
         }
 
+        internal static bool IsCharacter(char character, string writingState)
+        {
+            if (writingState == "Simplified")
+            {
+                return allWords.Any(w => w.Simplified == character.ToString());
+            }
+            else
+            {
+                return allWords.Any(w => w.Traditional == character.ToString());
+            }
+        }
+
         internal static bool IsPunctuation(string word)
         {
             return word == "," || word == "，" ||
@@ -203,12 +215,23 @@ namespace ChineseAppWPF.Logic
             return wordsSet.Contains(simplOfWord);
         }
 
-        public static IEnumerable<Word> GetAllWordsFrom(IEnumerable<string> simpList)
+        public static IEnumerable<Word> GetAllWordsFrom(IEnumerable<string> simpList, string writingState)
         {
-            return from simp in simpList
-                   from w in allWords
-                   where w.Simplified == simp
-                   select w;
+            if (writingState == "Simplified")
+            {
+                return from simp in simpList
+                       from w in allWords
+                       where w.Simplified == simp
+                       select w;
+            }
+            else
+            {
+                return from simp in simpList
+                       from w in allWords
+                       where w.Traditional == simp
+                       select w;
+            }
+
         }
 
         /// <summary>
