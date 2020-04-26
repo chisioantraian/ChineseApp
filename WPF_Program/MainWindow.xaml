@@ -43,8 +43,8 @@
                         Name="InputComboBox"                                 
                         
                         SelectedIndex="0">
-                        <ComboBoxItem>English</ComboBoxItem>
-                        <ComboBoxItem>Chinese</ComboBoxItem>
+                        <ComboBoxItem>Eng - Chn</ComboBoxItem>
+                        <!--<ComboBoxItem>Chinese</ComboBoxItem>-->
                         <ComboBoxItem>Pronounciation</ComboBoxItem>
                         <ComboBoxItem>Compose</ComboBoxItem>
                     </ComboBox>

@@ -8,9 +8,34 @@ namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
-        internal static void ShowChineseResult() => ChineseService.SearchBySimplified(mainWindow.SearchBar.Text).UpdateShownWords();
+        //internal static void ShowChineseResult() => ChineseService.SearchBySimplified(mainWindow.SearchBar.Text).UpdateShownWords();
 
-        internal static void ShowEnglishResult() => ChineseService.GetEnglishResult(mainWindow.SearchBar.Text).UpdateShownWords();
+        private static string english = "   ,. 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+
+        internal static void ShowChineseResult()
+        {
+            string text = mainWindow.SearchBar.Text;
+            bool isEnglish = true;
+            foreach (char c in text)
+            {
+                if (! english.Contains(c))
+                {
+                    isEnglish = false;
+                    break;
+                }
+            }
+            if (isEnglish)
+            {
+                ChineseService.GetEnglishResult(text).UpdateShownWords();
+            }
+            else
+            {
+                ChineseService.SearchBySimplified(text).UpdateShownWords();
+            }
+        }
+
+        //internal static void ShowEnglishResult() => ChineseService.GetEnglishResult(mainWindow.SearchBar.Text).UpdateShownWords();
 
         internal static void ShowPronounciationResult() => ChineseService.SearchByPinyin(mainWindow.SearchBar.Text).UpdateShownWords();
 

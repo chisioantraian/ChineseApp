@@ -85,49 +85,6 @@ namespace ChineseAppWPF.Controllers
         }
 
 
-        /*internal static List<TreeViewItem> GetTreeDecomposition(string ch, int level, string writingState)
-        {
-
-
-            if (ch.Length == 1 && (Kangxi.CheckIfKangxiRadical(ch[0]) || Kangxi.CheckIfStroke(ch[0])))
-            {
-                return new TreeViewItem
-                {
-                    Header = CreateBranchWord(ch, level, true, writingState),
-                    Margin = new Thickness(30, 0, 0, 0),
-                    IsExpanded = true
-                };
-            }
-
-            TreeViewItem item = new TreeViewItem
-            {
-                Header = CreateBranchWord(ch, level, false, writingState),
-                Margin = new Thickness(30, 0, 0, 0),
-                IsExpanded = true
-            };
-
-
-
-            if (!ChineseService.IsCharacter(ch[0], writingState))
-            {
-                // children one level up
-            }
-            else
-            {
-                // default
-            }
-
-            if (basicDict.ContainsKey(ch))
-            {
-                foreach (string c in basicDict[ch])
-                {
-                    item.Items.Add(GetTreeDecomposition(c, level + 1, writingState));
-                }
-            }
-
-            return item;
-        }*/
-
         internal static Border CreateBranchWord(string ch, int level, bool isKangxi, string writingState)
         {
             List<Word> words = ChineseService
@@ -189,9 +146,6 @@ namespace ChineseAppWPF.Controllers
 
             charBorder.Child = charBlock;
             detailBorder.Child = detailBlock;
-
-            //panel.Children.Add(charBlock);
-            //panel.Children.Add(detailBlock);
 
             panel.Children.Add(charBorder);
             panel.Children.Add(detailBorder);
