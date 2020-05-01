@@ -138,16 +138,15 @@ namespace ChineseAppWPF.Logic
             return count;
         }
 
-        public static bool ContainsInsensitive(this string source, string value, StringComparison comparisonType)
+        public static bool ContainsInsensitive(this string source, string value)
         {
-            return source?.IndexOf(value, comparisonType) >= 0;
+            return source?.IndexOf(value, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
         public static IEnumerable<Word> GetEnglishResult(string text)
         {
             return allWords.AsParallel()
-                           //.Where(w => w.Definitions.ToLower().Contains(text));  //TODO modify
-                           .Where(w => w.Definitions.ContainsInsensitive(text, StringComparison.InvariantCultureIgnoreCase));
+                           .Where(w => w.Definitions.ContainsInsensitive(text));
         }
 
         public static IEnumerable<Word> SearchBySimplified(string text)

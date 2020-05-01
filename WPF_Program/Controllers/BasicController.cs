@@ -32,17 +32,20 @@ namespace ChineseAppWPF.Controllers
 
         public static void ShowResult()
         {
+            if (mainWindow == null)
+                return;
             if (string.IsNullOrEmpty(mainWindow.SearchBar.Text))
             {
+                currentWords = new List<Word>();
+                currentWords.UpdateShownWords();
                 return;
             }
             ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
             switch (typeItem.Content.ToString())
             {
-                case "Eng - Chn": ShowChineseResult(); break;
-                //case "English": ShowEnglishResult(); break;
+                case "Eng - Chn": ShowEnglishChineseResult(); break;
                 case "Pronounciation": ShowPronounciationResult(); break;
-                case "Compose": ShowComposeResult(); break;
+                //case "Compose": ShowComposeResult(); break;
             }
         }
 

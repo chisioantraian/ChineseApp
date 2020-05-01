@@ -41,9 +41,14 @@ namespace ChineseAppWPF.Controllers
                 };
             }
 
+            Border b = CreateBranchWord(ch, level, false, writingState);
+            //if (b == null)
+            //{
+            //    return new List<TreeViewItem>();
+            //}
             TreeViewItem item = new TreeViewItem
             {
-                Header = CreateBranchWord(ch, level, false, writingState),
+                Header = b,
                 Margin = new Thickness(30, 0, 0, 0),
                 IsExpanded = true
             };
@@ -90,6 +95,11 @@ namespace ChineseAppWPF.Controllers
             List<Word> words = ChineseService
                                 .GetAllWordsFrom(new List<string> { ch.ToString() }, writingState)
                                 .ToList();
+            
+            //if (words.Count() == 0)
+            //{
+            //    return null;
+            //}
 
             string description = GetOnlyDetails(words);
 

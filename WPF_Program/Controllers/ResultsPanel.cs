@@ -8,14 +8,15 @@ namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
-        //internal static void ShowChineseResult() => ChineseService.SearchBySimplified(mainWindow.SearchBar.Text).UpdateShownWords();
+        private static string english = "   ,. 0123456789/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        private static string english = "   ,. 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-
-        internal static void ShowChineseResult()
+        internal static void ShowEnglishChineseResult(string value = "")
         {
             string text = mainWindow.SearchBar.Text;
+
+            if (value != "")
+                text = value;
+            
             bool isEnglish = true;
             foreach (char c in text)
             {
@@ -35,11 +36,9 @@ namespace ChineseAppWPF.Controllers
             }
         }
 
-        //internal static void ShowEnglishResult() => ChineseService.GetEnglishResult(mainWindow.SearchBar.Text).UpdateShownWords();
-
         internal static void ShowPronounciationResult() => ChineseService.SearchByPinyin(mainWindow.SearchBar.Text).UpdateShownWords();
 
-        internal static void ShowComposeResult() => Decomposition.GetCharactersWithComponent(mainWindow.SearchBar.Text).UpdateShownWords();
+        internal static void ShowComposeResult(string value) => Decomposition.GetCharactersWithComponent(value).UpdateShownWords();
 
         internal static void ShowSomeRandomWords() => ChineseService.GetRandomWords().UpdateShownWords();
 

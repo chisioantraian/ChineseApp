@@ -217,6 +217,7 @@ namespace ChineseAppWPF.Logic
                 new KangxiRadical { Symbol = '羽', Number = 124 },
                 new KangxiRadical { Symbol = '老', Number = 125 },
                 new KangxiRadical { Symbol = '耂', Number = 125 },
+                new KangxiRadical { Symbol = '⺹', Number = 125 },
                 new KangxiRadical { Symbol = '而', Number = 126 },
                 new KangxiRadical { Symbol = '耒', Number = 127 },
                 new KangxiRadical { Symbol = '耳', Number = 128 },

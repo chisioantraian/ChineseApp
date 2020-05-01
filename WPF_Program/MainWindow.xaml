@@ -24,6 +24,7 @@
                     Grid.Row="0"
                     Name="SearchBar" FontSize="16" 
                     Padding="12" Margin="12" 
+                    ToolTip="Search something automatically by typing in english or chinese"
                     KeyUp="SearchBar_KeyUp"/>
 
 
@@ -40,31 +41,33 @@
                 <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5,0,10,0">
                     <TextBlock Text="Input type:" />
                     <ComboBox
-                        Name="InputComboBox"                                 
-                        
+                        Name="InputComboBox"
+                        ToolTip="Choose how the search bar will be used"
+                        SelectionChanged="InputComboBox_SelectionChanged"
                         SelectedIndex="0">
-                        <ComboBoxItem>Eng - Chn</ComboBoxItem>
-                        <!--<ComboBoxItem>Chinese</ComboBoxItem>-->
-                        <ComboBoxItem>Pronounciation</ComboBoxItem>
-                        <ComboBoxItem>Compose</ComboBoxItem>
+                        <ComboBoxItem ToolTip="Search words by typing in english/chinese">Eng - Chn</ComboBoxItem>
+                        <ComboBoxItem ToolTip="Search characters by typing their pinyin">Pronounciation</ComboBoxItem>
+                        <ComboBoxItem ToolTip="Search characters which contain the given component">Compose</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,0,10,0">
                     <TextBlock Text="Sort By: "/>
                     <ComboBox Name="SortingComboBox"
+                              ToolTip="Sort shown words by some criterion"
                               SelectionChanged="SortingComboBox_SelectionChanged"
                           
                           SelectedIndex="0">
-                        <ComboBoxItem>Frequency</ComboBoxItem>
-                        <ComboBoxItem>Strokes</ComboBoxItem>
-                        <ComboBoxItem>Pinyin</ComboBoxItem>
+                        <ComboBoxItem ToolTip="Sort by word's frequency in language">Frequency</ComboBoxItem>
+                        <ComboBoxItem ToolTip="Sort by word's number of strokes">Strokes</ComboBoxItem>
+                        <ComboBoxItem ToolTip="Sort alphabetically by word's pronounciation">Pinyin</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" Orientation="Vertical" Margin="0,0,10,0">
                     <TextBlock Text="Writing system:" />
                     <ComboBox Name="WritingSystemComboBox"
+                              ToolTip="Choose between the simplified or the traditional form, for the result."
                               SelectionChanged="WritingSystemComboBox_SelectionChanged"
                               SelectedIndex="0">
                         <ComboBoxItem>Simplified</ComboBoxItem>
@@ -74,9 +77,26 @@
 
                 <Button Grid.Column="3" Click="RandomButton_Click"
                         Content="Random Words" 
-                        Margin="0,10,10,5"/>
+                        Margin="0,10,10,5">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            Show 200 random words
+                        </ToolTip>
+                    </Button.ToolTip>
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="test1"/>
+                            <MenuItem Header="test2"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
 
-                <TextBlock Grid.Column="4" Name="WordsCount" Margin="0,15,0,0"/>
+                <TextBlock Grid.Column="4" 
+                           Name="WordsCount" 
+                           ToolTip="Number of words found by the current search"
+                           Margin="0,15,0,0">
+                    
+                </TextBlock>
             </Grid>
 
 
@@ -106,10 +126,24 @@
                                                 <TextBlock
                                                     Text="{Binding ChineseCharacter}"
                                                     FontSize="48"
+                                                    Foreground="DarkSlateGray"
                                                     HorizontalAlignment="Center"
-                                                    MouseUp="CharacterAndPinyin_MouseUp"
+                                                    
+                                                   
                                                     MouseEnter="CharacterAndPinyin_MouseEnter"
-                                                    />
+                                                    MouseLeave="CharacterAndPinyin_MouseLeave"
+                                                >
+                                                    <TextBlock.ContextMenu>
+                                                        <ContextMenu>
+                                                            <MenuItem Header="Show characters which contain this component"
+                                                                      Tag="{Binding ChineseCharacter}"
+                                                                      Click="CharactersWithComponent_Click"/>
+                                                            <MenuItem Header="Show words with this character"
+                                                                      Tag="{Binding ChineseCharacter}"
+                                                                      Click="WordsWithCharacter_Click"/>
+                                                        </ContextMenu>
+                                                    </TextBlock.ContextMenu>
+                                                </TextBlock>
 
                                                 <TextBlock
                                                     Name="caracterPronuntie"
@@ -144,7 +178,8 @@
 
         <TabControl Name="MyTabControl"
                     Grid.Column="1">
-            <TabItem Header="Decomposition">
+            <TabItem Header="Decomposition" 
+                     ToolTip="Show a character's decomposition down to radicals level">
                 <Grid>
                     <Border BorderThickness="2" BorderBrush="Black">
                         <TreeView Name="tView"> </TreeView>
@@ -152,7 +187,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Gramm.Analysis.(temp)">
+            <TabItem Header="Gramm.Analysis.(temp)" ToolTip="Temporary Tab">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*" />
@@ -237,7 +272,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Analysis">
+            <TabItem Header="Analysis" ToolTip="Analyse the given sentence">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="16*" />
@@ -257,11 +292,13 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,-1,0" />
+                        <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,-1,0" 
+                                   />
 
 
                         <TextBox Name="SentenceAnalysisInputBox"
                                  KeyUp="SentenceAnalysis_KeyUp"
+                                 ToolTip="Type here the sentence which will be analyzed. Hover the word to see definition"
                                  Grid.Row="1"
                                  FontSize="16"
                                  Margin="10,10,9,10" Grid.ColumnSpan="4" />
@@ -275,7 +312,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Words" />
+            <TabItem Header="Words" ToolTip="Tables of words"/>
 
         </TabControl>
     </Grid>
