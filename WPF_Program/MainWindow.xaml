@@ -39,15 +39,14 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5,0,10,0">
-                    <TextBlock Text="Input type:" />
+                    <TextBlock Text="Input language:" />
                     <ComboBox
                         Name="InputComboBox"
                         ToolTip="Choose how the search bar will be used"
                         SelectionChanged="InputComboBox_SelectionChanged"
                         SelectedIndex="0">
-                        <ComboBoxItem ToolTip="Search words by typing in english/chinese">Eng - Chn</ComboBoxItem>
-                        <ComboBoxItem ToolTip="Search characters by typing their pinyin">Pronounciation</ComboBoxItem>
-                        <ComboBoxItem ToolTip="Search characters which contain the given component">Compose</ComboBoxItem>
+                        <ComboBoxItem ToolTip="Search words by typing in english">English</ComboBoxItem>
+                        <ComboBoxItem ToolTip="Search words by typing in chinese/pinyin">Chinese</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 
@@ -137,10 +136,15 @@
                                                         <ContextMenu>
                                                             <MenuItem Header="Show characters which contain this component"
                                                                       Tag="{Binding ChineseCharacter}"
-                                                                      Click="CharactersWithComponent_Click"/>
+                                                                      Click="CharactersWithComponent_Click"
+                                                                      FontSize="16"
+                                                                      Padding="10" />
+                                                            <Separator />
                                                             <MenuItem Header="Show words with this character"
                                                                       Tag="{Binding ChineseCharacter}"
-                                                                      Click="WordsWithCharacter_Click"/>
+                                                                      Click="WordsWithCharacter_Click"
+                                                                      FontSize="16"
+                                                                      Padding="10" />
                                                         </ContextMenu>
                                                     </TextBlock.ContextMenu>
                                                 </TextBlock>

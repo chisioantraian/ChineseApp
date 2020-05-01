@@ -10,7 +10,40 @@ namespace ChineseAppWPF.Controllers
     {
         private static string english = "   ,. 0123456789/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        internal static void ShowEnglishChineseResult(string value = "")
+        internal static void ShowEnglishResult()
+        {
+            string text = mainWindow.SearchBar.Text;
+            ChineseService.GetEnglishResult(text).UpdateShownWords();
+        }
+
+        internal static void ShowChineseResult(string value="")
+        {
+            string text = mainWindow.SearchBar.Text;
+
+            if (value != "")
+                text = value;
+
+            bool isPinyin = false;
+            foreach (char c in text)
+            {
+                if (english.Contains(c))
+                {
+                    isPinyin = true;
+                    break;
+                }
+            }
+
+            if (isPinyin)
+            {
+                ChineseService.SearchByPinyin(text).UpdateShownWords();
+            }
+            else
+            {
+                ChineseService.SearchBySimplified(text).UpdateShownWords();
+            }
+        }
+
+        /*internal static void ShowEnglishChineseResult(string value = "")
         {
             string text = mainWindow.SearchBar.Text;
 
@@ -34,7 +67,7 @@ namespace ChineseAppWPF.Controllers
             {
                 ChineseService.SearchBySimplified(text).UpdateShownWords();
             }
-        }
+        }*/
 
         internal static void ShowPronounciationResult() => ChineseService.SearchByPinyin(mainWindow.SearchBar.Text).UpdateShownWords();
 

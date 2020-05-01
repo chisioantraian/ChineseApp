@@ -56,12 +56,12 @@ namespace ChineseAppWPF
             textBlock.Foreground = Brushes.DarkSlateGray;
         }
 
-        private void CharacterAndPinyin_MouseUp(object sender, MouseButtonEventArgs e)
+        /*private void CharacterAndPinyin_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var textBlock = (TextBlock)sender;
             SearchBar.Text = textBlock.Text;
             Controller.ShowEnglishChineseResult();
-        }
+        }*/
 
         private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();
 
@@ -90,7 +90,7 @@ namespace ChineseAppWPF
             var item = (MenuItem)sender;
             string value = item.Tag.ToString();
 
-            Controller.ShowEnglishChineseResult(value); //change
+            Controller.ShowChineseResult(value); //change
         }
 
 
