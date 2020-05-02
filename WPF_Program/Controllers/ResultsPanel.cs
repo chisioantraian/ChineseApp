@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using System.Windows.Controls;
 using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
 
@@ -43,34 +43,6 @@ namespace ChineseAppWPF.Controllers
             }
         }
 
-        /*internal static void ShowEnglishChineseResult(string value = "")
-        {
-            string text = mainWindow.SearchBar.Text;
-
-            if (value != "")
-                text = value;
-            
-            bool isEnglish = true;
-            foreach (char c in text)
-            {
-                if (! english.Contains(c))
-                {
-                    isEnglish = false;
-                    break;
-                }
-            }
-            if (isEnglish)
-            {
-                ChineseService.GetEnglishResult(text).UpdateShownWords();
-            }
-            else
-            {
-                ChineseService.SearchBySimplified(text).UpdateShownWords();
-            }
-        }*/
-
-        internal static void ShowPronounciationResult() => ChineseService.SearchByPinyin(mainWindow.SearchBar.Text).UpdateShownWords();
-
         internal static void ShowComposeResult(string value) => Decomposition.GetCharactersWithComponent(value).UpdateShownWords();
 
         internal static void ShowSomeRandomWords() => ChineseService.GetRandomWords().UpdateShownWords();
@@ -102,11 +74,17 @@ namespace ChineseAppWPF.Controllers
                     break;
 
                 case "Strokes":
-                    filteredWords = filteredWords.SortByStrokesCount();
+                    filteredWords = filteredWords.SortByStrokesCount(writingState);
                     break;
 
                 case "Pinyin":
                     filteredWords = filteredWords.SortByPinyin();
+                    break;
+
+                case "Exact":
+                    ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
+                    string language = typeItem.Content.ToString();
+                    filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, language);
                     break;
             }
 

@@ -56,13 +56,6 @@ namespace ChineseAppWPF
             textBlock.Foreground = Brushes.DarkSlateGray;
         }
 
-        /*private void CharacterAndPinyin_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var textBlock = (TextBlock)sender;
-            SearchBar.Text = textBlock.Text;
-            Controller.ShowEnglishChineseResult();
-        }*/
-
         private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();
 
         private void AnalyseSentence_Click(object sender, RoutedEventArgs e) => Controller.AnalyseSentence_TestTab();

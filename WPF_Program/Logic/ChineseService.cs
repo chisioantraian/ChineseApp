@@ -117,9 +117,9 @@ namespace ChineseAppWPF.Logic
             return words.OrderBy(w => w.Frequency).Reverse();
         }
 
-        public static IEnumerable<Word> SortByStrokesCount(this IEnumerable<Word> words)
+        public static IEnumerable<Word> SortByStrokesCount(this IEnumerable<Word> words, string writingState)
         {
-            return words.OrderBy(w => GetStrokeCount(w));
+            return words.OrderBy(w => GetStrokeCount(w, writingState));
         }
 
         public static IEnumerable<Word> SortByPinyin(this IEnumerable<Word> words)
@@ -127,13 +127,48 @@ namespace ChineseAppWPF.Logic
             return words.OrderBy(w => w.Pinyin);
         }
 
-        private static int GetStrokeCount(Word w) //modify to use traditional
+        public static IEnumerable<Word> SortByExactity(this IEnumerable<Word> words, string text, string language)
+        {
+            IEnumerable<Word> exactWords;
+            IEnumerable<Word> restOfWords;
+            if (language == "English")
+            {
+                exactWords = words.Where(w => w.Definitions.ContainsInsensitive('/' + text + '/'));
+            }
+            else
+            {
+                exactWords = words.Where(w => w.Simplified == text);
+            }
+            restOfWords = words.Except(exactWords);
+
+            foreach (Word w in exactWords)
+            {
+                yield return w;
+            }
+            foreach (Word w in restOfWords.SortByFrequency())
+            {
+                yield return w;
+            }
+        }
+
+        private static int GetStrokeCount(Word w, string writingState) //modify to use traditional
         {
             int count = 0;
-            foreach (char c in w.Simplified)
+            if (writingState == "Simplified")
             {
-                if (strokesDict.ContainsKey(c))
-                    count += strokesDict[c];
+                foreach (char c in w.Simplified)
+                {
+                    if (strokesDict.ContainsKey(c))
+                        count += strokesDict[c];
+                }
+            }
+            else
+            {
+                foreach (char c in w.Traditional)
+                {
+                    if (strokesDict.ContainsKey(c))
+                        count += strokesDict[c];
+                }
             }
             return count;
         }
@@ -143,10 +178,25 @@ namespace ChineseAppWPF.Logic
             return source?.IndexOf(value, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
+        /*
+         * Fast but not 100% correct. ( '/' can be used)
+         * Or, slow and correct. (and no intermediary results)
+         */
         public static IEnumerable<Word> GetEnglishResult(string text)
         {
+            //return allWords.AsParallel()
+            //   .Where(w => w.Definitions.ContainsInsensitive('/' + text + '/'));
+
             return allWords.AsParallel()
                            .Where(w => w.Definitions.ContainsInsensitive(text));
+
+            //char[] delims = { ' ', '(', ')', '[', ']', ',', '.', '/'};
+            //return allWords.AsParallel()
+            //               .Where(w => w.Definitions.Split(delims).Any(tok => tok.ToLower() == text.ToLower()));
+
+            //char[] delims = { ' ', '(', ')', '[', ']', ',', '.', '/'};
+            //return allWords.AsParallel()
+            //               .Where(w => w.Definitions.Split(delims).Any(tok => tok.ToLower().StartsWith(text.ToLower()) ));
         }
 
         public static IEnumerable<Word> SearchBySimplified(string text)

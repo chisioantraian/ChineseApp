@@ -43,9 +43,8 @@ namespace ChineseAppWPF.Controllers
             ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
             switch (typeItem.Content.ToString())
             {
-                case "English": ShowEnglishResult(); break; //ShowEnglishChineseResult(); break;
-                case "Chinese": ShowChineseResult(); break;//ShowPronounciationResult(); break;
-                //case "Compose": ShowComposeResult(); break;
+                case "English": ShowEnglishResult(); break;
+                case "Chinese": ShowChineseResult(); break;
             }
         }
 

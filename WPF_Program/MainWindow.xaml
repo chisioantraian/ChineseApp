@@ -60,6 +60,7 @@
                         <ComboBoxItem ToolTip="Sort by word's frequency in language">Frequency</ComboBoxItem>
                         <ComboBoxItem ToolTip="Sort by word's number of strokes">Strokes</ComboBoxItem>
                         <ComboBoxItem ToolTip="Sort alphabetically by word's pronounciation">Pinyin</ComboBoxItem>
+                        <ComboBoxItem ToolTip="The exact typed word is shown first">Exact</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 
