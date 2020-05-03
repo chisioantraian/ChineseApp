@@ -108,15 +108,28 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Black"
+                                
                                 BorderThickness="1"
                                 CornerRadius="8">
                             <StackPanel>
 
-                                <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}">
-
+                                <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}"
+                                              Background="White"
+                                              Cursor="Hand"
+                                             >
+                                    <ItemsControl.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Show words inside this word"
+                                                      Tag="{Binding SimplifiedPinyinPairs}"
+                                                      Click="WordsInsideThisWord_Click"
+                                                      FontSize="16"
+                                                      Padding="10" />
+                                        </ContextMenu>
+                                    </ItemsControl.ContextMenu>
+                                    
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal" />
+                                            <StackPanel Orientation="Horizontal"  />
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
 
@@ -129,10 +142,9 @@
                                                     Foreground="DarkSlateGray"
                                                     HorizontalAlignment="Center"
                                                     
-                                                   
+                                                    MouseUp="CharacterAndPinyin_MouseUp"
                                                     MouseEnter="CharacterAndPinyin_MouseEnter"
-                                                    MouseLeave="CharacterAndPinyin_MouseLeave"
-                                                >
+                                                    MouseLeave="CharacterAndPinyin_MouseLeave" >
                                                     <TextBlock.ContextMenu>
                                                         <ContextMenu>
                                                             <MenuItem Header="Show characters which contain this component"
@@ -146,6 +158,8 @@
                                                                       Click="WordsWithCharacter_Click"
                                                                       FontSize="16"
                                                                       Padding="10" />
+                                                            <Separator />
+
                                                         </ContextMenu>
                                                     </TextBlock.ContextMenu>
                                                 </TextBlock>

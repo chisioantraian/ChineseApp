@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using ChineseAppWPF.Controllers;
 using ChineseAppWPF.Logic;
+using ChineseAppWPF.Models;
 
 namespace ChineseAppWPF
 {
@@ -14,6 +17,8 @@ namespace ChineseAppWPF
     {
         public MainWindow()
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             InitializeComponent();
 
             ChineseService.InitializeData();
@@ -43,6 +48,56 @@ namespace ChineseAppWPF
             textBlock.Text = "";
             textBlock.Foreground = Brushes.Black;
             textBlock.Inlines.Add(new Run(character){ FontWeight = FontWeights.Bold });
+        }
+
+
+        private void printSubArrays(List<string> arr, int start, int end)
+        {
+            if (end == arr.Count)
+                return;
+            
+            else if (start > end)
+                printSubArrays(arr, 0, end + 1);
+
+            else
+            {
+                for (int i = start; i <= end; i++)
+                    Console.Write(arr[i]);
+                Console.WriteLine();
+                printSubArrays(arr, start + 1, end);
+            }
+            return;
+        }
+
+        private void word_mouseenter(object sender, MouseEventArgs e)
+        {
+            var item = (ItemsControl)sender;
+            IEnumerable<SPPair> sPPairs = (IEnumerable<SPPair>)item.Tag;
+            List<string> chars = sPPairs.Select(sp => sp.ChineseCharacter.ToString()).ToList();
+
+            Controller.ShowWordsFromThisChars(chars);
+            printSubArrays(chars, 0, 0);
+            Console.WriteLine();
+
+        }
+
+        private void WordsInsideThisWord_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (MenuItem)sender;
+            //string s = item.Tag.ToString();
+            //Console.WriteLine(s);
+            IEnumerable<SPPair> sPPairs = (IEnumerable<SPPair>)item.Tag;
+            foreach (SPPair sp in sPPairs)
+            {
+                Console.WriteLine(sp.ChineseCharacter);
+            }
+            List<string> chars = sPPairs.Select(sp => sp.ChineseCharacter.ToString()).ToList();
+            Controller.ShowWordsFromThisChars(chars);
+        }
+
+        private void CharacterAndPinyin_MouseUp(object sender, RoutedEventArgs e)
+        {
+            var textBlock = (TextBlock)sender;
             Controller.ShowWordWithThisCharacter(textBlock.Text[0]);
         }
 

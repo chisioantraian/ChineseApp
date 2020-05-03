@@ -47,6 +47,43 @@ namespace ChineseAppWPF.Controllers
                 case "Chinese": ShowChineseResult(); break;
             }
         }
+        private static void constructResultedWords(List<Word> result, List<string> arr, int start, int end)
+        {
+            if (end == arr.Count)
+                return;
+
+            else if (start > end)
+                constructResultedWords(result, arr, 0, end + 1);
+
+            else
+            {
+                string s = "";
+                for (int i = start; i <= end; i++)
+                {
+                    Console.Write(arr[i]);
+                    s += arr[i];//Console.Write(arr[i]);
+                }
+                Console.WriteLine();
+                if (ChineseService.WordExists(s))
+                {
+                    //IEnumerable<Word> wds = ChineseService.SearchBySimplified(s);
+                    IEnumerable<Word> wds = ChineseService.GetAllWordsFrom(new List<string> { s }, writingState);
+                    foreach (Word w in wds)
+                        result.Add(w);
+                }
+                //Console.WriteLine();
+                constructResultedWords(result, arr, start + 1, end);
+            }
+            return;
+        }
+
+        public static void ShowWordsFromThisChars(List<string> chars)
+        {
+            List<Word> result = new List<Word>();
+
+            constructResultedWords(result, chars, 0, 0);
+            result.UpdateShownWords();
+        }
 
 
         public static void SortResult()
