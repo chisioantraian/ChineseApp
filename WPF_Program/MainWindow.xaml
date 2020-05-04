@@ -20,12 +20,26 @@
                 <RowDefinition Height="8*" />
             </Grid.RowDefinitions>
 
-            <TextBox 
-                    Grid.Row="0"
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50px" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Name="UndoButton"
+                        IsEnabled="False"
+                        Margin="5,20,5,20"
+                        Content="Undo"
+                        Click="Undo_Click" />
+                <TextBox 
+                    Grid.Column="1"
                     Name="SearchBar" FontSize="16" 
                     Padding="12" Margin="12" 
                     ToolTip="Search something automatically by typing in english or chinese"
                     KeyUp="SearchBar_KeyUp"/>
+            </Grid>
+
 
 
             <Grid Grid.Row="1">
@@ -226,27 +240,17 @@
                 <Grid>
                     <Border BorderThickness="2" BorderBrush="Black">
                         <TreeView Name="tView">
-                            <!--
-                            <TreeView.ItemContainerStyle>
-                                <Style TargetType="{x:Type TreeViewItem}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="Background" Value="Transparent" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TreeView.ItemContainerStyle>
-                            -->
+
                             <TreeView.Resources>
+                               <SolidColorBrush
+                                    x:Key="{x:Static SystemColors.HighlightBrushKey}" 
+                                    Color="Transparent" /> 
                                 <SolidColorBrush
-            x:Key="{x:Static SystemColors.HighlightBrushKey}" 
-            Color="Transparent" />
+                                    x:Key="{x:Static SystemColors.ControlBrushKey}" 
+                                    Color="Transparent" />
                                 <SolidColorBrush
-            x:Key="{x:Static SystemColors.ControlBrushKey}" 
-            Color="Transparent" />
-                                <SolidColorBrush
-            x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
-            Color="Black" />
+                                    x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
+                                    Color="Black" />
                             </TreeView.Resources>
                         </TreeView>
                     </Border>

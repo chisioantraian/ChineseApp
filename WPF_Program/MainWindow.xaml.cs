@@ -32,6 +32,8 @@ namespace ChineseAppWPF
             Controller.ShowSomeRandomWords();
         }
 
+        private void Undo_Click(object sender, RoutedEventArgs e) => Controller.Undo();
+
         private void SearchButton_Click(object sender, RoutedEventArgs e) => Controller.ShowResult();
 
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
