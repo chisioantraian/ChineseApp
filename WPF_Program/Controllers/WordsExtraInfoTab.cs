@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace ChineseAppWPF.Controllers
@@ -17,7 +18,6 @@ namespace ChineseAppWPF.Controllers
         private static void ShowCharacterDecomposition(string characterToBeDecomposed, string writingState)
         {
             mainWindow.tView.Items.Clear();
-            //mainWindow.tView.Items.Add(GetTreeDecomposition(characterToBeDecomposed, 0, writingState));
             var itemsToAdd = GetTreeDecomposition(characterToBeDecomposed, 0, writingState);
             foreach (TreeViewItem item in itemsToAdd)
             {
@@ -126,12 +126,46 @@ namespace ChineseAppWPF.Controllers
             Brush shownColor = Brushes.Black;
             if (shownText == "*")
                 shownColor = Brushes.Yellow;
-            
+
+            MenuItem item1 = new MenuItem
+            {
+                Header = "Show characters which contain this component",
+                FontSize = 16,
+                Padding = new Thickness(10),
+            };
+            item1.Click += (s,e) => Controller.ShowComposeResult(shownText);
+
+            MenuItem item2 = new MenuItem
+            {
+                Header = "Show words with this character",
+                FontSize = 16,
+                Padding = new Thickness(10)
+            };
+            item2.Click += (s, e) => Controller.ShowChineseResult(shownText);
+
+            ContextMenu menu = new ContextMenu
+            {
+                Items = { item1, item2 }
+            };
             TextBlock charBlock = new TextBlock
             {
                 Text = shownText,
                 FontSize = 60,
-                Foreground = shownColor,
+                Foreground = Brushes.DarkSlateGray,
+                Cursor = Cursors.Hand,
+                ContextMenu = menu
+            };
+            charBlock.MouseEnter += (s, e) =>
+            {
+                charBlock.Text = "";
+                charBlock.Foreground = Brushes.Black;
+                charBlock.Inlines.Add(new Run(shownText) { FontWeight = FontWeights.Bold });
+            };
+            charBlock.MouseLeave += (s, e) =>
+            {
+                charBlock.Text = "";
+                charBlock.Inlines.Add(shownText);
+                charBlock.Foreground = Brushes.DarkSlateGray;
             };
             TextBlock detailBlock = new TextBlock
             {
@@ -163,6 +197,11 @@ namespace ChineseAppWPF.Controllers
             border.Child = panel;
 
             return border;
+        }
+
+        private static void Item1_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         internal static string GetOnlyDetails(List<Word> words)

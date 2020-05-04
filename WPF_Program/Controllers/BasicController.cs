@@ -28,6 +28,9 @@ namespace ChineseAppWPF.Controllers
             mainWindow = window;
             allDetailedWords = ChineseService.GetAllDetailedWords();
             basicDict = Decomposition.GetBasicDict();
+
+            // here?
+            //mainWindow.tView.
         }
 
         public static void ShowResult()
@@ -82,7 +85,7 @@ namespace ChineseAppWPF.Controllers
             List<Word> result = new List<Word>();
 
             constructResultedWords(result, chars, 0, 0);
-            result.UpdateShownWords();
+            result.UpdateShownWords(false);
         }
 
 

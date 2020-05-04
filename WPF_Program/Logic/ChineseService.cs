@@ -86,6 +86,8 @@ namespace ChineseAppWPF.Logic
         {
             foreach (var word in allWords)
             {
+                wordsSet.Add(word.Traditional);
+                //if (word.Simplified == word.Traditional)
                 wordsSet.Add(word.Simplified);
             }
         }
@@ -199,10 +201,18 @@ namespace ChineseAppWPF.Logic
             //               .Where(w => w.Definitions.Split(delims).Any(tok => tok.ToLower().StartsWith(text.ToLower()) ));
         }
 
-        public static IEnumerable<Word> SearchBySimplified(string text)
+        public static IEnumerable<Word> SearchBySimplified(string text, string writingState)
         {
-            return allWords.AsParallel()
-                           .Where(w => w.Simplified.Contains(text));
+            if (writingState == "Simplified")
+            {
+                return allWords.AsParallel()
+                               .Where(w => w.Simplified.Contains(text));
+            }
+            else
+            {
+                return allWords.AsParallel()
+                               .Where(w => w.Traditional.Contains(text));
+            }
         }
 
         public static IEnumerable<Word> SearchByPinyin(string text)

@@ -42,14 +42,14 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-        private static bool IsComponentInTree(string simplified, string component)
+        private static bool IsComponentInTree(string character, string component)
         {
-            if (simplified == component)
+            if (character == component)
                 return true;
 
-            if (basicDict.ContainsKey(simplified))
+            if (basicDict.ContainsKey(character))
             {
-                foreach (string ch in basicDict[simplified])
+                foreach (string ch in basicDict[character])
                 {
                     if (IsComponentInTree(ch, component))
                         return true;
@@ -59,9 +59,15 @@ namespace ChineseAppWPF.Logic
             return false;
         }
 
-        public static IEnumerable<Word> GetCharactersWithComponent(string component)
+        public static IEnumerable<Word> GetCharactersWithComponent(string component, string writingState)
         {
-            bool ComputedSimplifiedIsFound(Word w) => IsComponentInTree(w.Simplified, component);
+            bool ComputedSimplifiedIsFound(Word w)
+            {
+                if (writingState == "Simplified")
+                    return IsComponentInTree(w.Simplified, component);
+                else
+                    return IsComponentInTree(w.Traditional, component);
+            }
 
             return ChineseService.GetAllWords()
                                  .AsParallel()

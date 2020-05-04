@@ -104,7 +104,29 @@
                      Grid.Row="2" 
                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                      HorizontalContentAlignment="Stretch">
+                <!--
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                             Color="Yellow" />
+                        </Style.Resources>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                -->
 
+                <!--
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                -->
+                
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="Black"
@@ -168,6 +190,7 @@
                                                     Name="caracterPronuntie"
                                                     HorizontalAlignment="Center"
                                                     Margin="-10"
+                                                    
 >
                                                     <TextBlock.Inlines>
                                                         <Run Text="{Binding Pinyin}"
@@ -186,6 +209,7 @@
 
                                 <TextBlock Text="{Binding Definitions}" 
                                        FontSize="16"
+                                       
                                        Foreground="Brown"/>
                             </StackPanel>
                         </Border>
@@ -201,7 +225,30 @@
                      ToolTip="Show a character's decomposition down to radicals level">
                 <Grid>
                     <Border BorderThickness="2" BorderBrush="Black">
-                        <TreeView Name="tView"> </TreeView>
+                        <TreeView Name="tView">
+                            <!--
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="Transparent" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                            -->
+                            <TreeView.Resources>
+                                <SolidColorBrush
+            x:Key="{x:Static SystemColors.HighlightBrushKey}" 
+            Color="Transparent" />
+                                <SolidColorBrush
+            x:Key="{x:Static SystemColors.ControlBrushKey}" 
+            Color="Transparent" />
+                                <SolidColorBrush
+            x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
+            Color="Black" />
+                            </TreeView.Resources>
+                        </TreeView>
                     </Border>
                 </Grid>
             </TabItem>

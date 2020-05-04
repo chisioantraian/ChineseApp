@@ -39,17 +39,17 @@ namespace ChineseAppWPF.Controllers
             }
             else
             {
-                ChineseService.SearchBySimplified(text).UpdateShownWords();
+                ChineseService.SearchBySimplified(text, writingState).UpdateShownWords();
             }
         }
 
-        internal static void ShowComposeResult(string value) => Decomposition.GetCharactersWithComponent(value).UpdateShownWords();
+        internal static void ShowComposeResult(string value) => Decomposition.GetCharactersWithComponent(value, writingState).UpdateShownWords();
 
         internal static void ShowSomeRandomWords() => ChineseService.GetRandomWords().UpdateShownWords();
 
         internal static void ShowWordWithThisCharacter(char character) => ShowCharacterDecomposition(character.ToString(), writingState);
 
-        internal static void UpdateShownWords(this IEnumerable<Word> filteredWords)
+        internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, bool showSorted = true)
         {
             static SPPair makeSPP(char chn, string pron) => new SPPair { ChineseCharacter = chn, Pinyin = pron };
 
@@ -66,27 +66,30 @@ namespace ChineseAppWPF.Controllers
                 };
             }
 
-            
-            switch (sortingState)
+            if (showSorted)
             {
-                case "Frequency":
-                    filteredWords = filteredWords.SortByFrequency();
-                    break;
+                switch (sortingState)
+                {
+                    case "Frequency":
+                        filteredWords = filteredWords.SortByFrequency();
+                        break;
 
-                case "Strokes":
-                    filteredWords = filteredWords.SortByStrokesCount(writingState);
-                    break;
+                    case "Strokes":
+                        filteredWords = filteredWords.SortByStrokesCount(writingState);
+                        break;
 
-                case "Pinyin":
-                    filteredWords = filteredWords.SortByPinyin();
-                    break;
+                    case "Pinyin":
+                        filteredWords = filteredWords.SortByPinyin();
+                        break;
 
-                case "Exact":
-                    ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
-                    string language = typeItem.Content.ToString();
-                    filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, language);
-                    break;
+                    case "Exact":
+                        ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
+                        string language = typeItem.Content.ToString();
+                        filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, language);
+                        break;
+                }
             }
+
 
             mainWindow.WordsList.ItemsSource = filteredWords.Select(ResultedWordFromWord);
             mainWindow.WordsCount.Text = $"{filteredWords.Count()} words found";
