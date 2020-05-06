@@ -23,7 +23,8 @@ namespace ChineseAppWPF.Logic
             '㇈',
             '㇆',
             '㇇',
-            '㇗'
+            '㇗',
+            '㇖'
         };
 
         public static bool CheckIfKangxiRadical(char character) => kangxiRadicals.Any(kr => kr.Symbol == character);
