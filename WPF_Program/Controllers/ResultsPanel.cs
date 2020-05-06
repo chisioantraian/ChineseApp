@@ -14,42 +14,21 @@ namespace ChineseAppWPF.Controllers
         {
             string text = mainWindow.SearchBar.Text;
             ChineseService.GetEnglishResult(text).UpdateShownWords();
-
-            undoList.Push(new UndoState
-            {
-                Language = "English",
-                Text = text,
-                WritingSystem = writingState,
-                SortingMethod = sortingState
-            });
         }
 
-        internal static void ShowEnglishResult(string text, string writingSystem, string sortingMethod)
-        {
-            ChineseService.GetEnglishResult(text).UpdateShownWords(writingSystem, sortingMethod);
-        }
-
-        internal static void ShowChineseResult(string text = "")
+        /*internal static void ShowChineseResult(string text = "")
         {
             if (text == "")
                 text = mainWindow.SearchBar.Text;
             ShowChineseResult(text, writingState, sortingState);
+        }*/
 
-            undoList.Push(new UndoState
-            {
-                Language = "Chinese",
-                Text = text,
-                WritingSystem = writingState,
-                SortingMethod = sortingState
-            });
-        }
-
-        internal static void ShowChineseResult(string text, string writingSystem, string sortingMethod)
+        internal static void ShowChineseResult(string value = "")
         {
-            //string text = mainWindow.SearchBar.Text;
+            string text = mainWindow.SearchBar.Text;
 
-            //if (value != "")
-            //    text = value;
+            if (value != "")
+                text = value;
 
             bool isPinyin = false;
             foreach (char c in text)

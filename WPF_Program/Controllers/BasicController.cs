@@ -5,17 +5,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Threading;
 using System.Windows.Controls;
 
 namespace ChineseAppWPF.Controllers
 {
-    class UndoState
-    {
-        public string Language { get; set; }
-        public string Text { get; set; }
-        public string WritingSystem { get; set; }
-        public string SortingMethod { get; set; }
-    }
     public static partial class Controller
     {
         private static MainWindow mainWindow;
@@ -30,9 +24,6 @@ namespace ChineseAppWPF.Controllers
 
         private static string sortingState = "Frequency";
         private static string writingState = "Simplified";
-
-        
-        private static Stack<UndoState> undoList = new Stack<UndoState>();
 
         public static void SetWindow(MainWindow window)
         {
@@ -54,9 +45,18 @@ namespace ChineseAppWPF.Controllers
             ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
             switch (typeItem.Content.ToString())
             {
-                case "English": ShowEnglishResult(); break;
+                case "English":
+                    var t = new Thread(ShowEnglishThread);
+                    t.Start();
+                    //ShowEnglishResult(); 
+                    break;
                 case "Chinese": ShowChineseResult(); break;
             }
+        }
+
+        public static void ShowEnglishThread()
+        {
+            mainWindow.Dispatcher.BeginInvoke(new Action(() => ShowEnglishResult()));
         }
 
         public static void Undo()
@@ -65,34 +65,6 @@ namespace ChineseAppWPF.Controllers
             currentWords.UpdateShownWords();
 
             mainWindow.UndoButton.IsEnabled = false;
-
-            //previousWords = new List<Word>();
-            //previous = new 
-            
-            /*
-            if (undoList.Count > 0)
-                undoList.Pop();
-            if (undoList.Count > 0)
-            {
-                UndoState undoState = undoList.Peek();
-                mainWindow.SearchBar.Text = undoState.Text;
-
-                Console.WriteLine($"{undoState.Language}, {undoState.Text}, {undoState.WritingSystem}, {undoState.SortingMethod}");
-                
-                switch (undoState.Language)
-                {
-                    case "English":
-                        ShowEnglishResult(undoState.Text, undoState.WritingSystem, undoState.SortingMethod);
-                        break;
-                    case "Chinese": 
-                        ShowChineseResult(undoState.Text, undoState.WritingSystem, undoState.SortingMethod);
-                        break;
-                }
-            }
-            else
-            {
-                new List<Word>().UpdateShownWords();
-            }*/
         }
 
         private static void constructResultedWords(List<Word> result, List<string> arr, int start, int end)

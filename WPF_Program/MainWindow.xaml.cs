@@ -30,6 +30,7 @@ namespace ChineseAppWPF
             Controller.InitializeSentenceExamples();
 
             Controller.ShowSomeRandomWords();
+            UndoButton.IsEnabled = false;
         }
 
         private void Undo_Click(object sender, RoutedEventArgs e) => Controller.Undo();
