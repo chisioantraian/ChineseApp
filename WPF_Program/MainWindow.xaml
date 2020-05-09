@@ -118,42 +118,24 @@
                      Grid.Row="2" 
                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                      HorizontalContentAlignment="Stretch">
-
-                <!--
+<!--
                 <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <StackPanel>
-                                        <Separator x:Name="Sep"/>
-                                    </StackPanel>
-                                    <ControlTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                            <Setter Property="Visibility" TargetName="Sep" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                                
-                            </Setter.Value>
-                        </Setter>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Bisque" />
+                        </Style.Resources>
                     </Style>
-                </ListBox.ItemContainerStyle>
-                -->
-                
+                </ListBox.ItemContainerStyle> -->
 
+                
+                
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        
+                        <StackPanel Background="White">
                             
-                            <StackPanel>
-                                <Separator/>
-                                <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}"
-                                              Background="White"
-                                             
-                                             >
-                                   
-                                    <ItemsControl.ItemsPanel>
+                            
+                            <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}">
+                                <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Horizontal"  />
                                         </ItemsPanelTemplate>
@@ -211,10 +193,18 @@
 
                                 </ItemsControl>
 
-                                <TextBlock Text="{Binding Definitions}" 
+                            <WrapPanel>
+                                <StackPanel Orientation="Vertical" 
+                                            Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
+                                    <TextBlock
+                                       Text="{Binding Definitions}" 
                                        FontSize="16"
-                                       
+                                       TextWrapping="WrapWithOverflow"
                                        Foreground="Brown"/>
+                                </StackPanel>
+                            </WrapPanel>
+                                
+                            <Separator />
                             </StackPanel>
 
 
