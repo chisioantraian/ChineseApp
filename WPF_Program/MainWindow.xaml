@@ -116,22 +116,16 @@
 
             <ListBox Name="WordsList" 
                      Grid.Row="2" 
-                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                     VirtualizingStackPanel.IsVirtualizing="True"
+                     VirtualizingStackPanel.ScrollUnit="Pixel"
                      HorizontalContentAlignment="Stretch">
-<!--
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Style.Resources>
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Bisque" />
-                        </Style.Resources>
-                    </Style>
-                </ListBox.ItemContainerStyle> -->
+
 
                 
                 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Background="White">
+                        <StackPanel Background="White" Margin="0">
                             
                             
                             <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}">
@@ -147,7 +141,7 @@
                                                 <TextBlock
                                                     Text="{Binding ChineseCharacter}"
                                                     FontSize="48"
-                                                    Foreground="DarkSlateGray"
+                                                    Foreground="{Binding CharacterColor}"
                                                     HorizontalAlignment="Center"
                                                     
                                                     MouseUp="CharacterAndPinyin_MouseUp"
@@ -182,7 +176,6 @@
                                                         <Run Text="{Binding Pinyin}"
                                                              FontSize="12" 
                                                              FontWeight="Bold"
-                                                             Foreground="DarkGreen"
                                                              />
                                                     </TextBlock.Inlines>
                                                 </TextBlock>
@@ -200,12 +193,16 @@
                                        Text="{Binding Definitions}" 
                                        FontSize="16"
                                        TextWrapping="WrapWithOverflow"
-                                       Foreground="Brown"/>
+                                       />
                                 </StackPanel>
                             </WrapPanel>
-                                
-                            <Separator />
-                            </StackPanel>
+
+                            <Separator>
+                                <Separator.RenderTransform>
+                                    <ScaleTransform ScaleY="2"/>
+                                </Separator.RenderTransform>
+                            </Separator>
+                        </StackPanel>
 
 
                                 

@@ -49,7 +49,7 @@ namespace ChineseAppWPF
             textBlock.Cursor = Cursors.Hand;
 
             textBlock.Text = "";
-            textBlock.Foreground = Brushes.Black;
+            //textBlock.Foreground = Brushes.Black;
             textBlock.Inlines.Add(new Run(character){ FontWeight = FontWeights.Bold });
         }
 
@@ -111,7 +111,7 @@ namespace ChineseAppWPF
 
             textBlock.Text = "";
             textBlock.Inlines.Add(character);
-            textBlock.Foreground = Brushes.DarkSlateGray;
+            //textBlock.Foreground = Brushes.DarkSlateGray;
         }
 
         private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();

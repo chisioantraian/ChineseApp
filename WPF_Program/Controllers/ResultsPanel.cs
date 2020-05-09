@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Media;
 using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
 
@@ -62,9 +63,30 @@ namespace ChineseAppWPF.Controllers
             filteredWords.UpdateShownWords(writingState, sortingState, showSorted);
         }
 
+        internal static Brush ComputeColor(string pron)
+        {
+            if (pron.Contains("1"))
+                return Brushes.Red;
+            if (pron.Contains("2"))
+                return Brushes.LimeGreen; //Green
+            if (pron.Contains("3"))
+                return Brushes.Blue;
+            if (pron.Contains("4"))
+                return Brushes.DarkMagenta; // Purple
+            return Brushes.Gray;
+        }
+
         internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, string writingSystem, string sortingMethod, bool showSorted = true)
         {
-            static SPPair makeSPP(char chn, string pron) => new SPPair { ChineseCharacter = chn, Pinyin = pron };
+            static SPPair makeSPP(char chn, string pron) 
+            {
+                return new SPPair
+                {
+                    ChineseCharacter = chn,
+                    CharacterColor = ComputeColor(pron),
+                    Pinyin = pron,
+                };
+            }
 
             ResultWord ResultedWordFromWord(Word word)
             {
@@ -75,7 +97,7 @@ namespace ChineseAppWPF.Controllers
                 return new ResultWord
                 {
                     SimplifiedPinyinPairs = sPPairs,
-                    Definitions = word.Definitions
+                    Definitions = word.Definitions,
                 };
             }
 
