@@ -36,7 +36,7 @@ namespace ChineseAppWPF.Controllers
                     {
                         Header = CreateBranchWord(ch, level, true, writingState),
                         Margin = new Thickness(30, 0, 0, 0),
-                        IsExpanded = true
+                        //IsExpanded = true
                     }
                 };
             }

@@ -10,8 +10,8 @@
         Title="Window1" Height="1080" Width="1920" >
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0" Name="WordsPanel">
             <Grid.RowDefinitions>
@@ -118,51 +118,41 @@
                      Grid.Row="2" 
                      VirtualizingStackPanel.VirtualizationMode="Recycling"
                      HorizontalContentAlignment="Stretch">
-                <!--
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <Style.Resources>
-                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                             Color="Yellow" />
-                        </Style.Resources>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                -->
 
                 <!--
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="Transparent" />
-                            </Trigger>
-                        </Style.Triggers>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <StackPanel>
+                                        <Separator x:Name="Sep"/>
+                                    </StackPanel>
+                                    <ControlTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                            <Setter Property="Visibility" TargetName="Sep" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                                
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
                 -->
                 
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Black"
-                                
-                                BorderThickness="1"
-                                CornerRadius="8">
+                        
+                            
                             <StackPanel>
-
+                                <Separator/>
                                 <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}"
                                               Background="White"
-                                              Cursor="Hand"
+                                             
                                              >
-                                    <ItemsControl.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="Show words inside this word"
-                                                      Tag="{Binding SimplifiedPinyinPairs}"
-                                                      Click="WordsInsideThisWord_Click"
-                                                      FontSize="16"
-                                                      Padding="10" />
-                                        </ContextMenu>
-                                    </ItemsControl.ContextMenu>
-                                    
+                                   
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Horizontal"  />
@@ -226,7 +216,9 @@
                                        
                                        Foreground="Brown"/>
                             </StackPanel>
-                        </Border>
+
+
+                                
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 

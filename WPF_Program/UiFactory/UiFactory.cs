@@ -17,7 +17,7 @@ namespace ChineseAppWPF.UiFactory
         {
             TextBlock wBlock = new TextBlock
             {
-                FontSize = 32,
+                FontSize = 14,
                 Foreground = posTuple.Item1,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(5),
@@ -32,7 +32,7 @@ namespace ChineseAppWPF.UiFactory
             };
             TextBlock posBox = new TextBlock
             {
-                FontSize = 18,
+                FontSize = 14,
                 Foreground = posTuple.Item1,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, -5, 0, 0),

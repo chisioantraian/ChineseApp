@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 using ChineseAppWPF.Models;
 
 namespace ChineseAppWPF.Logic
@@ -29,9 +29,20 @@ namespace ChineseAppWPF.Logic
 
                 if (afterParan.Contains(','))
                 {
-                    components.Add(afterParan.Split(',')[0]);
-                    components.Add(afterParan.Split(',')[1]
-                                             .Split(')')[0]);
+                    int count = Regex.Matches(afterParan, ",").Count;
+                    if (count == 1)
+                    {
+                        components.Add(afterParan.Split(',')[0]);
+                        components.Add(afterParan.Split(',')[1]
+                                                 .Split(')')[0]);
+                    }
+                    else
+                    {
+                        components.Add(afterParan.Split(',')[0]);
+                        components.Add(afterParan.Split(',')[1]);
+                        components.Add(afterParan.Split(',')[2]
+                                                 .Split(')')[0]);
+                    }
                 }
                 else
                 {

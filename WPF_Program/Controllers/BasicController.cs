@@ -38,7 +38,7 @@ namespace ChineseAppWPF.Controllers
                 return;
             if (string.IsNullOrEmpty(mainWindow.SearchBar.Text))
             {
-                currentWords = new List<Word>();
+                currentWords = new List<Word>(); 
                 currentWords.UpdateShownWords();
                 return;
             }

@@ -80,6 +80,7 @@
 他下了车。	他_r	下_v	了_y	车_n	。_chnDot
 天气好冷。	天气_n	好_a	冷_a	。_chnDot
 我是对的。	我_r	是_v	对_a	的_u	。_chnDot
+钟还没响。	钟_n	还_d	没_d	响_v	。_chnDot
 他和我同岁。	他_r	和_cc	我_r	同_p	岁_qt	。_chnDot
 他在看电视。	他_r	在_p	看_v	电视_n	。_chnDot
 他是医生吗？	他_r	是_v	医生_n	吗_y	？_chnQmark
@@ -143,6 +144,9 @@
 他是老师吗？	他_r	是_v	老师_n	吗_y	？_chnQmark
 没有椅子坐。	没有_v	椅子_n	坐_v	。_chnDot
 他说九点了。	他_r	说_v	九_m	点_qt	了_y	。_chnDot
+他下楼来了。	他_r	下_f	楼_n	来_v	了_y	。_chnDot
+她游过了河。	她_r	游_v	过_u	了_y	河_n	。_chnDot
+他看完信了。	他_r	看_v	完_v	信_n	了_y	。_chnDot
 今天天气很好。	今天_t	天气_n	很_d	好_a	。_chnDot
 他们帮助了我。	他们_r	帮助_v	了_y	我_r	。_chnDot
 他在学习汉语。	他_r	在_p	学习_v	汉语_nz	。_chnDot
@@ -154,3 +158,47 @@
 你叫什么名字？	你_r	叫_v	什么_r	名字_n	？_chnQmark
 你家有多少人？	你_r	家_n	有_v	多少_r	人_n	？_chnQmark
 你明天能来吗？	你_r	明天_t	能_v	来_v	吗_y	？_chnQm
+她很容易感冒。	她_r	很_d	容易_a	感冒_v	。_chnDot
+请给我一张票。	请_v	给_v	我_r	一_m	张_q	票_n	。_chnDot
+你看了比赛吗?	你_r	看_v	了_y	比赛_vn	吗_y	?_engQmark
+我不喜欢假花。	我_r	不_d	喜欢_v	假_a	花_n	。_chnDot
+洗你的脸和手。	洗_v	你_r	的_u	脸_n	和_cc	手_n	。_chnDot
+你不需要着急。	你_r	不_d	需要_v	着急_a	。_chnDot
+我已经洗了碗。	我_r	已经_d	洗_v	了_y	碗_n	。_chnDot
+他在自己房里玩。	他_r	在_p	自己_r	房_n	里_f	玩_v	。_chnDot
+我忘了这是什么.	我_r	忘_v	了_y	这_r	是_v	什么_r	._engDot
+我现在必须走了。	我_r	现在_t	必须_d	走_v	了_y	。_chnDot
+他是个安静的人。	他_r	是_v	个_q	安静_a	的_u	人_n	。_chnDot
+他总是忘记事情。	他_r	总是_d	忘记_v	事情_n	。_chnDot
+我不喜欢她的脸。	我_r	不_d	喜欢_v	她_r	的_u	脸_n	。_chnDot
+我吃了三块蛋糕。	我_r	吃_v	了_y	三_m	块_q	蛋糕_n	。_chnDot
+他愿意帮助别人。	他_r	愿意_v	帮助_v	别人_r	。_chnDot
+我要她提行李箱。	我_r	要_v	她_r	提_v	行李箱_n	。_chnDot
+请给我些饮料喝。	请_v	给_v	我_r	些_q	饮料_n	喝_g	。_chnDot
+这附近有超市吗？	这_r	附近_f	有_v	超市_n	吗_y	？_chnQmark
+那只鸟叫什么名字？	那_r	只_q	鸟_n	叫_v	什么_r	名字_n	？_chnQmark
+你记得他说了什么？	你_r	记得_v	他_r	说_v	了_y	什么_r	？_chnQmark
+他给了我一件礼物。	他_r	给_v	了_y	我_r	一_m	件_q	礼物_n	。_chnDot
+他是对我感兴趣的。	他_r	是_v	对_p	我_r	感兴趣_a	的_u	。_chnDot
+你买了多少张照片？	你_r	买_v	了_y	多少_r	张_q	照片_n	？_chnQmark
+她跑得跟你一样快。	她_r	跑_v	得_u	跟_p	你_r	一样_u	快_a	。_chnDot
+我想喝点热的饮料。	我_r	想_v	喝_v	点_qt	热_a	的_u	饮料_n	。_chnDot
+我要去换我的衬衫。	我_r	要_v	去_v	换_v	我_r	的_u	衬衫_n	。_chnDot
+我记得去年看过你。	我_r	记得_v	去年_t	看_v	过_u	你_r	。_chnDot
+他给我看了她的照片。	他_r	给_p	我_r	看_v	了_y	她_r	的_u	照片_n	。_chnDot
+已经很长一段时间了。	已经_d	很_d	长_a	一_m	段_q	时间_n	了_y	。_chnDot
+我记得在哪儿见过她。	我_r	记得_v	在_p	哪儿_r	见_v	过_u	她_r	。_chnDot
+他给你看过照片了吗？	他_r	给_p	你_r	看_v	过_u	照片_n	了_y	吗_y	？_chnQmark
+我只睡了三个小时觉。	我_r	只_d	睡_v	了_y	三_m	个_q	小时_n	觉_v	。_chnDot
+我已经换了我的衣服。	我_r	已经_d	换_v	了_y	我_r	的_u	衣服_n	。_chnDot
+我叔叔给了我他的车。	我_r	叔叔_n	给_v	了_y	我_r	他_r	的_u	车_n	。_chnDot
+游泳对你的健康很好。	游泳_v	对_p	你_r	的_u	健康_a	很_d	好_a	。_chnDot
+我妈妈留了口信给我。	我_r	妈妈_n	留_v	了_y	口_n	信_n	给_p	我_r	。_chnDot
+他很少给他的妻子礼物。	他_r	很_d	少_a	给_v	他_r	的_u	妻子_n	礼物_n	。_chnDot
+她昨天一定已经做过了。	她_r	昨天_t	一定_d	已经_d	做_v	过_u	了_y	。_chnDot
+你用你的照相机做了什么？	你_r	用_v	你_r	的_u	照相机_n	做_v	了_y	什么_r	？_chnQmark
+他做了一把椅子给他儿子。	他_r	做_v	了_y	一_m	把_q	椅子_n	给_p	他_r	儿子_n	。_chnDot
+我叔叔给了我一个照相机。	我_r	叔叔_n	给_v	了_y	我_r	一_m	个_q	照相机_n	。_chnDot
+他忘记给她买过一个礼物了。	他_r	忘记_v	给_p	她_r	买_v	过_u	一_m	个_q	礼物_n	了_y	。_chnDot
+我真的等了她很长一段时间。	我_r	真_d	的_u	等_v	了_y	她_r	很_d	长_a	一_m	段_q	时间_n	。_chnDot
+她把我介绍给她的弟弟认识。	她_r	把_p	我_r	介绍_v	给_p	她_r	的_u	弟弟_n	认识_v	。_chnDot
