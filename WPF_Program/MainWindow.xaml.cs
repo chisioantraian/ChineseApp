@@ -96,8 +96,6 @@ namespace ChineseAppWPF
 
         private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();
 
-        private void WritingSystemComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.ChangeWritingSystem();
-
         private void InputComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.ShowResult();
 
         private void CharactersWithComponent_Click(object sender, RoutedEventArgs e)

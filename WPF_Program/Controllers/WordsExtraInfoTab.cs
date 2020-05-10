@@ -15,16 +15,16 @@ namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
-        private static void ShowCharacterDecomposition(string characterToBeDecomposed, string writingState)
+        private static void ShowCharacterDecomposition(string characterToBeDecomposed)
         {
             mainWindow.tView.Items.Clear();
-            var itemsToAdd = GetTreeDecomposition(characterToBeDecomposed, 0, writingState);
+            var itemsToAdd = GetTreeDecomposition(characterToBeDecomposed);
             foreach (TreeViewItem item in itemsToAdd)
             {
                 mainWindow.tView.Items.Add(item);
             }
         }
-        internal static List<TreeViewItem> GetTreeDecomposition(string ch, int level, string writingState)
+        internal static List<TreeViewItem> GetTreeDecomposition(string ch)
         {
 
 
@@ -34,14 +34,14 @@ namespace ChineseAppWPF.Controllers
                 {
                     new TreeViewItem
                     {
-                        Header = CreateBranchWord(ch, level, true, writingState),
+                        Header = CreateBranchWord(ch, true),
                         //Margin = new Thickness(10, 0, 0, 0),
                         //IsExpanded = true
                     }
                 };
             }
 
-            Border b = CreateBranchWord(ch, level, false, writingState);
+            Border b = CreateBranchWord(ch, false);
             //if (b == null)
             //{
             //    return new List<TreeViewItem>();
@@ -59,13 +59,13 @@ namespace ChineseAppWPF.Controllers
                 return new List<TreeViewItem> { item };
             }
 
-            if (ChineseService.IsCharacter(ch[0], writingState))
+            if (ChineseService.IsCharacter(ch[0]))
             {
                 if (basicDict.ContainsKey(ch))
                 {
                     foreach (string c in basicDict[ch])
                     {
-                        foreach (var child in GetTreeDecomposition(c, level + 1, writingState))
+                        foreach (var child in GetTreeDecomposition(c))
                             item.Items.Add(child);
                     }
                 }
@@ -78,7 +78,7 @@ namespace ChineseAppWPF.Controllers
                     List<TreeViewItem> result = new List<TreeViewItem>();
                     foreach (string c in basicDict[ch])
                     {
-                        foreach (var child in GetTreeDecomposition(c, level + 1, writingState))
+                        foreach (var child in GetTreeDecomposition(c))
                         {
                             result.Add(child);
                         }
@@ -90,10 +90,10 @@ namespace ChineseAppWPF.Controllers
         }
 
 
-        internal static Border CreateBranchWord(string ch, int level, bool isKangxi, string writingState)
+        internal static Border CreateBranchWord(string ch, bool isKangxi)
         {
             List<Word> words = ChineseService
-                                .GetAllWordsFrom(new List<string> { ch.ToString() }, writingState)
+                                .GetAllWordsFrom(new List<string> { ch.ToString() })
                                 .ToList();
             
             //if (words.Count() == 0)

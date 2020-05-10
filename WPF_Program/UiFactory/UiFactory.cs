@@ -52,7 +52,7 @@ namespace ChineseAppWPF.UiFactory
             return wordBorder;
         }
 
-        public static Border CreateAnalysisWordBox((SolidColorBrush, string) posTuple, string simp, MainWindow window, string writingState)
+        public static Border CreateAnalysisWordBox((SolidColorBrush, string) posTuple, string simp, MainWindow window)//, string writingState)
         {
             TextBlock wBlock = new TextBlock
             {
@@ -83,7 +83,7 @@ namespace ChineseAppWPF.UiFactory
             };
             wordPanel.MouseEnter += (s, e) =>
             {
-                ChineseService.GetAllWordsFrom(new List<string>() { simp }, writingState).UpdateShownWords();
+                ChineseService.GetAllWordsFrom(new List<string>() { simp }).UpdateShownWords();
             };
 
             wordPanel.Children.Add(wBlock);

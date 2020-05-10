@@ -18,13 +18,6 @@ namespace ChineseAppWPF.Controllers
             ChineseService.GetEnglishResult(text).UpdateShownWords();
         }
 
-        /*internal static void ShowChineseResult(string text = "")
-        {
-            if (text == "")
-                text = mainWindow.SearchBar.Text;
-            ShowChineseResult(text, writingState, sortingState);
-        }*/
-
         internal static void ShowChineseResult(string value = "")
         {
             string text = mainWindow.SearchBar.Text;
@@ -48,64 +41,42 @@ namespace ChineseAppWPF.Controllers
             }
             else
             {
-                ChineseService.SearchBySimplified(text, writingState).UpdateShownWords();
+                ChineseService.SearchBySimplified(text).UpdateShownWords();
             }
         }
 
-        internal static void ShowComposeResult(string value) => Decomposition.GetCharactersWithComponent(value, writingState).UpdateShownWords();
+        internal static void ShowComposeResult(string value) => Decomposition.GetCharactersWithComponent(value).UpdateShownWords();
 
         internal static void ShowSomeRandomWords() => ChineseService.GetRandomWords().UpdateShownWords();
 
-        internal static void ShowWordWithThisCharacter(char character) => ShowCharacterDecomposition(character.ToString(), writingState);
+        internal static void ShowWordWithThisCharacter(char character) => ShowCharacterDecomposition(character.ToString());
 
 
         internal static void ShowCharsWithComponent_SidePanel(char character)
         {
-            IEnumerable<Word> words = Decomposition.GetCharactersWithComponent(character.ToString(), writingState);
+            IEnumerable<Word> words = Decomposition.GetCharactersWithComponent(character.ToString());
             words.UpdateShownWords_Left();
         }
 
         internal static void ShowWordsWithCharacter_SidePanel(char character)
         {
-            /*string text = mainWindow.SearchBar.Text;
-
-            if (value != "")
-                text = value;
-
-            bool isPinyin = false;
-            foreach (char c in text)
-            {
-                if (english.Contains(c))
-                {
-                    isPinyin = true;
-                    break;
-                }
-            }
-
-            if (isPinyin)
-            {
-                ChineseService.SearchByPinyin(text).UpdateShownWords();
-            }
-            else
-            {}*/
-                ChineseService.SearchBySimplified(character.ToString(), writingState).UpdateShownWords_Right();
-            
+            ChineseService.SearchBySimplified(character.ToString()).UpdateShownWords_Right();
         }
 
 
         internal static void UpdateShownWords_Left(this IEnumerable<Word> filteredWords, bool showSorted = true)
         {
-            filteredWords.UpdateShownWords_Left(writingState, sortingState, showSorted);
+            filteredWords.UpdateShownWords_Left(sortingState, showSorted);
         }
 
         internal static void UpdateShownWords_Right(this IEnumerable<Word> filteredWords, bool showSorted = true)
         {
-            filteredWords.UpdateShownWords_Right(writingState, sortingState, showSorted);
+            filteredWords.UpdateShownWords_Right(sortingState, showSorted);
         }
 
         internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, bool showSorted = true)
         {
-            filteredWords.UpdateShownWords(writingState, sortingState, showSorted);
+            filteredWords.UpdateShownWords(sortingState, showSorted);
         }
 
         internal static Brush ComputeColor(string pron)
@@ -137,7 +108,7 @@ namespace ChineseAppWPF.Controllers
 
 
 
-        internal static void UpdateShownWords_Left(this IEnumerable<Word> filteredWords, string writingSystem, string sortingMethod, bool showSorted = true)
+        internal static void UpdateShownWords_Left(this IEnumerable<Word> filteredWords, string sortingMethod, bool showSorted = true)
         {
             static SPPair makeSPP(char chn, string pron)
             {
@@ -215,7 +186,7 @@ namespace ChineseAppWPF.Controllers
                         break;
 
                     case "Strokes":
-                        filteredWords = filteredWords.SortByStrokesCount(writingState);
+                        filteredWords = filteredWords.SortByStrokesCount();
                         break;
 
                     case "Pinyin":
@@ -242,7 +213,7 @@ namespace ChineseAppWPF.Controllers
 
 
 
-        internal static void UpdateShownWords_Right(this IEnumerable<Word> filteredWords, string writingSystem, string sortingMethod, bool showSorted = true)
+        internal static void UpdateShownWords_Right(this IEnumerable<Word> filteredWords, string sortingMethod, bool showSorted = true)
         {
             static SPPair makeSPP(char chn, string pron)
             {
@@ -320,7 +291,7 @@ namespace ChineseAppWPF.Controllers
                         break;
 
                     case "Strokes":
-                        filteredWords = filteredWords.SortByStrokesCount(writingState);
+                        filteredWords = filteredWords.SortByStrokesCount();
                         break;
 
                     case "Pinyin":
@@ -347,7 +318,7 @@ namespace ChineseAppWPF.Controllers
 
 
 
-        internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, string writingSystem, string sortingMethod, bool showSorted = true)
+        internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, string sortingMethod, bool showSorted = true)
         {
             static SPPair makeSPP(char chn, string pron) 
             {
@@ -425,7 +396,7 @@ namespace ChineseAppWPF.Controllers
                         break;
 
                     case "Strokes":
-                        filteredWords = filteredWords.SortByStrokesCount(writingState);
+                        filteredWords = filteredWords.SortByStrokesCount();
                         break;
 
                     case "Pinyin":

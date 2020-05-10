@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Security.Policy;
 using ChineseAppWPF.Models;
 
 namespace ChineseAppWPF.Logic
@@ -16,6 +16,7 @@ namespace ChineseAppWPF.Logic
         private static List<Word> allWords = new List<Word>();
         private static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
         private static HashSet<string> wordsSet = new HashSet<string>();
+        private static HashSet<string> traditionalSet = new HashSet<string>();
         private static Dictionary<char, int> strokesDict = new Dictionary<char, int>();
 
         public static void InitializeData()
@@ -23,6 +24,7 @@ namespace ChineseAppWPF.Logic
             BuildAllWords();
             BuildAllDetailedWords();
             BuildAllWordsSet();
+            BuildTraditionalSet();
             BuilStrokesDict();
         }
 
@@ -92,6 +94,17 @@ namespace ChineseAppWPF.Logic
             }
         }
 
+        private static void BuildTraditionalSet()
+        {
+            foreach (var word in allWords)
+            {
+                if (word.Traditional != word.Simplified)
+                {
+                    traditionalSet.Add(word.Traditional);
+                }
+            }
+        }
+
         private static void BuilStrokesDict()
         {
             foreach (string line in File.ReadAllLines(strokesPath))
@@ -119,9 +132,9 @@ namespace ChineseAppWPF.Logic
             return words.OrderBy(w => w.Frequency).Reverse();
         }
 
-        public static IEnumerable<Word> SortByStrokesCount(this IEnumerable<Word> words, string writingState)
+        public static IEnumerable<Word> SortByStrokesCount(this IEnumerable<Word> words)
         {
-            return words.OrderBy(w => GetStrokeCount(w, writingState));
+            return words.OrderBy(w => GetStrokeCount(w));
         }
 
         public static IEnumerable<Word> SortByPinyin(this IEnumerable<Word> words)
@@ -153,9 +166,9 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-        private static int GetStrokeCount(Word w, string writingState) //modify to use traditional
+        private static int GetStrokeCount(Word w) //modify to use traditional
         {
-            int count = 0;
+            /*int count = 0;
             if (writingState == "Simplified")
             {
                 foreach (char c in w.Simplified)
@@ -172,6 +185,15 @@ namespace ChineseAppWPF.Logic
                         count += strokesDict[c];
                 }
             }
+            return count;*/
+            int count = 0;
+
+            foreach (char c in w.Simplified)
+            {
+                if (strokesDict.ContainsKey(c))
+                    count += strokesDict[c];
+            }
+            
             return count;
         }
 
@@ -201,9 +223,10 @@ namespace ChineseAppWPF.Logic
             //               .Where(w => w.Definitions.Split(delims).Any(tok => tok.ToLower().StartsWith(text.ToLower()) ));
         }
 
-        public static IEnumerable<Word> SearchBySimplified(string text, string writingState)
+        public static IEnumerable<Word> SearchBySimplified(string text)//, string writingState)
         {
-            if (writingState == "Simplified")
+            string writingSystem = GetWritingSystem(text);
+            if (writingSystem == "Simplified")
             {
                 return allWords.AsParallel()
                                .Where(w => w.Simplified.Contains(text));
@@ -214,6 +237,9 @@ namespace ChineseAppWPF.Logic
                                .Where(w => w.Traditional.Contains(text));
             }
         }
+
+
+
 
         public static IEnumerable<Word> SearchByPinyin(string text)
         {
@@ -250,9 +276,11 @@ namespace ChineseAppWPF.Logic
             return result;
         }
 
-        internal static bool IsCharacter(char character, string writingState)
+        internal static bool IsCharacter(char character)//, string writingState)
         {
-            if (writingState == "Simplified")
+            string writingSystem = GetWritingSystem(character.ToString());
+
+            if (writingSystem == "Simplified")
             {
                 return allWords.Any(w => w.Simplified == character.ToString());
             }
@@ -278,13 +306,15 @@ namespace ChineseAppWPF.Logic
             return wordsSet.Contains(simplOfWord);
         }
 
-        public static IEnumerable<Word> GetAllWordsFrom(IEnumerable<string> simpList, string writingState)
+        public static IEnumerable<Word> GetAllWordsFrom(IEnumerable<string> simpList)
         {
-            if (writingState == "Simplified")
+            string writingSystem = GetWritingSystem(simpList);
+
+            if (writingSystem == "Simplified")
             {
                 return from simp in simpList
                        from w in allWords
-                       where w.Simplified == simp
+                       where w.Simplified == simp // || w.Traditional == simp ?
                        select w;
             }
             else
@@ -296,6 +326,28 @@ namespace ChineseAppWPF.Logic
             }
 
         }
+
+
+        public static string GetWritingSystem(string text)
+        {
+            if (traditionalSet.Contains(text))
+                return "Traditional";
+            return "Simplified";
+        }
+
+
+        public static string GetWritingSystem(IEnumerable<string> simpList)
+        {
+            foreach (string s in simpList)
+            {
+                if (GetWritingSystem(s) == "Traditional")
+                {
+                    return "Traditional";
+                }
+            }
+            return "Simplified";
+        }
+
 
         /// <summary>
         /// Simplified (first match) + punctuation.

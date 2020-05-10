@@ -70,14 +70,17 @@ namespace ChineseAppWPF.Logic
             return false;
         }
 
-        public static IEnumerable<Word> GetCharactersWithComponent(string component, string writingState)
+        public static IEnumerable<Word> GetCharactersWithComponent(string component)
         {
+            //string writingSystem = //
+
             bool ComputedSimplifiedIsFound(Word w)
             {
-                if (writingState == "Simplified")
-                    return IsComponentInTree(w.Simplified, component);
-                else
-                    return IsComponentInTree(w.Traditional, component);
+                //if (writingState == "Simplified")
+                //    return IsComponentInTree(w.Simplified, component);
+                //else
+                //    return IsComponentInTree(w.Traditional, component);
+                return IsComponentInTree(w.Simplified, component) || IsComponentInTree(w.Traditional, component);
             }
 
             return ChineseService.GetAllWords()

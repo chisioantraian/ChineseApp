@@ -23,7 +23,7 @@ namespace ChineseAppWPF.Controllers
         private static IEnumerable<Word> previousWords = new List<Word>();
 
         private static string sortingState = "Frequency";
-        private static string writingState = "Simplified";
+        //private static string writingState = "Simplified";
 
         public static void SetWindow(MainWindow window)
         {
@@ -46,9 +46,9 @@ namespace ChineseAppWPF.Controllers
             switch (typeItem.Content.ToString())
             {
                 case "English":
-                    var t = new Thread(ShowEnglishThread);
-                    t.Start();
-                    //ShowEnglishResult(); 
+                    //var t = new Thread(ShowEnglishThread);
+                    //t.Start();
+                    ShowEnglishResult(); 
                     break;
                 case "Chinese": ShowChineseResult(); break;
             }
@@ -63,62 +63,7 @@ namespace ChineseAppWPF.Controllers
         {
             currentWords = previousWords;
             currentWords.UpdateShownWords();
-
             mainWindow.UndoButton.IsEnabled = false;
-        }
-
-        private static void constructResultedWords(List<Word> result, List<string> arr, int start, int end)
-        {
-            if (end == arr.Count)
-                return;
-
-            else if (start > end)
-                constructResultedWords(result, arr, 0, end + 1);
-
-            else
-            {
-                string s = "";
-                for (int i = start; i <= end; i++)
-                {
-                    Console.Write(arr[i]);
-                    s += arr[i];//Console.Write(arr[i]);
-                }
-                Console.WriteLine();
-                if (ChineseService.WordExists(s))
-                {
-                    //IEnumerable<Word> wds = ChineseService.SearchBySimplified(s);
-                    IEnumerable<Word> wds = ChineseService.GetAllWordsFrom(new List<string> { s }, writingState);
-                    foreach (Word w in wds)
-                        result.Add(w);
-                }
-                //Console.WriteLine();
-                constructResultedWords(result, arr, start + 1, end);
-            }
-            return;
-        }
-
-        public static void ShowWordsFromThisChars(List<string> chars)
-        {
-            List<Word> result = new List<Word>();
-
-            constructResultedWords(result, chars, 0, 0);
-            result.UpdateShownWords(false);
-        }
-
-
-        public static void ChangeWritingSystem2()
-        {
-            /*if (writingState == "Simplified")
-            {
-                writingState = "Traditional";
-                mainWindow.ChangeSystemButton.Content = "Change to Simplified";
-            }
-            else
-            {
-                writingState = "Simplified";
-                mainWindow.ChangeSystemButton.Content = "Change to Traditional";
-            }
-            currentWords.UpdateShownWords();*/
         }
 
         public static void SortResult()
@@ -134,21 +79,6 @@ namespace ChineseAppWPF.Controllers
                 sortingState = selectedSorting;
                 currentWords.UpdateShownWords();
             }
-        }
-
-        public static void ChangeWritingSystem()
-        {
-            /*if (mainWindow == null)
-                return;
-
-            ComboBoxItem item = (ComboBoxItem)mainWindow.WritingSystemComboBox.SelectedItem;
-            string selectedSystem = item.Content.ToString();
-
-            if (writingState != selectedSystem)
-            {
-                writingState = selectedSystem;
-                currentWords.UpdateShownWords();
-            }*/
         }
 
         public static IEnumerable<Breakdown> GetNoAlgBreakdown(string sentence)
@@ -178,7 +108,6 @@ namespace ChineseAppWPF.Controllers
                     BreakdownService.ApplyRule(rule, algList, i);
                 }
             }
-
             return algList;
         }
 
