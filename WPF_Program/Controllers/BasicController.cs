@@ -108,7 +108,7 @@ namespace ChineseAppWPF.Controllers
 
         public static void ChangeWritingSystem2()
         {
-            if (writingState == "Simplified")
+            /*if (writingState == "Simplified")
             {
                 writingState = "Traditional";
                 mainWindow.ChangeSystemButton.Content = "Change to Simplified";
@@ -118,7 +118,7 @@ namespace ChineseAppWPF.Controllers
                 writingState = "Simplified";
                 mainWindow.ChangeSystemButton.Content = "Change to Traditional";
             }
-            currentWords.UpdateShownWords();
+            currentWords.UpdateShownWords();*/
         }
 
         public static void SortResult()
