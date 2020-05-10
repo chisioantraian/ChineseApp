@@ -106,6 +106,21 @@ namespace ChineseAppWPF.Controllers
         }
 
 
+        public static void ChangeWritingSystem2()
+        {
+            if (writingState == "Simplified")
+            {
+                writingState = "Traditional";
+                mainWindow.ChangeSystemButton.Content = "Change to Simplified";
+            }
+            else
+            {
+                writingState = "Simplified";
+                mainWindow.ChangeSystemButton.Content = "Change to Traditional";
+            }
+            currentWords.UpdateShownWords();
+        }
+
         public static void SortResult()
         {
             if (mainWindow == null)
@@ -123,7 +138,7 @@ namespace ChineseAppWPF.Controllers
 
         public static void ChangeWritingSystem()
         {
-            if (mainWindow == null)
+            /*if (mainWindow == null)
                 return;
 
             ComboBoxItem item = (ComboBoxItem)mainWindow.WritingSystemComboBox.SelectedItem;
@@ -133,7 +148,7 @@ namespace ChineseAppWPF.Controllers
             {
                 writingState = selectedSystem;
                 currentWords.UpdateShownWords();
-            }
+            }*/
         }
 
         public static IEnumerable<Breakdown> GetNoAlgBreakdown(string sentence)

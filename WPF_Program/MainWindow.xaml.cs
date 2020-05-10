@@ -37,65 +37,24 @@ namespace ChineseAppWPF
 
         private void SearchButton_Click(object sender, RoutedEventArgs e) => Controller.ShowResult();
 
+        private void ChangeWritingSystem_Click(object sender, RoutedEventArgs e) => Controller.ChangeWritingSystem2();
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
 
         private void SearchBar_KeyUp(object sender, KeyEventArgs e) => Controller.ShowResult();
+
+        private string fillers = "〔〕-";
 
         private void CharacterAndPinyin_MouseEnter(object sender, MouseEventArgs e)
         {
             var textBlock = (TextBlock)sender;
             string character = textBlock.Text;
-
-            textBlock.Cursor = Cursors.Hand;
-
-            textBlock.Text = "";
-            //textBlock.Foreground = Brushes.Black;
-            textBlock.Inlines.Add(new Run(character){ FontWeight = FontWeights.Bold });
-        }
-
-
-        private void printSubArrays(List<string> arr, int start, int end)
-        {
-            if (end == arr.Count)
-                return;
-            
-            else if (start > end)
-                printSubArrays(arr, 0, end + 1);
-
-            else
+            if (!fillers.Contains(character))
             {
-                for (int i = start; i <= end; i++)
-                    Console.Write(arr[i]);
-                Console.WriteLine();
-                printSubArrays(arr, start + 1, end);
+                textBlock.Cursor = Cursors.Hand;
+                textBlock.Text = "";
+                //textBlock.Foreground = Brushes.Black;
+                textBlock.Inlines.Add(new Run(character) { FontWeight = FontWeights.Bold });
             }
-            return;
-        }
-
-        private void word_mouseenter(object sender, MouseEventArgs e)
-        {
-            var item = (ItemsControl)sender;
-            IEnumerable<SPPair> sPPairs = (IEnumerable<SPPair>)item.Tag;
-            List<string> chars = sPPairs.Select(sp => sp.ChineseCharacter.ToString()).ToList();
-
-            Controller.ShowWordsFromThisChars(chars);
-            printSubArrays(chars, 0, 0);
-            Console.WriteLine();
-
-        }
-
-        private void WordsInsideThisWord_Click(object sender, RoutedEventArgs e)
-        {
-            var item = (MenuItem)sender;
-            //string s = item.Tag.ToString();
-            //Console.WriteLine(s);
-            IEnumerable<SPPair> sPPairs = (IEnumerable<SPPair>)item.Tag;
-            foreach (SPPair sp in sPPairs)
-            {
-                Console.WriteLine(sp.ChineseCharacter);
-            }
-            List<string> chars = sPPairs.Select(sp => sp.ChineseCharacter.ToString()).ToList();
-            Controller.ShowWordsFromThisChars(chars);
         }
 
         private void CharacterAndPinyin_MouseUp(object sender, RoutedEventArgs e)
@@ -108,10 +67,12 @@ namespace ChineseAppWPF
         {
             var textBlock = (TextBlock)sender;
             string character = textBlock.Text;
-
-            textBlock.Text = "";
-            textBlock.Inlines.Add(character);
-            //textBlock.Foreground = Brushes.DarkSlateGray;
+            if (!fillers.Contains(character))
+            {
+                textBlock.Text = "";
+                textBlock.Inlines.Add(character);
+                //textBlock.Foreground = Brushes.DarkSlateGray;
+            }
         }
 
         private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();
