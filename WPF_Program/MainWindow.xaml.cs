@@ -15,6 +15,7 @@ namespace ChineseAppWPF
 {
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -35,9 +36,6 @@ namespace ChineseAppWPF
 
         private void Undo_Click(object sender, RoutedEventArgs e) => Controller.Undo();
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e) => Controller.ShowResult();
-
-        private void ChangeWritingSystem_Click(object sender, RoutedEventArgs e) => Controller.ChangeWritingSystem2();
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
 
         private void SearchBar_KeyUp(object sender, KeyEventArgs e) => Controller.ShowResult();
@@ -47,31 +45,44 @@ namespace ChineseAppWPF
         private void CharacterAndPinyin_MouseEnter(object sender, MouseEventArgs e)
         {
             var textBlock = (TextBlock)sender;
-            string character = textBlock.Text;
-            if (!fillers.Contains(character))
+            //string character = textBlock.Text;
+            //if (!fillers.Contains(character))
+            char character = textBlock.Text[0];
+            if (character != '〔' && 
+                character != '〕' && 
+                character != '-' &&
+                character != ' ')
             {
                 textBlock.Cursor = Cursors.Hand;
                 textBlock.Text = "";
-                //textBlock.Foreground = Brushes.Black;
-                textBlock.Inlines.Add(new Run(character) { FontWeight = FontWeights.Bold });
+                textBlock.Inlines.Add(new Run(character.ToString()) { FontWeight = FontWeights.Bold });
             }
         }
 
         private void CharacterAndPinyin_MouseUp(object sender, RoutedEventArgs e)
         {
             var textBlock = (TextBlock)sender;
-            Controller.ShowWordWithThisCharacter(textBlock.Text[0]);
+            MouseButtonEventArgs ev = (MouseButtonEventArgs)e;
+            if (ev.ChangedButton == MouseButton.Left)
+            {
+                Controller.ShowWordWithThisCharacter(textBlock.Text[0]);
+                Controller.ShowCharsWithComponent_SidePanel(textBlock.Text[0]);
+                Controller.ShowWordsWithCharacter_SidePanel(textBlock.Text[0]);
+            }
         }
 
         private void CharacterAndPinyin_MouseLeave(object sender, MouseEventArgs e)
         {
             var textBlock = (TextBlock)sender;
-            string character = textBlock.Text;
-            if (!fillers.Contains(character))
+            //string character = textBlock.Text;
+            //if (!fillers.Contains(character))
+            char character = textBlock.Text[0];
+            if (character != '〔' &&
+                character != '〕' &&
+                character != '-' &&
+                character != ' ')
             {
-                textBlock.Text = "";
-                textBlock.Inlines.Add(character);
-                //textBlock.Foreground = Brushes.DarkSlateGray;
+                textBlock.Text = character.ToString();
             }
         }
 

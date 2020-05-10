@@ -35,7 +35,7 @@ namespace ChineseAppWPF.Controllers
                     new TreeViewItem
                     {
                         Header = CreateBranchWord(ch, level, true, writingState),
-                        Margin = new Thickness(30, 0, 0, 0),
+                        //Margin = new Thickness(10, 0, 0, 0),
                         //IsExpanded = true
                     }
                 };
@@ -49,7 +49,7 @@ namespace ChineseAppWPF.Controllers
             TreeViewItem item = new TreeViewItem
             {
                 Header = b,
-                Margin = new Thickness(30, 0, 0, 0),
+                //Margin = new Thickness(5, 0, 0, 0),
                 IsExpanded = true
             };
 
@@ -110,10 +110,10 @@ namespace ChineseAppWPF.Controllers
             Border border = new Border
             {
                 BorderBrush = color,
-                BorderThickness = new Thickness(3),
+                BorderThickness = new Thickness(2),
                 CornerRadius = new CornerRadius(5),
-                Margin = new Thickness(0,2,2,2),
-                Padding = new Thickness(2),
+                Margin = new Thickness(0,1,1,1),
+                Padding = new Thickness(1),
             };
             StackPanel panel = new StackPanel
             {
@@ -150,7 +150,7 @@ namespace ChineseAppWPF.Controllers
             TextBlock charBlock = new TextBlock
             {
                 Text = shownText,
-                FontSize = 60,
+                FontSize = 30,
                 Foreground = Brushes.DarkSlateGray,
                 Cursor = Cursors.Hand,
                 ContextMenu = menu
@@ -170,7 +170,7 @@ namespace ChineseAppWPF.Controllers
             TextBlock detailBlock = new TextBlock
             {
                 Text = description,
-                FontSize = 16
+                FontSize = 12
             };
 
             Border charBorder = new Border
