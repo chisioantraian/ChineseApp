@@ -30,10 +30,7 @@ namespace ChineseAppWPF
 
         private void Undo_Click(object sender, RoutedEventArgs e) => Controller.Undo();
 
-        private void ChangeLanguage_Click(object sender, RoutedEventArgs e)
-        {
-            Controller.ChangeLanguage();
-        }
+        private void ChangeLanguage_Click(object sender, RoutedEventArgs e) => Controller.ChangeLanguage();
 
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
 

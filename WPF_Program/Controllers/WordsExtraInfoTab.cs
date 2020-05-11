@@ -15,7 +15,7 @@ namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
-        private static void ShowCharacterDecomposition(string characterToBeDecomposed)
+        private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
             mainWindow.tView.Items.Clear();
             List<TreeViewItem> itemsToAdd = GetTreeDecomposition(characterToBeDecomposed);
@@ -24,47 +24,39 @@ namespace ChineseAppWPF.Controllers
                 mainWindow.tView.Items.Add(item);
             }
         }
-        internal static List<TreeViewItem> GetTreeDecomposition(string ch)
+        internal static List<TreeViewItem> GetTreeDecomposition(char ch)//(string ch)
         {
 
-            if (ch.Length == 1 && (Kangxi.CheckIfKangxiRadical(ch[0]) || Kangxi.CheckIfStroke(ch[0])))
+            if (Kangxi.CheckIfKangxiRadical(ch) || Kangxi.CheckIfStroke(ch))
             {
-                return new List<TreeViewItem>
-                {
-                    new TreeViewItem
-                    {
-                        Header = CreateBranchWord(ch, true),
-                        //Margin = new Thickness(10, 0, 0, 0),
-                        //IsExpanded = true
-                    }
-                };
+                return new List<TreeViewItem> { new TreeViewItem {Header = CreateBranchWord(ch, true)} };
             }
 
-            Border b = CreateBranchWord(ch, false);
+            //Border b = CreateBranchWord(ch, false);
             //if (b == null)
             //{
             //    return new List<TreeViewItem>();
             //}
             TreeViewItem item = new TreeViewItem
             {
-                Header = b,
-                //Margin = new Thickness(5, 0, 0, 0),
+                Header = CreateBranchWord(ch, false),
                 IsExpanded = true
             };
 
-            
-            if (ch == null || ch == "")
+            //TODO ???
+            if (ch == ' ')//if (ch == null || ch == "")
             {
                 return new List<TreeViewItem> { item };
             }
 
-            if (ChineseService.IsCharacter(ch[0]))
+            if (ChineseService.IsCharacter(ch))
             {
-                if (basicDict.ContainsKey(ch))
+                //string to char ?
+                if (basicDict.ContainsKey(ch.ToString()))
                 {
-                    foreach (string c in basicDict[ch])
+                    foreach (string c in basicDict[ch.ToString()])
                     {
-                        foreach (var child in GetTreeDecomposition(c))
+                        foreach (TreeViewItem child in GetTreeDecomposition(c[0]))
                             item.Items.Add(child);
                     }
                 }
@@ -72,12 +64,12 @@ namespace ChineseAppWPF.Controllers
             }
             else
             {
-                if (basicDict.ContainsKey(ch))
+                if (basicDict.ContainsKey(ch.ToString()))
                 {
                     List<TreeViewItem> result = new List<TreeViewItem>();
-                    foreach (string c in basicDict[ch])
+                    foreach (string c in basicDict[ch.ToString()])
                     {
-                        foreach (var child in GetTreeDecomposition(c))
+                        foreach (var child in GetTreeDecomposition(c[0]))
                         {
                             result.Add(child);
                         }
@@ -89,7 +81,8 @@ namespace ChineseAppWPF.Controllers
         }
 
 
-        internal static Border CreateBranchWord(string ch, bool isKangxi)
+        //TODO remove isKangxi inside this method?
+        internal static Border CreateBranchWord(char ch, bool isKangxi)
         {
             List<Word> words = ChineseService
                                 .GetAllWordsFrom(new List<string> { ch.ToString() })
@@ -119,12 +112,12 @@ namespace ChineseAppWPF.Controllers
                 Orientation = Orientation.Horizontal
             };
 
-            string shownText = ch;
-            if (ch.Length > 1)
-                shownText = "*";
-            Brush shownColor = Brushes.Black;
-            if (shownText == "*")
-                shownColor = Brushes.Yellow;
+            string shownText = ch.ToString();
+            //if (ch.Length > 1)
+            //    shownText = "*";
+            //Brush shownColor = Brushes.Black;
+            //if (shownText == "*")
+            //    shownColor = Brushes.Yellow;
 
             MenuItem item1 = new MenuItem
             {
@@ -162,8 +155,9 @@ namespace ChineseAppWPF.Controllers
             };
             charBlock.MouseLeave += (s, e) =>
             {
-                charBlock.Text = "";
-                charBlock.Inlines.Add(shownText);
+                charBlock.Text = shownText;
+                //charBlock.Text = "";
+                //charBlock.Inlines.Add(shownText);
                 charBlock.Foreground = Brushes.DarkSlateGray;
             };
             TextBlock detailBlock = new TextBlock
