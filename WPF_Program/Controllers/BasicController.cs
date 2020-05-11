@@ -23,6 +23,11 @@ namespace ChineseAppWPF.Controllers
         private static IEnumerable<Word> previousWords = new List<Word>();
 
         private static string sortingState = "Frequency";
+        private static string selectedLanguage = "English";
+
+        private delegate void ShowLanguageResult();
+        private static ShowLanguageResult showLanguageResult = ShowEnglishResult;
+
         //private static string writingState = "Simplified";
 
         public static void SetWindow(MainWindow window)
@@ -31,6 +36,24 @@ namespace ChineseAppWPF.Controllers
             allDetailedWords = ChineseService.GetAllDetailedWords();
             basicDict = Decomposition.GetBasicDict();
         }
+
+
+        public static void ChangeLanguage()
+        {
+            if (selectedLanguage == "English")
+            {
+                selectedLanguage = "Chinese";
+                mainWindow.ChangeLanguageButton.Content = "Change to English";
+                showLanguageResult = ShowChineseResult;
+            }
+            else
+            {
+                selectedLanguage = "English";
+                mainWindow.ChangeLanguageButton.Content = "Change to Chinese";
+                showLanguageResult = ShowEnglishResult;
+            }
+        }
+
 
         public static void ShowResult()
         {
@@ -42,6 +65,7 @@ namespace ChineseAppWPF.Controllers
                 currentWords.UpdateShownWords();
                 return;
             }
+            /*
             ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
             switch (typeItem.Content.ToString())
             {
@@ -52,7 +76,11 @@ namespace ChineseAppWPF.Controllers
                     break;
                 case "Chinese": ShowChineseResult(); break;
             }
+            */
+            showLanguageResult();
         }
+
+
 
         public static void ShowEnglishThread()
         {

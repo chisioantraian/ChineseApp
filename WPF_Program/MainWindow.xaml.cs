@@ -36,9 +36,20 @@ namespace ChineseAppWPF
 
         private void Undo_Click(object sender, RoutedEventArgs e) => Controller.Undo();
 
+        private void ChangeLanguage_Click(object sender, RoutedEventArgs e)
+        {
+            Controller.ChangeLanguage();
+        }
+
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
 
-        private void SearchBar_KeyUp(object sender, KeyEventArgs e) => Controller.ShowResult();
+        private void SearchBar_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Controller.ShowResult();
+            }
+        }
 
         private string fillers = "〔〕-";
 

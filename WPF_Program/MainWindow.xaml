@@ -52,6 +52,15 @@
 
                 </Grid.ColumnDefinitions>
 
+                <Button Grid.Column="0" 
+                        Click="ChangeLanguage_Click"
+                        Content="Change to Chinese"
+                        Name="ChangeLanguageButton"
+                        Margin="10,10,10,5">
+                    
+                </Button>
+                
+                <!--
                 <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5,0,10,0">
                     <TextBlock Text="Input language:" />
                     <ComboBox
@@ -64,7 +73,8 @@
                         <ComboBoxItem ToolTip="Search words by typing in chinese/pinyin">Chinese</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
-
+                -->
+                
                 <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,0,10,0">
                     <TextBlock Text="Sort By: "/>
                     <ComboBox Name="SortingComboBox"
@@ -106,16 +116,13 @@
 
             <ListBox Name="WordsList" 
                      Grid.Row="2" 
-                     VirtualizingStackPanel.IsVirtualizing="True"
-                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                    
                      HorizontalContentAlignment="Stretch"
                      Background="WhiteSmoke">
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Background="White" Margin="0">
-                            
-                            
                             <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}">
                                 <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -131,11 +138,10 @@
                                                     FontSize="48"
                                                     Foreground="{Binding CharacterColor}"
                                                     HorizontalAlignment="Center"
-                                                    
-                                                    
                                                     MouseUp="CharacterAndPinyin_MouseUp"
                                                     MouseEnter="CharacterAndPinyin_MouseEnter"
                                                     MouseLeave="CharacterAndPinyin_MouseLeave" >
+                                                    
                                                     <TextBlock.ContextMenu>
                                                         <ContextMenu>
                                                             <MenuItem Header="Show characters which contain this component"
@@ -155,6 +161,7 @@
 
                                                         </ContextMenu>
                                                     </TextBlock.ContextMenu>
+                                                    
                                                 </TextBlock>
 
                                                 <TextBlock
@@ -211,15 +218,10 @@
                     
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="35" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     
-                    <!--
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    -->
                     <Border Grid.Row="0" BorderThickness="2" BorderBrush="Black">
                         <TreeView Name="tView">
 
@@ -236,102 +238,35 @@
                             </TreeView.Resources>
                         </TreeView>
                     </Border>
+
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" 
+                                   Name="LeftPanelCounter"
+                                   Padding="40,12,0,0"
+                                   FontSize="16"
+                                   Text="Words with selected character: " />
+                        <TextBlock Grid.Column="1" 
+                                   Name="RightPanelCounter"
+                                   Padding="40,12,0,0"
+                                   FontSize="16"
+                                   Text="Characters with selected component: " />
+                    </Grid>
+                    
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
                         
-                        <ListBox Name="CharLeftPanel" 
-                             Grid.Column="0" 
-                             VirtualizingStackPanel.IsVirtualizing="True"
-                             VirtualizingStackPanel.VirtualizationMode="Recycling"
-                             HorizontalContentAlignment="Stretch"
-                             Background="WhiteSmoke">
-
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Background="White" Margin="0">
-
-                                        <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"  />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Vertical" Background="White">
-                                                        <TextBlock
-                                                            Text="{Binding ChineseCharacter}"
-                                                            FontSize="36"
-                                                            Foreground="{Binding CharacterColor}"
-                                                            HorizontalAlignment="Center"
-                                                            MouseEnter="CharacterAndPinyin_MouseEnter"
-                                                            MouseLeave="CharacterAndPinyin_MouseLeave" >
-                                                            <TextBlock.ContextMenu>
-                                                                <ContextMenu>
-                                                                    <MenuItem Header="Show characters which contain this component"
-                                                                      Tag="{Binding ChineseCharacter}"
-                                                                      Click="CharactersWithComponent_Click"
-                                                                      Cursor="Hand"
-                                                                      FontSize="16"
-                                                                      Padding="10" />
-                                                                    <Separator />
-                                                                    <MenuItem Header="Show words with this character"
-                                                                      Tag="{Binding ChineseCharacter}"
-                                                                      Click="WordsWithCharacter_Click"
-                                                                      Cursor="Hand"
-                                                                      FontSize="16"
-                                                                      Padding="10" />
-                                                                    <Separator />
-
-                                                                </ContextMenu>
-                                                            </TextBlock.ContextMenu>
-                                                        </TextBlock>
-
-                                                        <TextBlock
-                                                            Name="caracterPronuntie"
-                                                            HorizontalAlignment="Center"
-                                                            Margin="-10">
-                                                            <TextBlock.Inlines>
-                                                                <Run Text="{Binding Pinyin}"
-                                                             FontSize="9" 
-                                                             FontWeight="Bold"
-                                                             />
-                                                            </TextBlock.Inlines>
-                                                        </TextBlock>
-
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-
-                                        </ItemsControl>
-
-                                        <WrapPanel>
-                                            <StackPanel Orientation="Vertical" 
-                                            Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
-                                                <TextBlock
-                                                   Text="{Binding Definitions}" 
-                                                   FontSize="12"
-                                                   TextWrapping="WrapWithOverflow" />
-                                            </StackPanel>
-                                        </WrapPanel>
-
-                                        <Separator>
-                                            <Separator.RenderTransform>
-                                                <ScaleTransform ScaleY="2"/>
-                                            </Separator.RenderTransform>
-                                        </Separator>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                        
 
 
                         <ListBox Name="CharRightPanel" 
-                             Grid.Column="1" 
+                             Grid.Column="0" 
                              VirtualizingStackPanel.IsVirtualizing="True"
                              VirtualizingStackPanel.VirtualizationMode="Recycling"
                              HorizontalContentAlignment="Stretch"
@@ -421,6 +356,92 @@
                         </ListBox>
 
 
+                        <ListBox Name="CharLeftPanel" 
+                             Grid.Column="1" 
+                             VirtualizingStackPanel.IsVirtualizing="True"
+                             VirtualizingStackPanel.VirtualizationMode="Recycling"
+                             HorizontalContentAlignment="Stretch"
+                             Background="WhiteSmoke">
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Background="White" Margin="0">
+
+                                        <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"  />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Vertical" Background="White">
+                                                        <TextBlock
+                                                            Text="{Binding ChineseCharacter}"
+                                                            FontSize="36"
+                                                            Foreground="{Binding CharacterColor}"
+                                                            HorizontalAlignment="Center"
+                                                            MouseEnter="CharacterAndPinyin_MouseEnter"
+                                                            MouseLeave="CharacterAndPinyin_MouseLeave" >
+                                                            <TextBlock.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="Show characters which contain this component"
+                                                                      Tag="{Binding ChineseCharacter}"
+                                                                      Click="CharactersWithComponent_Click"
+                                                                      Cursor="Hand"
+                                                                      FontSize="16"
+                                                                      Padding="10" />
+                                                                    <Separator />
+                                                                    <MenuItem Header="Show words with this character"
+                                                                      Tag="{Binding ChineseCharacter}"
+                                                                      Click="WordsWithCharacter_Click"
+                                                                      Cursor="Hand"
+                                                                      FontSize="16"
+                                                                      Padding="10" />
+                                                                    <Separator />
+
+                                                                </ContextMenu>
+                                                            </TextBlock.ContextMenu>
+                                                        </TextBlock>
+
+                                                        <TextBlock
+                                                            Name="caracterPronuntie"
+                                                            HorizontalAlignment="Center"
+                                                            Margin="-10">
+                                                            <TextBlock.Inlines>
+                                                                <Run Text="{Binding Pinyin}"
+                                                             FontSize="9" 
+                                                             FontWeight="Bold"
+                                                             />
+                                                            </TextBlock.Inlines>
+                                                        </TextBlock>
+
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+
+                                        </ItemsControl>
+
+                                        <WrapPanel>
+                                            <StackPanel Orientation="Vertical" 
+                                            Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
+                                                <TextBlock
+                                                   Text="{Binding Definitions}" 
+                                                   FontSize="12"
+                                                   TextWrapping="WrapWithOverflow" />
+                                            </StackPanel>
+                                        </WrapPanel>
+
+                                        <Separator>
+                                            <Separator.RenderTransform>
+                                                <ScaleTransform ScaleY="2"/>
+                                            </Separator.RenderTransform>
+                                        </Separator>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </Grid>
                 </Grid>
             </TabItem>

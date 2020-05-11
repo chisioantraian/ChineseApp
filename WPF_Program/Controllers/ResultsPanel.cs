@@ -12,13 +12,18 @@ namespace ChineseAppWPF.Controllers
     {
         private static string english = "   ,. 0123456789/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        internal static void ShowEnglishResult()
+        public static void ShowEnglishResult()
         {
             string text = mainWindow.SearchBar.Text;
             ChineseService.GetEnglishResult(text).UpdateShownWords();
         }
 
-        internal static void ShowChineseResult(string value = "")
+        public static void ShowChineseResult()
+        {
+            ShowChineseResult("");
+        }
+
+        public static void ShowChineseResult(string value = "")
         {
             string text = mainWindow.SearchBar.Text;
 
@@ -55,23 +60,23 @@ namespace ChineseAppWPF.Controllers
         internal static void ShowCharsWithComponent_SidePanel(char character)
         {
             IEnumerable<Word> words = Decomposition.GetCharactersWithComponent(character.ToString());
-            words.UpdateShownWords_Left();
+            words.UpdateShownWords_Left(character);
         }
 
         internal static void ShowWordsWithCharacter_SidePanel(char character)
         {
-            ChineseService.SearchBySimplified(character.ToString()).UpdateShownWords_Right();
+            ChineseService.SearchBySimplified(character.ToString()).UpdateShownWords_Right(character);
         }
 
 
-        internal static void UpdateShownWords_Left(this IEnumerable<Word> filteredWords, bool showSorted = true)
+        internal static void UpdateShownWords_Left(this IEnumerable<Word> filteredWords, char character, bool showSorted = true)
         {
-            filteredWords.UpdateShownWords_Left(sortingState, showSorted);
+            filteredWords.UpdateShownWords_Left(sortingState, character, showSorted);
         }
 
-        internal static void UpdateShownWords_Right(this IEnumerable<Word> filteredWords, bool showSorted = true)
+        internal static void UpdateShownWords_Right(this IEnumerable<Word> filteredWords, char character, bool showSorted = true)
         {
-            filteredWords.UpdateShownWords_Right(sortingState, showSorted);
+            filteredWords.UpdateShownWords_Right(sortingState, character, showSorted);
         }
 
         internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, bool showSorted = true)
@@ -108,7 +113,7 @@ namespace ChineseAppWPF.Controllers
 
 
 
-        internal static void UpdateShownWords_Left(this IEnumerable<Word> filteredWords, string sortingMethod, bool showSorted = true)
+        internal static void UpdateShownWords_Left(this IEnumerable<Word> filteredWords, string sortingMethod, char character, bool showSorted = true)
         {
             static SPPair makeSPP(char chn, string pron)
             {
@@ -194,15 +199,19 @@ namespace ChineseAppWPF.Controllers
                         break;
 
                     case "Exact":
-                        ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
-                        string language = typeItem.Content.ToString();
-                        filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, language);
+                        //ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
+                        //string language = typeItem.Content.ToString();
+                        
+                        filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, selectedLanguage);
                         break;
                 }
             }
 
 
             mainWindow.CharLeftPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
+            //mainWindow.RightPanelCounter.Text = "Characters with this component: " + filteredWords.Count();
+            mainWindow.RightPanelCounter.Text = $"Characters with component {character} : {filteredWords.Count()}";
+
             //mainWindow.WordsCount.Text = $"{filteredWords.Count()} words found";
             //
             //previousWords = currentWords; // ?
@@ -213,7 +222,7 @@ namespace ChineseAppWPF.Controllers
 
 
 
-        internal static void UpdateShownWords_Right(this IEnumerable<Word> filteredWords, string sortingMethod, bool showSorted = true)
+        internal static void UpdateShownWords_Right(this IEnumerable<Word> filteredWords, string sortingMethod, char character, bool showSorted = true)
         {
             static SPPair makeSPP(char chn, string pron)
             {
@@ -299,15 +308,17 @@ namespace ChineseAppWPF.Controllers
                         break;
 
                     case "Exact":
-                        ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
-                        string language = typeItem.Content.ToString();
-                        filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, language);
+                        //ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
+                        //string language = typeItem.Content.ToString();
+                        filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, selectedLanguage);
                         break;
                 }
             }
 
 
             mainWindow.CharRightPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
+            mainWindow.LeftPanelCounter.Text = $"Words with character {character} : {filteredWords.Count()}";
+            //mainWindow.LeftPanelCounter.Text = "Words with this character: " + filteredWords.Count();
             //mainWindow.WordsCount.Text = $"{filteredWords.Count()} words found";
             //
             //previousWords = currentWords; // ?
@@ -404,9 +415,9 @@ namespace ChineseAppWPF.Controllers
                         break;
 
                     case "Exact":
-                        ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
-                        string language = typeItem.Content.ToString();
-                        filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, language);
+                        //ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
+                        //string language = typeItem.Content.ToString();
+                        filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, selectedLanguage);
                         break;
                 }
             }
