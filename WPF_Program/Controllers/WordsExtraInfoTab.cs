@@ -18,7 +18,7 @@ namespace ChineseAppWPF.Controllers
         private static void ShowCharacterDecomposition(string characterToBeDecomposed)
         {
             mainWindow.tView.Items.Clear();
-            var itemsToAdd = GetTreeDecomposition(characterToBeDecomposed);
+            List<TreeViewItem> itemsToAdd = GetTreeDecomposition(characterToBeDecomposed);
             foreach (TreeViewItem item in itemsToAdd)
             {
                 mainWindow.tView.Items.Add(item);
@@ -26,7 +26,6 @@ namespace ChineseAppWPF.Controllers
         }
         internal static List<TreeViewItem> GetTreeDecomposition(string ch)
         {
-
 
             if (ch.Length == 1 && (Kangxi.CheckIfKangxiRadical(ch[0]) || Kangxi.CheckIfStroke(ch[0])))
             {
@@ -199,11 +198,6 @@ namespace ChineseAppWPF.Controllers
             return border;
         }
 
-        private static void Item1_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         internal static string GetOnlyDetails(List<Word> words)
         {
             string definition = "";
@@ -212,20 +206,6 @@ namespace ChineseAppWPF.Controllers
                 definition += $"{w.Pinyin}: {w.Definitions}\n";
             }
             return definition;
-        }
-
-        internal static Brush GetColorFromLevel(int level)
-        {
-            return level switch
-            {
-                0 => Brushes.DarkRed,
-                1 => Brushes.Orange,
-                2 => Brushes.Olive,
-                3 => Brushes.Green,
-                4 => Brushes.Blue,
-                5 => Brushes.Purple,
-                _ => Brushes.Gray
-            };
         }
 
     }

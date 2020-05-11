@@ -10,6 +10,8 @@ using System.Windows.Controls;
 
 namespace ChineseAppWPF.Controllers
 {
+
+
     public static partial class Controller
     {
         private static MainWindow mainWindow;
@@ -22,13 +24,14 @@ namespace ChineseAppWPF.Controllers
         private static IEnumerable<Word> currentWords = new List<Word>();
         private static IEnumerable<Word> previousWords = new List<Word>();
 
-        private static string sortingState = "Frequency";
-        private static string selectedLanguage = "English";
+        //private static string sortingState = "Frequency";
+        //private static string selectedLanguage = "English";
+
+        private static SelectedLanguage selectedLanguage = SelectedLanguage.English;
+        private static SortingMethod sortingMethod = SortingMethod.Frequency;
 
         private delegate void ShowLanguageResult();
         private static ShowLanguageResult showLanguageResult = ShowEnglishResult;
-
-        //private static string writingState = "Simplified";
 
         public static void SetWindow(MainWindow window)
         {
@@ -40,6 +43,7 @@ namespace ChineseAppWPF.Controllers
 
         public static void ChangeLanguage()
         {
+            /*
             if (selectedLanguage == "English")
             {
                 selectedLanguage = "Chinese";
@@ -51,6 +55,19 @@ namespace ChineseAppWPF.Controllers
                 selectedLanguage = "English";
                 mainWindow.ChangeLanguageButton.Content = "Change to Chinese";
                 showLanguageResult = ShowEnglishResult;
+            }
+            */
+            if (selectedLanguage == SelectedLanguage.English)
+            {
+                selectedLanguage = SelectedLanguage.Chinese;
+                showLanguageResult = ShowChineseResult;
+                mainWindow.ChangeLanguageButton.Content = "Change to English";
+            }
+            else
+            {
+                selectedLanguage = SelectedLanguage.English;
+                showLanguageResult = ShowEnglishResult;
+                mainWindow.ChangeLanguageButton.Content = "Change to Chinese";
             }
         }
 
@@ -94,17 +111,32 @@ namespace ChineseAppWPF.Controllers
             mainWindow.UndoButton.IsEnabled = false;
         }
 
+        private static SortingMethod getSorting(string text)
+        {
+            return text switch
+            {
+                "Frequency" => SortingMethod.Frequency,
+                "Strokes" => SortingMethod.Strokes,
+                "Pinyin" => SortingMethod.Pinyin,
+                _ => SortingMethod.Exact
+            };
+        }
+
         public static void SortResult()
         {
             if (mainWindow == null)
                 return;
 
+            //TODO bind enum to combobox?
+            //TODO or change combobox to button
             ComboBoxItem sortItem = (ComboBoxItem)mainWindow.SortingComboBox.SelectedItem;
-            string selectedSorting = sortItem.Content.ToString();
+            SortingMethod selectedSorting = getSorting(sortItem.Content.ToString());
+            //string selectedSorting = sortItem.Content.ToString();
+
             
-            if (sortingState != selectedSorting)
+            if (sortingMethod != selectedSorting)
             {
-                sortingState = selectedSorting;
+                sortingMethod = selectedSorting;
                 currentWords.UpdateShownWords();
             }
         }

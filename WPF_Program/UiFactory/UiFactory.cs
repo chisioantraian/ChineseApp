@@ -52,7 +52,7 @@ namespace ChineseAppWPF.UiFactory
             return wordBorder;
         }
 
-        public static Border CreateAnalysisWordBox((SolidColorBrush, string) posTuple, string simp, MainWindow window)//, string writingState)
+        public static Border CreateAnalysisWordBox((SolidColorBrush, string) posTuple, string simp, MainWindow window)
         {
             TextBlock wBlock = new TextBlock
             {

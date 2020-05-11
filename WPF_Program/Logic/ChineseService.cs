@@ -89,7 +89,6 @@ namespace ChineseAppWPF.Logic
             foreach (var word in allWords)
             {
                 wordsSet.Add(word.Traditional);
-                //if (word.Simplified == word.Traditional)
                 wordsSet.Add(word.Simplified);
             }
         }
@@ -129,7 +128,8 @@ namespace ChineseAppWPF.Logic
 
         public static IEnumerable<Word> SortByFrequency(this IEnumerable<Word> words)
         {
-            return words.OrderBy(w => w.Frequency).Reverse();
+            //return words.OrderBy(w => w.Frequency).Reverse();
+            return words.OrderByDescending(w => w.Frequency);
         }
 
         public static IEnumerable<Word> SortByStrokesCount(this IEnumerable<Word> words)
@@ -142,17 +142,18 @@ namespace ChineseAppWPF.Logic
             return words.OrderBy(w => w.Pinyin);
         }
 
-        public static IEnumerable<Word> SortByExactity(this IEnumerable<Word> words, string text, string language)
+        public static IEnumerable<Word> SortByExactity(this IEnumerable<Word> words, string text, SelectedLanguage language)
         {
             IEnumerable<Word> exactWords;
             IEnumerable<Word> restOfWords;
-            if (language == "English")
+
+            if (language == SelectedLanguage.English)
             {
                 exactWords = words.Where(w => w.Definitions.ContainsInsensitive('/' + text + '/'));
             }
             else
             {
-                exactWords = words.Where(w => w.Simplified == text);
+                exactWords = words.Where(w => w.Simplified == text); //TODO add traditional
             }
             restOfWords = words.Except(exactWords);
 
@@ -166,26 +167,10 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-        private static int GetStrokeCount(Word w) //modify to use traditional
+        //TODO modify to use traditional
+        //TODO add new filed to file, with strokecount
+        private static int GetStrokeCount(Word w)
         {
-            /*int count = 0;
-            if (writingState == "Simplified")
-            {
-                foreach (char c in w.Simplified)
-                {
-                    if (strokesDict.ContainsKey(c))
-                        count += strokesDict[c];
-                }
-            }
-            else
-            {
-                foreach (char c in w.Traditional)
-                {
-                    if (strokesDict.ContainsKey(c))
-                        count += strokesDict[c];
-                }
-            }
-            return count;*/
             int count = 0;
 
             foreach (char c in w.Simplified)
@@ -202,31 +187,17 @@ namespace ChineseAppWPF.Logic
             return source?.IndexOf(value, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
-        /*
-         * Fast but not 100% correct. ( '/' can be used)
-         * Or, slow and correct. (and no intermediary results)
-         */
         public static IEnumerable<Word> GetEnglishResult(string text)
         {
-            //return allWords.AsParallel()
-            //   .Where(w => w.Definitions.ContainsInsensitive('/' + text + '/'));
-
             return allWords.AsParallel()
                            .Where(w => w.Definitions.ContainsInsensitive(text));
-
-            //char[] delims = { ' ', '(', ')', '[', ']', ',', '.', '/'};
-            //return allWords.AsParallel()
-            //               .Where(w => w.Definitions.Split(delims).Any(tok => tok.ToLower() == text.ToLower()));
-
-            //char[] delims = { ' ', '(', ')', '[', ']', ',', '.', '/'};
-            //return allWords.AsParallel()
-            //               .Where(w => w.Definitions.Split(delims).Any(tok => tok.ToLower().StartsWith(text.ToLower()) ));
         }
 
-        public static IEnumerable<Word> SearchBySimplified(string text)//, string writingState)
+        public static IEnumerable<Word> SearchBySimplified(string text)
         {
-            string writingSystem = GetWritingSystem(text);
-            if (writingSystem == "Simplified")
+            ChineseSystem writingSystem = GetWritingSystem(text);
+            
+            if (writingSystem == ChineseSystem.Simplified)
             {
                 return allWords.AsParallel()
                                .Where(w => w.Simplified.Contains(text));
@@ -240,7 +211,7 @@ namespace ChineseAppWPF.Logic
 
 
 
-
+        //TODO improve algorithm
         public static IEnumerable<Word> SearchByPinyin(string text)
         {
             if (string.IsNullOrEmpty(text))
@@ -276,17 +247,19 @@ namespace ChineseAppWPF.Logic
             return result;
         }
 
-        internal static bool IsCharacter(char character)//, string writingState)
+        internal static bool IsCharacter(char character)
         {
-            string writingSystem = GetWritingSystem(character.ToString());
+            ChineseSystem writingSystem = GetWritingSystem(character.ToString());
 
-            if (writingSystem == "Simplified")
+            if (writingSystem == ChineseSystem.Simplified)
             {
-                return allWords.Any(w => w.Simplified == character.ToString());
+                //return allWords.Any(w => w.Simplified == character.ToString());
+                return allWords.Any(w => w.Simplified[0] == character);
             }
             else
             {
-                return allWords.Any(w => w.Traditional == character.ToString());
+                //return allWords.Any(w => w.Traditional == character.ToString());
+                return allWords.Any(w => w.Traditional[0] == character);
             }
         }
 
@@ -308,9 +281,9 @@ namespace ChineseAppWPF.Logic
 
         public static IEnumerable<Word> GetAllWordsFrom(IEnumerable<string> simpList)
         {
-            string writingSystem = GetWritingSystem(simpList);
+            ChineseSystem writingSystem = GetWritingSystem(simpList);
 
-            if (writingSystem == "Simplified")
+            if (writingSystem == ChineseSystem.Simplified)
             {
                 return from simp in simpList
                        from w in allWords
@@ -324,28 +297,27 @@ namespace ChineseAppWPF.Logic
                        where w.Traditional == simp
                        select w;
             }
-
         }
 
 
-        public static string GetWritingSystem(string text)
+        public static ChineseSystem GetWritingSystem(string text)
         {
             if (traditionalSet.Contains(text))
-                return "Traditional";
-            return "Simplified";
+                return ChineseSystem.Traditional;
+            return ChineseSystem.Simplified;
         }
 
 
-        public static string GetWritingSystem(IEnumerable<string> simpList)
+        public static ChineseSystem GetWritingSystem(IEnumerable<string> simpList)
         {
             foreach (string s in simpList)
             {
-                if (GetWritingSystem(s) == "Traditional")
+                if (GetWritingSystem(s) == ChineseSystem.Traditional)
                 {
-                    return "Traditional";
+                    return ChineseSystem.Traditional;
                 }
             }
-            return "Simplified";
+            return ChineseSystem.Simplified;
         }
 
 

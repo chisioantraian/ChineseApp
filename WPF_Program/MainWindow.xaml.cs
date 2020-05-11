@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using ChineseAppWPF.Controllers;
 using ChineseAppWPF.Logic;
-using ChineseAppWPF.Models;
 
 namespace ChineseAppWPF
 {
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -51,14 +45,11 @@ namespace ChineseAppWPF
             }
         }
 
-        private string fillers = "〔〕-";
-
         private void CharacterAndPinyin_MouseEnter(object sender, MouseEventArgs e)
         {
-            var textBlock = (TextBlock)sender;
-            //string character = textBlock.Text;
-            //if (!fillers.Contains(character))
+            TextBlock textBlock = (TextBlock)sender;
             char character = textBlock.Text[0];
+
             if (character != '〔' && 
                 character != '〕' && 
                 character != '-' &&
@@ -72,22 +63,23 @@ namespace ChineseAppWPF
 
         private void CharacterAndPinyin_MouseUp(object sender, RoutedEventArgs e)
         {
-            var textBlock = (TextBlock)sender;
+            TextBlock textBlock = (TextBlock)sender;
             MouseButtonEventArgs ev = (MouseButtonEventArgs)e;
+            char character = textBlock.Text[0];
+
             if (ev.ChangedButton == MouseButton.Left)
             {
-                Controller.ShowWordWithThisCharacter(textBlock.Text[0]);
-                Controller.ShowCharsWithComponent_SidePanel(textBlock.Text[0]);
-                Controller.ShowWordsWithCharacter_SidePanel(textBlock.Text[0]);
+                Controller.ShowWordWithThisCharacter(character);
+                Controller.ShowCharsWithComponent_SidePanel(character);
+                Controller.ShowWordsWithCharacter_SidePanel(character);
             }
         }
 
         private void CharacterAndPinyin_MouseLeave(object sender, MouseEventArgs e)
         {
-            var textBlock = (TextBlock)sender;
-            //string character = textBlock.Text;
-            //if (!fillers.Contains(character))
+            TextBlock textBlock = (TextBlock)sender;
             char character = textBlock.Text[0];
+
             if (character != '〔' &&
                 character != '〕' &&
                 character != '-' &&
@@ -107,11 +99,9 @@ namespace ChineseAppWPF
 
         private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();
 
-        private void InputComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.ShowResult();
-
         private void CharactersWithComponent_Click(object sender, RoutedEventArgs e)
         {
-            var item = (MenuItem)sender;
+            MenuItem item = (MenuItem)sender;
             string value = item.Tag.ToString();
 
             Controller.ShowComposeResult(value);
@@ -119,12 +109,11 @@ namespace ChineseAppWPF
 
         private void WordsWithCharacter_Click(object sender, RoutedEventArgs e)
         {
-            var item = (MenuItem)sender;
+            MenuItem item = (MenuItem)sender;
             string value = item.Tag.ToString();
 
-            Controller.ShowChineseResult(value); //change
+            Controller.ShowChineseResult(value);
         }
-
 
     }
 }
