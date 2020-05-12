@@ -51,7 +51,7 @@ namespace ChineseAppWPF.Controllers
             }
         }
 
-        internal static void ShowComposeResult(string value) => Decomposition.GetCharactersWithComponent(value).UpdateShownWords();
+        internal static void ShowComposeResult(char component) => Decomposition.GetCharactersWithComponent(component.ToString()).UpdateShownWords();
 
         internal static void ShowSomeRandomWords() => ChineseService.GetRandomWords().UpdateShownWords();
 
@@ -69,61 +69,26 @@ namespace ChineseAppWPF.Controllers
             ChineseService.SearchBySimplified(character.ToString()).Update_ShownWordsWithCharacters(character);
         }
 
-
-        //internal static void Update_ShownCharsWithComponent(this IEnumerable<Word> filteredWords, char character)
-        //{
-        //    filteredWords.Update_ShownCharsWithComponent(sortingMethod, character);
-        //}
-
-        //internal static void Update_ShownWordsWithCharacters(this IEnumerable<Word> filteredWords, char character)
-        //{
-        //    filteredWords.Update_ShownWordsWithCharacters(character);
-        //}
-
-        //internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, bool showSorted = true)
-        //{
-        //    filteredWords.UpdateShownWords(showSorted);
-        //}
-
         internal static Brush ComputeColor(string pron)
         {
-            if (pron.Contains("1"))
-                return Brushes.Red;
-            if (pron.Contains("2"))
-                return Brushes.LimeGreen; //Green
-            if (pron.Contains("3"))
-                return Brushes.Blue;
-            if (pron.Contains("4"))
-                return Brushes.DarkMagenta; // Purple
+            if (pron.Contains("1")) return Brushes.Red;
+            if (pron.Contains("2")) return Brushes.LimeGreen;   //Green
+            if (pron.Contains("3")) return Brushes.Blue;
+            if (pron.Contains("4")) return Brushes.DarkMagenta; // Purple
             return Brushes.Gray;
         }
 
 
         internal static void Update_ShownCharsWithComponent(this IEnumerable<Word> filteredWords, char character)
         {
-            //static SPPair makeSPP(char chn, string pron)
-            //{
-            //    return new SPPair { ChineseCharacter = chn, CharacterColor = ComputeColor(pron), Pinyin = pron };
-            //}
-
             ResultWord ResultedWordFromWord(Word word)
             {
-                //IEnumerable<char> singleChar = writingSystem == "Simplified" ? word.Simplified : word.Traditional;
-                //IEnumerable<SPPair> sPPairs = singleChar.Zip(singlePron, makeSPP);
                 List<string> singlePron = word.Pinyin.Split(" ").ToList();
-
-                //if (singlePron.Count != word.Simplified.Length)
-                //    Console.WriteLine($"{word.Simplified} {word.Pinyin}");
-
                 List<SPPair> sPPairs = new List<SPPair>();
+
                 for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
                 {
-                    sPPairs.Add(new SPPair
-                    {
-                        ChineseCharacter = word.Simplified[i],
-                        CharacterColor = ComputeColor(singlePron[i]),
-                        Pinyin = singlePron[i]
-                    });
+                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i] });
                 }
 
                 bool addBrackets = false;
@@ -161,70 +126,23 @@ namespace ChineseAppWPF.Controllers
                 };
             }
 
-
-            /*switch (sortingMethod)
-            {
-                case "Frequency":
-                    filteredWords = filteredWords.SortByFrequency();
-                    break;
-
-                case "Strokes":
-                    filteredWords = filteredWords.SortByStrokesCount();
-                    break;
-
-                case "Pinyin":
-                    filteredWords = filteredWords.SortByPinyin();
-                    break;
-
-                case "Exact":
-                    //ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
-                    //string language = typeItem.Content.ToString();
-                        
-                    filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, selectedLanguage);
-                    break;
-            }*/
             filteredWords = filteredWords.SortByFrequency();
-
-
             mainWindow.CharLeftPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
-            //mainWindow.RightPanelCounter.Text = "Characters with this component: " + filteredWords.Count();
             mainWindow.RightPanelCounter.Text = $"Characters with component {character} : {filteredWords.Count()}";
-
-            //mainWindow.WordsCount.Text = $"{filteredWords.Count()} words found";
-            //
-            //previousWords = currentWords; // ?
-            //currentWords = filteredWords;
-            //mainWindow.UndoButton.IsEnabled = true;
-
         }
 
 
 
         internal static void Update_ShownWordsWithCharacters(this IEnumerable<Word> filteredWords, char character)
         {
-            //static SPPair makeSPP(char chn, string pron)
-            //{
-            //    return new SPPair { ChineseCharacter = chn, CharacterColor = ComputeColor(pron), Pinyin = pron };
-            //}
-
             ResultWord ResultedWordFromWord(Word word)
             {
-                //IEnumerable<char> singleChar = writingSystem == "Simplified" ? word.Simplified : word.Traditional;
-                //IEnumerable<SPPair> sPPairs = singleChar.Zip(singlePron, makeSPP);
                 List<string> singlePron = word.Pinyin.Split(" ").ToList();
-
-                //if (singlePron.Count != word.Simplified.Length)
-                //    Console.WriteLine($"{word.Simplified} {word.Pinyin}");
-
                 List<SPPair> sPPairs = new List<SPPair>();
+
                 for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
                 {
-                    sPPairs.Add(new SPPair
-                    {
-                        ChineseCharacter = word.Simplified[i],
-                        CharacterColor = ComputeColor(singlePron[i]),
-                        Pinyin = singlePron[i]
-                    });
+                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i] });
                 }
 
                 bool addBrackets = false;
@@ -255,8 +173,6 @@ namespace ChineseAppWPF.Controllers
                     sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
                 }
 
-
-
                 return new ResultWord
                 {
                     SimplifiedPinyinPairs = sPPairs,
@@ -264,71 +180,23 @@ namespace ChineseAppWPF.Controllers
                 };
             }
 
-            /*
-            if (showSorted)
-            {
-                switch (sortingMethod)
-                {
-                    case "Frequency":
-                        filteredWords = filteredWords.SortByFrequency();
-                        break;
-
-                    case "Strokes":
-                        filteredWords = filteredWords.SortByStrokesCount();
-                        break;
-
-                    case "Pinyin":
-                        filteredWords = filteredWords.SortByPinyin();
-                        break;
-
-                    case "Exact":
-                        //ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
-                        //string language = typeItem.Content.ToString();
-                        filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, selectedLanguage);
-                        break;
-                }
-            }*/
             filteredWords = filteredWords.SortByFrequency();
-
-
             mainWindow.CharRightPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
             mainWindow.LeftPanelCounter.Text = $"Words with character {character} : {filteredWords.Count()}";
-            //mainWindow.LeftPanelCounter.Text = "Words with this character: " + filteredWords.Count();
-            //mainWindow.WordsCount.Text = $"{filteredWords.Count()} words found";
-            //
-            //previousWords = currentWords; // ?
-            //currentWords = filteredWords;
-            //mainWindow.UndoButton.IsEnabled = true;
-
         }
 
 
 
         internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, bool showSorted = true)
         {
-            //static SPPair makeSPP(char chn, string pron) 
-            //{
-            //    return new SPPair { ChineseCharacter = chn, CharacterColor = ComputeColor(pron), Pinyin = pron };
-            //}
-
             ResultWord ResultedWordFromWord(Word word)
             {
-                //IEnumerable<char> singleChar = writingSystem == "Simplified" ? word.Simplified : word.Traditional;
-                //IEnumerable<SPPair> sPPairs = singleChar.Zip(singlePron, makeSPP);
                 List<string> singlePron = word.Pinyin.Split(" ").ToList();
-
-                //if (singlePron.Count != word.Simplified.Length)
-                //    Console.WriteLine($"{word.Simplified} {word.Pinyin}");
-
                 List<SPPair> sPPairs = new List<SPPair>();
+
                 for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
                 {
-                    sPPairs.Add(new SPPair
-                    {
-                        ChineseCharacter = word.Simplified[i],
-                        CharacterColor = ComputeColor(singlePron[i]),
-                        Pinyin = singlePron[i]
-                    });
+                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i] });
                 }
 
                 bool addBrackets = false;
@@ -359,8 +227,6 @@ namespace ChineseAppWPF.Controllers
                     sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
                 }
 
-               
-
                 return new ResultWord
                 {
                     SimplifiedPinyinPairs = sPPairs,
@@ -385,8 +251,6 @@ namespace ChineseAppWPF.Controllers
                         break;
 
                     case SortingMethod.Exact:
-                        //ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
-                        //string language = typeItem.Content.ToString();
                         filteredWords = filteredWords.SortByExactity(mainWindow.SearchBar.Text, selectedLanguage);
                         break;
                 }
@@ -396,7 +260,7 @@ namespace ChineseAppWPF.Controllers
             mainWindow.WordsList.ItemsSource = filteredWords.Select(ResultedWordFromWord);
             mainWindow.WordsCount.Text = $"{filteredWords.Count()} words found";
             //
-            previousWords = currentWords; // ?
+            previousWords = currentWords;
             currentWords = filteredWords;
             mainWindow.UndoButton.IsEnabled = true;
 

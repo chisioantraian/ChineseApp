@@ -23,8 +23,9 @@ namespace ChineseAppWPF.Controllers
             {
                 mainWindow.tView.Items.Add(item);
             }
+            mainWindow.DeompositionPanelCounter.Text = $"Decomposition to radicals of character {characterToBeDecomposed}";
         }
-        internal static List<TreeViewItem> GetTreeDecomposition(char ch)//(string ch)
+        internal static List<TreeViewItem> GetTreeDecomposition(char ch)
         {
 
             if (Kangxi.CheckIfKangxiRadical(ch) || Kangxi.CheckIfStroke(ch))
@@ -32,26 +33,20 @@ namespace ChineseAppWPF.Controllers
                 return new List<TreeViewItem> { new TreeViewItem {Header = CreateBranchWord(ch, true)} };
             }
 
-            //Border b = CreateBranchWord(ch, false);
-            //if (b == null)
-            //{
-            //    return new List<TreeViewItem>();
-            //}
             TreeViewItem item = new TreeViewItem
             {
                 Header = CreateBranchWord(ch, false),
                 IsExpanded = true
             };
 
-            //TODO ???
-            if (ch == ' ')//if (ch == null || ch == "")
+            if (ch == ' ')
             {
                 return new List<TreeViewItem> { item };
             }
 
             if (ChineseService.IsCharacter(ch))
             {
-                //string to char ?
+                //TODO string to char ?
                 if (basicDict.ContainsKey(ch.ToString()))
                 {
                     foreach (string c in basicDict[ch.ToString()])
@@ -113,11 +108,6 @@ namespace ChineseAppWPF.Controllers
             };
 
             string shownText = ch.ToString();
-            //if (ch.Length > 1)
-            //    shownText = "*";
-            //Brush shownColor = Brushes.Black;
-            //if (shownText == "*")
-            //    shownColor = Brushes.Yellow;
 
             MenuItem item1 = new MenuItem
             {
@@ -125,7 +115,8 @@ namespace ChineseAppWPF.Controllers
                 FontSize = 16,
                 Padding = new Thickness(10),
             };
-            item1.Click += (s,e) => Controller.ShowComposeResult(shownText);
+            //item1.Click += (s,e) => Controller.ShowComposeResult(shownText);
+            item1.Click += (s, e) => Controller.ShowComposeResult(ch);
 
             MenuItem item2 = new MenuItem
             {
@@ -156,8 +147,6 @@ namespace ChineseAppWPF.Controllers
             charBlock.MouseLeave += (s, e) =>
             {
                 charBlock.Text = shownText;
-                //charBlock.Text = "";
-                //charBlock.Inlines.Add(shownText);
                 charBlock.Foreground = Brushes.DarkSlateGray;
             };
             TextBlock detailBlock = new TextBlock
@@ -194,12 +183,12 @@ namespace ChineseAppWPF.Controllers
 
         internal static string GetOnlyDetails(List<Word> words)
         {
-            string definition = "";
+            StringBuilder definition = new StringBuilder();
             foreach (Word w in words)
             {
-                definition += $"{w.Pinyin}: {w.Definitions}\n";
+                definition.Append($"{w.Pinyin}: {w.Definitions}\n");
             }
-            return definition;
+            return definition.ToString();
         }
 
     }

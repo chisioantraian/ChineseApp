@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -66,6 +68,25 @@ namespace ChineseAppWPF
 
             if (ev.ChangedButton == MouseButton.Left)
             {
+                //mainWindow.Dispatcher.BeginInvoke(new Action(() => ShowEnglishResult()));
+
+                //Thread t1 = new Thread(() => Controller.ShowWordWithThisCharacter(character));
+                //Thread t2 = new Thread(() => Controller.ShowCharsWithComponent_SidePanel(character));
+                //Thread t3 = new Thread(() => Controller.ShowWordsWithCharacter_SidePanel(character));
+                //t1.Start();
+                //t2.Start();
+                //t2.Start();
+
+                //Parallel.Invoke(
+                //    () => Controller.ShowWordWithThisCharacter(character),
+                //    () => Controller.ShowCharsWithComponent_SidePanel(character),
+                //    () => Controller.ShowWordsWithCharacter_SidePanel(character)
+                //);
+
+                //Dispatcher.BeginInvoke(new Action(() => Controller.ShowWordWithThisCharacter(character)));
+                //Dispatcher.BeginInvoke(new Action(() => Controller.ShowCharsWithComponent_SidePanel(character)));
+                //Dispatcher.BeginInvoke(new Action(() => Controller.ShowWordsWithCharacter_SidePanel(character)));
+
                 Controller.ShowWordWithThisCharacter(character);
                 Controller.ShowCharsWithComponent_SidePanel(character);
                 Controller.ShowWordsWithCharacter_SidePanel(character);
@@ -99,9 +120,9 @@ namespace ChineseAppWPF
         private void CharactersWithComponent_Click(object sender, RoutedEventArgs e)
         {
             MenuItem item = (MenuItem)sender;
-            string value = item.Tag.ToString();
+            char component = item.Tag.ToString()[0];
 
-            Controller.ShowComposeResult(value);
+            Controller.ShowComposeResult(component);
         }
 
         private void WordsWithCharacter_Click(object sender, RoutedEventArgs e)

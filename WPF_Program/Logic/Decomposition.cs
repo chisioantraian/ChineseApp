@@ -53,14 +53,14 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-        private static bool IsComponentInTree(string character, string component)
+        private static bool IsComponentInTree(string wordChn, string component)
         {
-            if (character == component)
+            if (wordChn == component)
                 return true;
 
-            if (basicDict.ContainsKey(character))
+            if (basicDict.ContainsKey(wordChn))
             {
-                foreach (string ch in basicDict[character])
+                foreach (string ch in basicDict[wordChn])
                 {
                     if (IsComponentInTree(ch, component))
                         return true;

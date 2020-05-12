@@ -24,9 +24,6 @@ namespace ChineseAppWPF.Controllers
         private static IEnumerable<Word> currentWords = new List<Word>();
         private static IEnumerable<Word> previousWords = new List<Word>();
 
-        //private static string sortingState = "Frequency";
-        //private static string selectedLanguage = "English";
-
         private static SelectedLanguage selectedLanguage = SelectedLanguage.English;
         private static SortingMethod sortingMethod = SortingMethod.Frequency;
 
@@ -43,20 +40,6 @@ namespace ChineseAppWPF.Controllers
 
         public static void ChangeLanguage()
         {
-            /*
-            if (selectedLanguage == "English")
-            {
-                selectedLanguage = "Chinese";
-                mainWindow.ChangeLanguageButton.Content = "Change to English";
-                showLanguageResult = ShowChineseResult;
-            }
-            else
-            {
-                selectedLanguage = "English";
-                mainWindow.ChangeLanguageButton.Content = "Change to Chinese";
-                showLanguageResult = ShowEnglishResult;
-            }
-            */
             if (selectedLanguage == SelectedLanguage.English)
             {
                 selectedLanguage = SelectedLanguage.Chinese;
@@ -82,18 +65,7 @@ namespace ChineseAppWPF.Controllers
                 currentWords.UpdateShownWords();
                 return;
             }
-            /*
-            ComboBoxItem typeItem = (ComboBoxItem)mainWindow.InputComboBox.SelectedItem;
-            switch (typeItem.Content.ToString())
-            {
-                case "English":
-                    //var t = new Thread(ShowEnglishThread);
-                    //t.Start();
-                    ShowEnglishResult(); 
-                    break;
-                case "Chinese": ShowChineseResult(); break;
-            }
-            */
+
             showLanguageResult();
         }
 
@@ -131,9 +103,7 @@ namespace ChineseAppWPF.Controllers
             //TODO or change combobox to button
             ComboBoxItem sortItem = (ComboBoxItem)mainWindow.SortingComboBox.SelectedItem;
             SortingMethod selectedSorting = getSorting(sortItem.Content.ToString());
-            //string selectedSorting = sortItem.Content.ToString();
 
-            
             if (sortingMethod != selectedSorting)
             {
                 sortingMethod = selectedSorting;
