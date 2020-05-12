@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Policy;
+using System.Text;
 using ChineseAppWPF.Models;
 
 namespace ChineseAppWPF.Logic
@@ -328,6 +329,11 @@ namespace ChineseAppWPF.Logic
         /// <returns></returns>
         public static IEnumerable<string> GetSimplifiedWordsFromSentence(string sentence)
         {
+            //Console.WriteLine("Begin GetSimplifiedWordsFromSentence");
+            return CheckAlternative(sentence);
+            //
+            //
+            /*
             string constructedWord = "";
             string toInsert = string.Empty;
             foreach (char curr in sentence)
@@ -355,6 +361,43 @@ namespace ChineseAppWPF.Logic
             {
                 yield return toInsert;
             }
+            */
+
+        }
+
+        private static string GetStringFrom(int i, int j, string sentence)
+        {
+            StringBuilder result = new StringBuilder();
+            for (int k = i; k < j; k++)
+                result.Append(sentence[k].ToString());
+            return result.ToString();
+            //return sentence.Substring(i, j - i);
+        }
+
+        public static IEnumerable<string> CheckAlternative(string sentence)
+        {
+            int i = 0;
+            int j = sentence.Length;
+            List<string> result = new List<string>();
+
+            //Console.Write("test: ");
+            while (i < sentence.Length)
+            {
+                string possible = GetStringFrom(i, j, sentence);
+                if (WordExists(possible))
+                {
+                    //Console.Write($"{possible}.");
+                    result.Add(possible);
+                    i = j;
+                    j = sentence.Length;
+                }
+                else
+                {
+                    j--;
+                }
+            }
+            return result;
+            //Console.WriteLine();
         }
     }
 }

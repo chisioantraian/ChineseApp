@@ -19,6 +19,7 @@ namespace ChineseAppWPF.Controllers
 
         internal static void AnalyseSentence()
         {
+
             string sentenceText = mainWindow.SentenceAnalysisInputBox.Text;
             Sentence st = ComputeSentenceBreakdown(sentenceText);
 

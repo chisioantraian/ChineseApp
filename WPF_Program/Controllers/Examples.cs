@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using ChineseAppWPF.Models;
 
 namespace ChineseAppWPF.Controllers
@@ -15,6 +16,7 @@ namespace ChineseAppWPF.Controllers
                 };
                 item.MouseLeftButtonUp += (s, e) =>
                 {
+                    //Console.WriteLine("inside sentence item event ");
                     mainWindow.TestSentenceInputBox.Text = sentence.Text;
                     AnalyseSentence_TestTab();
                 };

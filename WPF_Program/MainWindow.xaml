@@ -225,6 +225,10 @@
 
                     <Border Grid.Row="0" BorderThickness="4,4,4,2" BorderBrush="DarkSlateGray">
                         <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="54*"/>
+                                <ColumnDefinition Width="515*"/>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="35" />
                                 <RowDefinition Height="*" />
@@ -235,9 +239,9 @@
                                    Padding="40,6,0,0"
                                    FontSize="18"
                                    Background="Gainsboro"
-                                   Text="Decomposition to radicals of selected character " />
+                                   Text="Decomposition to radicals of selected character " Grid.ColumnSpan="2" />
 
-                            <TreeView Name="tView" Grid.Row="1" Background="WhiteSmoke">
+                            <TreeView Name="tView" Grid.Row="1" Background="WhiteSmoke" Grid.ColumnSpan="2">
                                 <TreeView.Resources>
                                     <SolidColorBrush
                                     x:Key="{x:Static SystemColors.HighlightBrushKey}" 
