@@ -30,13 +30,14 @@ namespace ChineseAppWPF.Controllers
 
             if (Kangxi.CheckIfKangxiRadical(ch) || Kangxi.CheckIfStroke(ch))
             {
-                return new List<TreeViewItem> { new TreeViewItem {Header = CreateBranchWord(ch, true)} };
+                return new List<TreeViewItem> { new TreeViewItem {Header = CreateBranchWord(ch, true)/*, Background = Brushes.White*/} };
             }
 
             TreeViewItem item = new TreeViewItem
             {
                 Header = CreateBranchWord(ch, false),
-                IsExpanded = true
+                IsExpanded = true,
+                //Background = Brushes.White
             };
 
             if (ch == ' ')
@@ -136,7 +137,8 @@ namespace ChineseAppWPF.Controllers
                 FontSize = 30,
                 Foreground = Brushes.DarkSlateGray,
                 Cursor = Cursors.Hand,
-                ContextMenu = menu
+                ContextMenu = menu,
+                Background = Brushes.White
             };
             charBlock.MouseEnter += (s, e) =>
             {
@@ -152,7 +154,8 @@ namespace ChineseAppWPF.Controllers
             TextBlock detailBlock = new TextBlock
             {
                 Text = description,
-                FontSize = 12
+                FontSize = 12,
+                Background = Brushes.White
             };
 
             Border charBorder = new Border

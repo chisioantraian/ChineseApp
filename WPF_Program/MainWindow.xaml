@@ -214,7 +214,7 @@
 
         <TabControl Name="MyTabControl"
                     Grid.Column="1">
-            <TabItem Header="Decomposition" 
+            <TabItem Header="Words" 
                      ToolTip="Show a character's decomposition down to radicals level">
                 <Grid>
 
@@ -234,9 +234,10 @@
                                    Name="DeompositionPanelCounter"
                                    Padding="40,6,0,0"
                                    FontSize="18"
+                                   Background="Gainsboro"
                                    Text="Decomposition to radicals of selected character " />
 
-                            <TreeView Name="tView" Grid.Row="1">
+                            <TreeView Name="tView" Grid.Row="1" Background="WhiteSmoke">
                                 <TreeView.Resources>
                                     <SolidColorBrush
                                     x:Key="{x:Static SystemColors.HighlightBrushKey}" 
@@ -274,6 +275,7 @@
                                    Name="LeftPanelCounter"
                                    Padding="40,6,0,0"
                                    FontSize="18"
+                                   Background="Gainsboro"
                                    Text="Words with selected character: " />
 
                                 <ListBox Name="CharRightPanel" 
@@ -383,6 +385,7 @@
                                    Name="RightPanelCounter"
                                    Padding="40,6,0,0"
                                    FontSize="18"
+                                   Background="Gainsboro"
                                    Text="Characters with selected component: " />
 
 
@@ -480,7 +483,47 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Gramm.Analysis.(temp)" ToolTip="Temporary Tab">
+            <TabItem Header="Analysis" ToolTip="Analyse the given sentence">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="16*" />
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="914*"/>
+                        <ColumnDefinition Width="319*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" Grid.ColumnSpan="4" Margin="0,0,318,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="23*"/>
+                            <ColumnDefinition Width="73*"/>
+                            <ColumnDefinition Width="16*"/>
+                            <ColumnDefinition Width="844*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,-1,0" 
+                                   />
+
+
+                        <TextBox Name="SentenceAnalysisInputBox"
+                                 KeyUp="SentenceAnalysis_KeyUp"
+                                 ToolTip="Type here the sentence which will be analyzed. Hover the word to see definition"
+                                 Grid.Row="1"
+                                 FontSize="16"
+                                 Margin="10,10,9,10" Grid.ColumnSpan="4" />
+                    </Grid>
+
+                    <Border BorderThickness="3" 
+                            BorderBrush="Black" 
+                            Grid.Column="2" Grid.ColumnSpan="2" Margin="914,0,0,0">
+                        <StackPanel Name="PatternsPanel" />
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Analysis.(temporary)" ToolTip="Temporary Tab">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*" />
@@ -565,47 +608,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="Analysis" ToolTip="Analyse the given sentence">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="16*" />
-                        <ColumnDefinition Width="25*"/>
-                        <ColumnDefinition Width="914*"/>
-                        <ColumnDefinition Width="319*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0" Grid.ColumnSpan="4" Margin="0,0,318,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="23*"/>
-                            <ColumnDefinition Width="73*"/>
-                            <ColumnDefinition Width="16*"/>
-                            <ColumnDefinition Width="844*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="3*" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
 
-                        <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,-1,0" 
-                                   />
-
-
-                        <TextBox Name="SentenceAnalysisInputBox"
-                                 KeyUp="SentenceAnalysis_KeyUp"
-                                 ToolTip="Type here the sentence which will be analyzed. Hover the word to see definition"
-                                 Grid.Row="1"
-                                 FontSize="16"
-                                 Margin="10,10,9,10" Grid.ColumnSpan="4" />
-                    </Grid>
-
-                    <Border BorderThickness="3" 
-                            BorderBrush="Black" 
-                            Grid.Column="2" Grid.ColumnSpan="2" Margin="914,0,0,0">
-                        <StackPanel Name="PatternsPanel" />
-                    </Border>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="Words" ToolTip="Tables of words"/>
 
         </TabControl>
     </Grid>
