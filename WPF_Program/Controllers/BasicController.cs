@@ -44,13 +44,13 @@ namespace ChineseAppWPF.Controllers
             {
                 selectedLanguage = SelectedLanguage.Chinese;
                 showLanguageResult = ShowChineseResult;
-                mainWindow.ChangeLanguageButton.Content = "Change to English";
+                mainWindow.ChangeLanguageButton.Content = "Input: Chinese\nChange to English";
             }
             else
             {
                 selectedLanguage = SelectedLanguage.English;
                 showLanguageResult = ShowEnglishResult;
-                mainWindow.ChangeLanguageButton.Content = "Change to Chinese";
+                mainWindow.ChangeLanguageButton.Content = "Input: English\nChange to Chinese";
             }
         }
 

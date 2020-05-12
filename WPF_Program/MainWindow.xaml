@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         
         Closing="Window_Closing"
-        Title="Window1" Height="1080" Width="1920" >
+        Title="Licenta 2020 - Chis Ioan Traian"
+        Height="1080"
+        Width="1920" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -54,9 +56,9 @@
 
                 <Button Grid.Column="0" 
                         Click="ChangeLanguage_Click"
-                        Content="Change to Chinese"
+                        Content="Input: English &#xa;Change to Chinese"
                         Name="ChangeLanguageButton"
-                        Margin="10,10,10,5">
+                        Margin="10,4,10,4">
 
                 </Button>
 
