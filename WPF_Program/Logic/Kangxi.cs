@@ -8,6 +8,7 @@ namespace ChineseAppWPF.Logic
     public static class Kangxi
     {
         private static readonly List<KangxiRadical> kangxiRadicals = BuildRadicalList();
+        private static HashSet<char> kangxiSet = BuildKangxiSet();//new HashSet<char>();
 
         //+ other components
         private static List<char> strokes = new List<char>
@@ -27,10 +28,18 @@ namespace ChineseAppWPF.Logic
             '㇖'
         };
 
-        public static bool CheckIfKangxiRadical(char character) => kangxiRadicals.Any(kr => kr.Symbol == character);
+        //public static bool CheckIfKangxiRadical(char character) => kangxiRadicals.Any(kr => kr.Symbol == character);
+        public static bool CheckIfKangxiRadical(char character) => kangxiSet.Contains(character);
 
         public static bool CheckIfStroke(char character) => strokes.Any(s => s == character);
-        
+
+        private static HashSet<char> BuildKangxiSet()
+        {
+            HashSet<char> result = new HashSet<char>();
+            foreach (KangxiRadical kg in kangxiRadicals)
+                result.Add(kg.Symbol);
+            return result;
+        }
 
         private static List<KangxiRadical> BuildRadicalList()
         {

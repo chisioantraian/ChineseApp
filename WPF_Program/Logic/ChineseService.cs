@@ -105,6 +105,8 @@ namespace ChineseAppWPF.Logic
             }
         }
 
+
+
         private static void BuilStrokesDict()
         {
             foreach (string line in File.ReadAllLines(strokesPath))
@@ -254,12 +256,10 @@ namespace ChineseAppWPF.Logic
 
             if (writingSystem == ChineseSystem.Simplified)
             {
-                //return allWords.Any(w => w.Simplified == character.ToString());
                 return allWords.Any(w => w.Simplified[0] == character);
             }
             else
             {
-                //return allWords.Any(w => w.Traditional == character.ToString());
                 return allWords.Any(w => w.Traditional[0] == character);
             }
         }
@@ -322,72 +322,17 @@ namespace ChineseAppWPF.Logic
         }
 
 
-        /// <summary>
-        /// Simplified (first match) + punctuation.
-        /// </summary>
-        /// <param name="sentence"></param>
-        /// <returns></returns>
         public static IEnumerable<string> GetSimplifiedWordsFromSentence(string sentence)
-        {
-            //Console.WriteLine("Begin GetSimplifiedWordsFromSentence");
-            return CheckAlternative(sentence);
-            //
-            //
-            /*
-            string constructedWord = "";
-            string toInsert = string.Empty;
-            foreach (char curr in sentence)
-            {
-                string wordToCheck = constructedWord + curr.ToString();
-                if (WordExists(wordToCheck))
-                {
-                    toInsert = wordToCheck;
-                    constructedWord = wordToCheck;
-                }
-                else
-                {
-                    if (toInsert.Length != 0)
-                    {
-                        yield return toInsert;
-                    }
-                    if (WordExists(curr.ToString()))
-                        toInsert = curr.ToString();
-                    else
-                        toInsert = string.Empty;
-                    constructedWord = curr.ToString();
-                }
-            }
-            if (toInsert.Length != 0)
-            {
-                yield return toInsert;
-            }
-            */
-
-        }
-
-        private static string GetStringFrom(int i, int j, string sentence)
-        {
-            //StringBuilder result = new StringBuilder();
-            //for (int k = i; k < j; k++)
-            //    result.Append(sentence[k].ToString());
-            return sentence[i..j];//result.ToString();
-            //return sentence.Substring(i, j - i);
-        }
-
-        public static IEnumerable<string> CheckAlternative(string sentence)
         {
             int i = 0;
             int j = sentence.Length;
             List<string> result = new List<string>();
 
-            //Console.Write("test: ");
-            //while (i < sentence.Length)
             while (i < j)
             {
-                string possible = GetStringFrom(i, j, sentence);
+                string possible = sentence[i..j];
                 if (WordExists(possible))
                 {
-                    //Console.Write($"{possible}.");
                     result.Add(possible);
                     i = j;
                     j = sentence.Length;
@@ -398,7 +343,7 @@ namespace ChineseAppWPF.Logic
                 }
             }
             return result;
-            //Console.WriteLine();
         }
+
     }
 }

@@ -30,14 +30,13 @@ namespace ChineseAppWPF.Controllers
 
             if (Kangxi.CheckIfKangxiRadical(ch) || Kangxi.CheckIfStroke(ch))
             {
-                return new List<TreeViewItem> { new TreeViewItem {Header = CreateBranchWord(ch, true)/*, Background = Brushes.White*/} };
+                return new List<TreeViewItem> { new TreeViewItem {Header = CreateBranchWord(ch, true) } };
             }
 
             TreeViewItem item = new TreeViewItem
             {
                 Header = CreateBranchWord(ch, false),
                 IsExpanded = true,
-                //Background = Brushes.White
             };
 
             if (ch == ' ')
