@@ -19,8 +19,11 @@ namespace ChineseAppWPF.Controllers
 
         internal static void AnalyseSentence()
         {
-
             string sentenceText = mainWindow.SentenceAnalysisInputBox.Text;
+
+            Console.WriteLine($"Begin analyzeSentence: {sentenceText}");
+
+
             Sentence st = ComputeSentenceBreakdown(sentenceText);
 
             //TODO delete or separate thread
@@ -55,12 +58,15 @@ namespace ChineseAppWPF.Controllers
                     mainWindow.PatternsPanel.Children.Add(patternBlock);
                 }
             }
+            Console.WriteLine("\n\n");
         }
 
         private static Sentence ComputeSentenceBreakdown(string sentence)
         {
+            Console.WriteLine("Begin ComputeSentenceBreakdown");
             List<Breakdown> noAlgBreakdown = GetNoAlgBreakdown(sentence).ToList();
             List<Breakdown> algBreakdown = GetAlgBreakdown(noAlgBreakdown);
+            Console.WriteLine("End ComputeSentenceBreakdown");
 
             return new Sentence
             {

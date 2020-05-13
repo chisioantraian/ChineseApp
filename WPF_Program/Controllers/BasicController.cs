@@ -113,7 +113,10 @@ namespace ChineseAppWPF.Controllers
 
         public static IEnumerable<Breakdown> GetNoAlgBreakdown(string sentence)
         {
-            IEnumerable<string> wordParts = ChineseService.GetSimplifiedWordsFromSentence(sentence);
+            Console.WriteLine("Begin GetNoAlgBreakdown");
+
+            List<string> wordParts = ChineseService.GetSimplifiedWordsFromSentence(sentence).ToList();
+            Console.WriteLine("After GetSimplifiedWordsFromSentence");
             foreach (string part in wordParts)
             {
                 if (allDetailedWords.ContainsKey(part))
@@ -121,10 +124,13 @@ namespace ChineseAppWPF.Controllers
                 else
                     yield return new Breakdown { Part = part, Description = part }; // = "-"
             }
+            Console.WriteLine("End GetNoAlgBreakdown");
+
         }
 
         internal static List<Breakdown> GetAlgBreakdown(List<Breakdown> noAlg)
         {
+            Console.WriteLine("Begin GetAlgBreakdown");
             List<Breakdown> algList = new List<Breakdown>();
             foreach (Breakdown bd in noAlg)
             {
@@ -138,6 +144,8 @@ namespace ChineseAppWPF.Controllers
                     BreakdownService.ApplyRule(rule, algList, i);
                 }
             }
+            Console.WriteLine("End GetAlgBreakdown");
+
             return algList;
         }
 

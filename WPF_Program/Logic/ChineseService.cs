@@ -367,10 +367,10 @@ namespace ChineseAppWPF.Logic
 
         private static string GetStringFrom(int i, int j, string sentence)
         {
-            StringBuilder result = new StringBuilder();
-            for (int k = i; k < j; k++)
-                result.Append(sentence[k].ToString());
-            return result.ToString();
+            //StringBuilder result = new StringBuilder();
+            //for (int k = i; k < j; k++)
+            //    result.Append(sentence[k].ToString());
+            return sentence[i..j];//result.ToString();
             //return sentence.Substring(i, j - i);
         }
 
@@ -381,7 +381,8 @@ namespace ChineseAppWPF.Logic
             List<string> result = new List<string>();
 
             //Console.Write("test: ");
-            while (i < sentence.Length)
+            //while (i < sentence.Length)
+            while (i < j)
             {
                 string possible = GetStringFrom(i, j, sentence);
                 if (WordExists(possible))
