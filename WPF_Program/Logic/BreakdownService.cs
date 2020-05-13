@@ -50,7 +50,9 @@ namespace ChineseAppWPF.Logic
 
                 case BetweenWordsRule rule:
                     if ((i > 0) && (i < bd.Count - 1) &&
-                        (rule.LeftWord == bd[i - 1].Part) && (rule.RightWord == bd[i + 1].Part) && (rule.CurrentTag == bd[i].Part))
+                        (rule.LeftWord == bd[i - 1].Part) && 
+                        (rule.RightWord == bd[i + 1].Part) && 
+                        (rule.CurrentTag == bd[i].Description)) //.Part
                     {
                         bd[i].Description = rule.DesiredTag;
                     }

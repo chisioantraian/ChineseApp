@@ -267,18 +267,6 @@ namespace ChineseAppWPF.Logic
         internal static bool IsCharacter(char character)
         {
             return characterSet.Contains(character);
-            /*
-            ChineseSystem writingSystem = GetWritingSystem(character.ToString());
-
-            if (writingSystem == ChineseSystem.Simplified)
-            {
-                //return allWords.Any(w => w.Simplified[0] == character);
-            }
-            else
-            {
-                //return allWords.Any(w => w.Traditional[0] == character);
-            }
-            */
         }
 
         internal static bool IsPunctuation(string word)

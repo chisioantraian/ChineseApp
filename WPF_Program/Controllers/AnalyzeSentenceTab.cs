@@ -38,25 +38,7 @@ namespace ChineseAppWPF.Controllers
                 var posTuple = PosInformation.GetPosInfo(b.Description);
                 var wordBorder = BoxFactory.CreateAnalysisWordBox(posTuple, b.Part, mainWindow);
                 mainWindow.SentenceAnalysisBox.Children.Add(wordBorder);
-                //
-                //
-                if (b.Part == "了")
-                {
-                    TextBlock patternBlock = new TextBlock { Text = "Past particle found: 了", FontSize = 16, Padding = new System.Windows.Thickness(5) };
-                    mainWindow.PatternsPanel.Children.Add(patternBlock);
-                }
 
-                if (b.Part == "的")
-                {
-                    TextBlock patternBlock = new TextBlock { Text = "Possesive particle found: 的", FontSize = 16, Padding = new System.Windows.Thickness(5) };
-                    mainWindow.PatternsPanel.Children.Add(patternBlock);
-                }
-
-                if (b.Part == "们")
-                {
-                    TextBlock patternBlock = new TextBlock { Text = "Plural particle found: 们", FontSize = 16, Padding = new System.Windows.Thickness(5) };
-                    mainWindow.PatternsPanel.Children.Add(patternBlock);
-                }
             }
             Console.WriteLine("\n\n");
         }

@@ -21,57 +21,61 @@ namespace ChineseAppWPF.Controllers
             mainWindow.tView.ItemsSource = GetTreeDecomposition(characterToBeDecomposed);
             mainWindow.DeompositionPanelCounter.Text = $"Decomposition to radicals of character {characterToBeDecomposed}";
         }
-        internal static List<TreeViewItem> GetTreeDecomposition(char ch)
+
+        // ch, from string to ch
+        /*internal static IEnumerable<TreeViewItem> GetTreeDecomposition(string ch)
         {
-
-            if (Kangxi.CheckIfKangxiRadical(ch) || Kangxi.CheckIfStroke(ch))
+            if (Kangxi.CheckIfKangxiRadical(ch[0]) || Kangxi.CheckIfStroke(ch[0]))
             {
-                return new List<TreeViewItem> { new TreeViewItem {Header = CreateBranchWord(ch, true) } };
+                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch[0], true) } };
             }
 
-            TreeViewItem item = new TreeViewItem
+            if (!basicDict.ContainsKey(ch.ToString()))
             {
-                Header = CreateBranchWord(ch, false),
-                IsExpanded = true,
-            };
-
-            if (ch == ' ')
-            {
-                return new List<TreeViewItem> { item };
+                return new List<TreeViewItem>();
             }
 
-            if (ChineseService.IsCharacter(ch))
+            List<TreeViewItem> result = basicDict[ch.ToString()]
+                                            .SelectMany(c => GetTreeDecomposition(c))
+                                            .ToList();
+
+            if (ChineseService.IsCharacter(ch[0]))
             {
-                //TODO string to char ?
-                if (basicDict.ContainsKey(ch.ToString()))
-                {
-                    foreach (string c in basicDict[ch.ToString()])
-                    {
-                        item.ItemsSource = GetTreeDecomposition(c[0]);
-                        //foreach (TreeViewItem child in GetTreeDecomposition(c[0]))
-                        //    item.Items.Add(child);
-                    }
-                }
-                return new List<TreeViewItem> { item };
+                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch[0], false), ItemsSource = result, IsExpanded = true } };
             }
             else
             {
-                if (basicDict.ContainsKey(ch.ToString()))
-                {
-                    List<TreeViewItem> result = new List<TreeViewItem>();
-                    foreach (string c in basicDict[ch.ToString()])
-                    {
-                        foreach (var child in GetTreeDecomposition(c[0]))
-                        {
-                            result.Add(child);
-                        }
-                    }
-                    return result;
-                }
+                return result;
             }
-            return new List<TreeViewItem>();
-        }
 
+        }*/
+        
+        internal static IEnumerable<TreeViewItem> GetTreeDecomposition(char ch)
+        {
+            if (Kangxi.CheckIfKangxiRadical(ch) || Kangxi.CheckIfStroke(ch))
+            {
+                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch, true) } };
+            }
+
+            if (!basicDict.ContainsKey(ch.ToString()))
+            {
+                return new List<TreeViewItem>();
+            }
+
+            List<TreeViewItem> result = basicDict[ch.ToString()]
+                                            .SelectMany(c => GetTreeDecomposition(c[0]))
+                                            .ToList();
+
+            if (ChineseService.IsCharacter(ch))
+            {
+                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch, false), ItemsSource = result, IsExpanded = true } };
+            }
+            else
+            {
+                return result;
+            }
+        }
+        
 
         //TODO remove isKangxi inside this method?
         internal static Border CreateBranchWord(char ch, bool isKangxi)
