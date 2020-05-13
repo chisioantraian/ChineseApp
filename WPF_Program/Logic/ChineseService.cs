@@ -16,8 +16,9 @@ namespace ChineseAppWPF.Logic
 
         private static List<Word> allWords = new List<Word>();
         private static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
-        private static HashSet<string> wordsSet = new HashSet<string>();
-        private static HashSet<string> traditionalSet = new HashSet<string>();
+        private static HashSet<string> wordsSet = new HashSet<string>();                  // words
+        private static HashSet<char> characterSet = new HashSet<char>();                  // chars
+        private static HashSet<string> onlyTraditionalSet = new HashSet<string>();        // words
         private static Dictionary<char, int> strokesDict = new Dictionary<char, int>();
 
         public static void InitializeData()
@@ -25,7 +26,8 @@ namespace ChineseAppWPF.Logic
             BuildAllWords();
             BuildAllDetailedWords();
             BuildAllWordsSet();
-            BuildTraditionalSet();
+            BuildCharacterSet();
+            BuildOnlyTraditionalSet();
             BuilStrokesDict();
         }
 
@@ -94,13 +96,25 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-        private static void BuildTraditionalSet()
+        private static void BuildCharacterSet()
+        {
+            foreach (var word in allWords)
+            {
+                if (word.Simplified.Length == 1)
+                {
+                    characterSet.Add(word.Simplified[0]);
+                    characterSet.Add(word.Traditional[0]);
+                }
+            }
+        }
+
+        private static void BuildOnlyTraditionalSet()
         {
             foreach (var word in allWords)
             {
                 if (word.Traditional != word.Simplified)
                 {
-                    traditionalSet.Add(word.Traditional);
+                    onlyTraditionalSet.Add(word.Traditional);
                 }
             }
         }
@@ -252,16 +266,19 @@ namespace ChineseAppWPF.Logic
 
         internal static bool IsCharacter(char character)
         {
+            return characterSet.Contains(character);
+            /*
             ChineseSystem writingSystem = GetWritingSystem(character.ToString());
 
             if (writingSystem == ChineseSystem.Simplified)
             {
-                return allWords.Any(w => w.Simplified[0] == character);
+                //return allWords.Any(w => w.Simplified[0] == character);
             }
             else
             {
-                return allWords.Any(w => w.Traditional[0] == character);
+                //return allWords.Any(w => w.Traditional[0] == character);
             }
+            */
         }
 
         internal static bool IsPunctuation(string word)
@@ -303,7 +320,7 @@ namespace ChineseAppWPF.Logic
 
         public static ChineseSystem GetWritingSystem(string text)
         {
-            if (traditionalSet.Contains(text))
+            if (onlyTraditionalSet.Contains(text))
                 return ChineseSystem.Traditional;
             return ChineseSystem.Simplified;
         }

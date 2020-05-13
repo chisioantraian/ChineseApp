@@ -2,6 +2,7 @@
 using ChineseAppWPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Packaging;
 using System.Linq;
 using System.Text;
@@ -17,12 +18,7 @@ namespace ChineseAppWPF.Controllers
     {
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
-            mainWindow.tView.Items.Clear();
-            List<TreeViewItem> itemsToAdd = GetTreeDecomposition(characterToBeDecomposed);
-            foreach (TreeViewItem item in itemsToAdd)
-            {
-                mainWindow.tView.Items.Add(item);
-            }
+            mainWindow.tView.ItemsSource = GetTreeDecomposition(characterToBeDecomposed);
             mainWindow.DeompositionPanelCounter.Text = $"Decomposition to radicals of character {characterToBeDecomposed}";
         }
         internal static List<TreeViewItem> GetTreeDecomposition(char ch)
@@ -51,8 +47,9 @@ namespace ChineseAppWPF.Controllers
                 {
                     foreach (string c in basicDict[ch.ToString()])
                     {
-                        foreach (TreeViewItem child in GetTreeDecomposition(c[0]))
-                            item.Items.Add(child);
+                        item.ItemsSource = GetTreeDecomposition(c[0]);
+                        //foreach (TreeViewItem child in GetTreeDecomposition(c[0]))
+                        //    item.Items.Add(child);
                     }
                 }
                 return new List<TreeViewItem> { item };

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -87,9 +88,23 @@ namespace ChineseAppWPF
                 //Dispatcher.BeginInvoke(new Action(() => Controller.ShowCharsWithComponent_SidePanel(character)));
                 //Dispatcher.BeginInvoke(new Action(() => Controller.ShowWordsWithCharacter_SidePanel(character)));
 
+                Stopwatch stopwatch = new Stopwatch();
+
+                stopwatch.Start();
                 Controller.ShowWordWithThisCharacter(character);
+                stopwatch.Stop();
+                Console.WriteLine($"\ntime decomposition: {stopwatch.ElapsedMilliseconds} ms");
+
+                stopwatch.Restart();
                 Controller.ShowCharsWithComponent_SidePanel(character);
+                stopwatch.Stop();
+                Console.WriteLine($"chars with comp: {stopwatch.ElapsedMilliseconds} ms");
+
+                stopwatch.Restart();
                 Controller.ShowWordsWithCharacter_SidePanel(character);
+                stopwatch.Stop();
+                Console.WriteLine($"words with chars: {stopwatch.ElapsedMilliseconds} ms\n");
+
             }
         }
 
