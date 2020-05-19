@@ -51,5 +51,12 @@ namespace ChineseAppWPF.Models
         public string DesiredTag { get; set; }
     }
 
+    public class NoMoreVerbsRule : Rule
+    {
+        public string CurrentChar { get; set; }
+        public string DesiredTag { get; set; }
+
+    }
+
 
 }

@@ -52,11 +52,28 @@ namespace ChineseAppWPF.Logic
                     if ((i > 0) && (i < bd.Count - 1) &&
                         (rule.LeftWord == bd[i - 1].Part) && 
                         (rule.RightWord == bd[i + 1].Part) && 
-                        (rule.CurrentTag == bd[i].Description)) //.Part
+                        (rule.CurrentTag == bd[i].Description))
                     {
                         bd[i].Description = rule.DesiredTag;
                     }
                     break;
+
+                case NoMoreVerbsRule rule:
+                    bool thereAreVerbs = false;
+                    for (int j = i + 1; j < bd.Count; j++)
+                        if (bd[j].Description == "v")
+                        {
+                            thereAreVerbs = true;
+                            break;
+                        }
+                    if ((rule.CurrentChar == bd[i].Part) && thereAreVerbs)
+                    {
+                        bd[i].Description = rule.DesiredTag;
+                    }
+                    break;
+                
+
+
             }
         }
     }

@@ -2,6 +2,7 @@
 using ChineseAppWPF.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -17,9 +18,11 @@ namespace ChineseAppWPF.Controllers
         private static MainWindow mainWindow;
         private static Dictionary<string, DetailedWord> allDetailedWords;
         private const string testsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\testSentences.utf8";
+        private const string longerPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\longer2.utf8";
         private static List<Sentence> sentences = new List<Sentence>();
         private static readonly List<Sentence> wrongSentences = new List<Sentence>();
         private static Dictionary<string, List<string>> basicDict;
+        //private static List<FastWord> fastWords;
 
         private static IEnumerable<Word> currentWords = new List<Word>();
         private static IEnumerable<Word> previousWords = new List<Word>();
@@ -29,12 +32,14 @@ namespace ChineseAppWPF.Controllers
 
         private delegate void ShowLanguageResult();
         private static ShowLanguageResult showLanguageResult = ShowEnglishResult;
+        private static Stopwatch stopwatch = new Stopwatch();
 
         public static void SetWindow(MainWindow window)
         {
             mainWindow = window;
             allDetailedWords = ChineseService.GetAllDetailedWords();
             basicDict = Decomposition.GetBasicDict();
+            //fastWords = ChineseService.GetFastWords();
         }
 
 
@@ -66,9 +71,31 @@ namespace ChineseAppWPF.Controllers
                 return;
             }
 
+            stopwatch.Restart();
             showLanguageResult();
+
+            stopwatch.Stop();
+
+            Console.WriteLine($"\nsearch time: {stopwatch.ElapsedMilliseconds} ms");
         }
 
+        /*
+        public static void ShowFastResult()
+        {
+            if (mainWindow == null)
+                return;
+            if (string.IsNullOrEmpty(mainWindow.SearchBar.Text))
+            {
+                return;
+            }
+            string text = mainWindow.SearchBar.Text;
+            List<StackPanel> words = fastWords.Where(w => w.Definitions.Contains(text))
+                                            .Select(w => w.elem)
+                                            .ToList();
+
+            mainWindow.fastWordsList.ItemsSource = words;
+        }
+        */
 
 
         public static void ShowEnglishThread()

@@ -4,7 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using ChineseAppWPF.Models;
+using Ubiety.Dns.Core;
 
 namespace ChineseAppWPF.Logic
 {
@@ -14,15 +20,19 @@ namespace ChineseAppWPF.Logic
         private const string wordsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\allWords.utf8";
         private const string strokesPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\ucs-strokes.txt";
 
+
         private static List<Word> allWords = new List<Word>();
         private static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
         private static HashSet<string> wordsSet = new HashSet<string>();                  // words
         private static HashSet<char> characterSet = new HashSet<char>();                  // chars
         private static HashSet<string> onlyTraditionalSet = new HashSet<string>();        // words
         private static Dictionary<char, int> strokesDict = new Dictionary<char, int>();
+        private static List<FastWord> allFastWords = new List<FastWord>();
+        private static int lineNumber = 0;
 
         public static void InitializeData()
         {
+            //BuildFastWords();
             BuildAllWords();
             BuildAllDetailedWords();
             BuildAllWordsSet();
@@ -31,13 +41,117 @@ namespace ChineseAppWPF.Logic
             BuilStrokesDict();
         }
 
+        public static List<FastWord> GetFastWords() => allFastWords;
         public static List<Word> GetAllWords() => allWords;
 
         public static Dictionary<string, DetailedWord> GetAllDetailedWords() => allDetailedWords;
 
+        private static void BuildFastWords()
+        {
+            allFastWords = File.ReadAllLines(wordsPath)
+                               //.AsParallel()
+                               .Select(getFastWordFromLine)
+                               .ToList();
+
+            static FastWord getFastWordFromLine(string line)
+            {
+                string[] tokens = line.Split('\t');
+                return new FastWord
+                {
+                    Traditional = tokens[0],
+                    Simplified = tokens[1],
+                    Pinyin = tokens[2],
+                    Definitions = tokens[3],
+                    Frequency = int.Parse(tokens[4]),
+                    elem = generateControl(tokens) // TODO modify here
+                };
+            }
+        }
+
+        private static StackPanel generateControl(string[] tokens)
+        {
+            //Console.WriteLine(tokens[0]);
+            StackPanel charPronPairs = generatePairs(tokens);
+            TextBlock defBlock = new TextBlock 
+            { 
+                Text = tokens[3], 
+                FontSize = 16
+            };
+            
+
+            StackPanel control = new StackPanel { Orientation = Orientation.Vertical };
+            control.Children.Add(charPronPairs);
+            control.Children.Add(defBlock);
+            control.Children.Add(new Separator());
+            return control;
+        }
+
+        private static Brush calculateColor(string pron)
+        {
+            if (pron.Contains("1")) return Brushes.Red;
+            if (pron.Contains("2")) return Brushes.LimeGreen;   //Green
+            if (pron.Contains("3")) return Brushes.Blue;
+            if (pron.Contains("4")) return Brushes.DarkMagenta; // Purple
+            return Brushes.Gray;
+        }
+
+        private static StackPanel generatePairs(string[] tokens)
+        {
+            StackPanel pairsPanel = new StackPanel { Orientation = Orientation.Horizontal };
+            List<string> singlePron = tokens[2].Split(" ").ToList();
+            string simplified = tokens[1];
+            string traditional = tokens[0];
+
+            for (int i = 0; i < singlePron.Count && i < simplified.Length; i++)
+            {
+                StackPanel singlePair = new StackPanel { Orientation = Orientation.Vertical };
+                TextBlock charBlock = new TextBlock 
+                { 
+                    Text = simplified[i].ToString(), 
+                    FontSize = 48, 
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Foreground = calculateColor(singlePron[i])
+                };
+                //MenuItem item1 = new MenuItem { Header = "Show words" };
+                //MenuItem item2 = new MenuItem { Header = "Show chars" };
+
+                //charBlock.ContextMenu.Items.Add(item1);
+                //charBlock.ContextMenu.Items.Add(item2);
+
+                string st = simplified[i].ToString();
+                charBlock.MouseEnter += (s,e) =>
+                {
+                    
+                    charBlock.Text = "";
+                    charBlock.Inlines.Add(new Run(st) { FontWeight = FontWeights.Bold });
+                    charBlock.Cursor = Cursors.Hand;
+                };
+
+                charBlock.MouseLeave += (s, e) =>
+                {
+                    charBlock.Text = st;
+                    charBlock.Cursor = Cursors.Arrow;
+                };
+
+                TextBlock pronBlock = new TextBlock
+                {
+                    //Text = tokens[2][i].ToString(),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                };
+                pronBlock.Inlines.Add(new Run(singlePron[i]) { FontWeight = FontWeights.Bold });
+
+                singlePair.Children.Add(charBlock);
+                singlePair.Children.Add(pronBlock);
+                pairsPanel.Children.Add(singlePair);
+            }
+            return pairsPanel;
+        }
+
+        //private const string longerPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\longer.utf8";
+
         private static void BuildAllWords()
         {
-            allWords = File.ReadAllLines(wordsPath)
+            allWords = File.ReadAllLines(wordsPath)//(wordsPath)
                            .AsParallel()
                            .Select(getWordFromLine)
                            .ToList();
@@ -45,14 +159,43 @@ namespace ChineseAppWPF.Logic
             static Word getWordFromLine(string line)
             {
                 string[] tokens = line.Split('\t');
+
                 return new Word
                 {
                     Traditional = tokens[0],
                     Simplified = tokens[1],
                     Pinyin = tokens[2],
                     Definitions = tokens[3],
-                    Frequency = int.Parse(tokens[4])
+                    Frequency = int.Parse(tokens[4]),
+                    //Longer = tokens[5]
                 };
+                /*
+                if (tokens.Length >= 5)
+                {
+                    return new Word
+                    {
+                        Traditional = tokens[0],
+                        Simplified = tokens[1],
+                        Pinyin = tokens[2],
+                        Definitions = tokens[3],
+                        Frequency = int.Parse(tokens[4]),
+                        Longer = tokens[5]
+                    };
+                }
+                else
+                {
+                    return new Word
+                    {
+                        Traditional = tokens[0],
+                        Simplified = tokens[1],
+                        Pinyin = tokens[2],
+                        Definitions = tokens[3],
+                        Frequency = int.Parse(tokens[4]),
+                        //Longer = tokens[5]
+                    };
+                }
+                */
+
             }
         }
 
@@ -145,7 +288,6 @@ namespace ChineseAppWPF.Logic
 
         public static IEnumerable<Word> SortByFrequency(this IEnumerable<Word> words)
         {
-            //return words.OrderBy(w => w.Frequency).Reverse();
             return words.OrderByDescending(w => w.Frequency);
         }
 

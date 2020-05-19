@@ -31,6 +31,7 @@ namespace ChineseAppWPF.Controllers
                     "nextWord" => new NextWordRule { NextWord=tokens[1], CurrentWord=tokens[2], CurrentTag=tokens[3], DesiredTag=tokens[4]},
                     "betweenTags" => new BetweenTagsRule { LeftTag=tokens[1], RightTag=tokens[2], CurrentWord=tokens[3], CurrentTag=tokens[4], DesiredTag=tokens[5]},
                     "betweenWords" => new BetweenWordsRule { LeftWord=tokens[1], RightWord=tokens[2], CurrentTag=tokens[3], DesiredTag=tokens[4]},
+                    "noMoreVerbs" => new NoMoreVerbsRule { CurrentChar=tokens[1], DesiredTag=tokens[2]},
                     _ => null
                 };
             }

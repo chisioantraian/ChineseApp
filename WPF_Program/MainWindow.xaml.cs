@@ -27,7 +27,6 @@ namespace ChineseAppWPF
             Controller.InitializeStatistics();
             Controller.InitializeSentenceExamples();
 
-            Controller.ShowSomeRandomWords();
             UndoButton.IsEnabled = false;
         }
 
@@ -69,42 +68,9 @@ namespace ChineseAppWPF
 
             if (ev.ChangedButton == MouseButton.Left)
             {
-                //mainWindow.Dispatcher.BeginInvoke(new Action(() => ShowEnglishResult()));
-
-                //Thread t1 = new Thread(() => Controller.ShowWordWithThisCharacter(character));
-                //Thread t2 = new Thread(() => Controller.ShowCharsWithComponent_SidePanel(character));
-                //Thread t3 = new Thread(() => Controller.ShowWordsWithCharacter_SidePanel(character));
-                //t1.Start();
-                //t2.Start();
-                //t2.Start();
-
-                //Parallel.Invoke(
-                //    () => Controller.ShowWordWithThisCharacter(character),
-                //    () => Controller.ShowCharsWithComponent_SidePanel(character),
-                //    () => Controller.ShowWordsWithCharacter_SidePanel(character)
-                //);
-
-                //Dispatcher.BeginInvoke(new Action(() => Controller.ShowWordWithThisCharacter(character)));
-                //Dispatcher.BeginInvoke(new Action(() => Controller.ShowCharsWithComponent_SidePanel(character)));
-                //Dispatcher.BeginInvoke(new Action(() => Controller.ShowWordsWithCharacter_SidePanel(character)));
-
-                Stopwatch stopwatch = new Stopwatch();
-
-                stopwatch.Start();
                 Controller.ShowWordWithThisCharacter(character);
-                stopwatch.Stop();
-                Console.WriteLine($"\ntime decomposition: {stopwatch.ElapsedMilliseconds} ms");
-
-                stopwatch.Restart();
                 Controller.ShowCharsWithComponent_SidePanel(character);
-                stopwatch.Stop();
-                Console.WriteLine($"chars with comp: {stopwatch.ElapsedMilliseconds} ms");
-
-                stopwatch.Restart();
                 Controller.ShowWordsWithCharacter_SidePanel(character);
-                stopwatch.Stop();
-                Console.WriteLine($"words with chars: {stopwatch.ElapsedMilliseconds} ms\n");
-
             }
         }
 
@@ -128,7 +94,10 @@ namespace ChineseAppWPF
 
         private void SaveSentence_Click(object sender, RoutedEventArgs e) => Controller.AddSentenceBreakdownToTests();
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) => Controller.SaveTestSentences();
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Controller.SaveTestSentences();
+        }
 
         private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();
 

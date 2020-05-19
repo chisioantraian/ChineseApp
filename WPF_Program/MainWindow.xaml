@@ -3,13 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChineseAppWPF"
+        xmlns:local="clr-namespace:ChineseAppWPF" xmlns:system="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         
         Closing="Window_Closing"
         Title="Licenta 2020 - Chis Ioan Traian"
         Height="1080"
         Width="1920" >
+    <Window.Resources>
+        <system:String x:Key="ChineseCharacterSize">48</system:String>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -612,7 +616,11 @@
                 </Grid>
             </TabItem>
 
-
+            <TabItem Header="testSearch">
+                <ListBox Name="fastWordsList">
+                    
+                </ListBox>
+            </TabItem>
 
         </TabControl>
     </Grid>

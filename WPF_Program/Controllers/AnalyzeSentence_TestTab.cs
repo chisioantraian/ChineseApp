@@ -210,5 +210,55 @@ namespace ChineseAppWPF.Controllers
             Console.WriteLine("Saved sentences to file");
         }
 
+        internal static void CreateLongerWords()
+        {
+            using StreamWriter sw = new StreamWriter(longerPath);
+
+            foreach (Word w in ChineseService.GetAllWords().Skip(116939))
+            {
+                try {
+                    sw.WriteLine($"{w.Traditional}	{w.Simplified}	{w.Pinyin}	{w.Definitions}	{w.Frequency}	{getCombined(w)}");
+                }
+                catch
+                {
+                    Console.WriteLine("shit");
+                }
+            }
+
+        }
+
+        private static string getCombined(Word word)
+        {
+            StringBuilder result = new StringBuilder(word.Simplified);
+            List<string> singlePron = word.Pinyin.Split(" ").ToList();
+
+            bool addBrackets = false;
+            for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
+            {
+                if (word.Simplified[i] != word.Traditional[i])
+                {
+                    addBrackets = true;
+                    break;
+                }
+            }
+            if (addBrackets)
+            {
+                result.Append(" 〔");
+                for (int i = 0; i < word.Traditional.Length && i < singlePron.Count; i++)
+                {
+                    if (word.Simplified[i] == word.Traditional[i])
+                    {
+                        result.Append("-");
+                    }
+                    else
+                    {
+                        result.Append(word.Traditional[i]);
+                    }
+                }
+                result.Append("〕");
+            }
+            return result.ToString();
+        }
+
     }
 }

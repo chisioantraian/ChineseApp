@@ -2,5 +2,6 @@
 nextTag	a	多	a	d
 prevTag	m	本	r	q
 nextWord	书	本	r	q
+nextWord	了	给	p	v
 betweenTags	m	m	米	n	q
 betweenWords	是	的	p	a

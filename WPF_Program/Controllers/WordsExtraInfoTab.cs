@@ -18,12 +18,12 @@ namespace ChineseAppWPF.Controllers
     {
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
-            mainWindow.tView.ItemsSource = GetTreeDecomposition(characterToBeDecomposed);
+            mainWindow.tView.ItemsSource = GetTreeDecomposition(characterToBeDecomposed.ToString());
             mainWindow.DeompositionPanelCounter.Text = $"Decomposition to radicals of character {characterToBeDecomposed}";
         }
 
         // ch, from string to ch
-        /*internal static IEnumerable<TreeViewItem> GetTreeDecomposition(string ch)
+        internal static IEnumerable<TreeViewItem> GetTreeDecomposition(string ch)
         {
             if (Kangxi.CheckIfKangxiRadical(ch[0]) || Kangxi.CheckIfStroke(ch[0]))
             {
@@ -48,8 +48,8 @@ namespace ChineseAppWPF.Controllers
                 return result;
             }
 
-        }*/
-        
+        }
+        /*
         internal static IEnumerable<TreeViewItem> GetTreeDecomposition(char ch)
         {
             if (Kangxi.CheckIfKangxiRadical(ch) || Kangxi.CheckIfStroke(ch))
@@ -74,7 +74,7 @@ namespace ChineseAppWPF.Controllers
             {
                 return result;
             }
-        }
+        }*/
         
 
         //TODO remove isKangxi inside this method?
