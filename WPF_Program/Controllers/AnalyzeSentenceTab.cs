@@ -31,12 +31,11 @@ namespace ChineseAppWPF.Controllers
             //ChineseService.GetAllWordsFrom(simpList).UpdateShownWords();
 
             mainWindow.SentenceAnalysisBox.Children.Clear();
-            mainWindow.PatternsPanel.Children.Clear();
 
             foreach (Breakdown b in st.Algorithm)
             {
                 var posTuple = PosInformation.GetPosInfo(b.Description);
-                var wordBorder = BoxFactory.CreateAnalysisWordBox(posTuple, b.Part, mainWindow);
+                var wordBorder = BoxFactory.CreateAnalysisWordBox(posTuple, b.Part);
                 mainWindow.SentenceAnalysisBox.Children.Add(wordBorder);
 
             }

@@ -3,16 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChineseAppWPF" xmlns:system="clr-namespace:System;assembly=System.Runtime"
-        mc:Ignorable="d"
-        
+        mc:Ignorable="d"        
         Closing="Window_Closing"
         Title="Licenta 2020 - Chis Ioan Traian"
-        Height="1080"
-        Width="1920" >
+        Width="1920"
+        Height="1080">
+    
     <Window.Resources>
-        <system:String x:Key="ChineseCharacterSize">48</system:String>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ChineseResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
+
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -32,62 +36,33 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0"
-                        Name="UndoButton"
-                        IsEnabled="False"
-                        Margin="5,20,5,20"
-                        Content="Undo"
-                        Click="Undo_Click" />
-                <TextBox 
+                <TextBox
+                    Name="SearchBar"
                     Grid.Column="1"
-                    Name="SearchBar" FontSize="16" 
-                    Padding="12" Margin="12" 
-                    ToolTip="Search something automatically by typing in english or chinese"
-                    KeyUp="SearchBar_KeyUp"/>
+                    Style="{StaticResource SearchBarStyle}"
+                    KeyUp="SearchBar_KeyUp" />
             </Grid>
 
-
-
-            <Grid Grid.Row="1"
-                  Background="WhiteSmoke">
+            <Grid Grid.Row="1" Background="WhiteSmoke">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
-
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" 
-                        Click="ChangeLanguage_Click"
-                        Content="Input: English &#xa;Change to Chinese"
-                        Name="ChangeLanguageButton"
-                        Margin="10,4,10,4">
-
-                </Button>
-
-                <!--
-                <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5,0,10,0">
-                    <TextBlock Text="Input language:" />
-                    <ComboBox
-                        Name="InputComboBox"
-                        Background="Beige"
-                        ToolTip="Choose how the search bar will be used"
-                        SelectionChanged="InputComboBox_SelectionChanged"
-                        SelectedIndex="0">
-                        <ComboBoxItem ToolTip="Search words by typing in english">English</ComboBoxItem>
-                        <ComboBoxItem ToolTip="Search words by typing in chinese/pinyin">Chinese</ComboBoxItem>
-                    </ComboBox>
-                </StackPanel>
-                -->
+                <Button Name="ChangeLanguageButton"
+                        Grid.Column="0" 
+                        Style="{StaticResource ChangeLanguageButtonStyle}" 
+                        Click="ChangeLanguage_Click" />
 
                 <StackPanel Grid.Column="1" Orientation="Vertical" Margin="0,0,10,0">
                     <TextBlock Text="Sort By: "/>
-                    <ComboBox Name="SortingComboBox"
-                              ToolTip="Sort shown words by some criterion"
-                              SelectionChanged="SortingComboBox_SelectionChanged"
-                          
-                          SelectedIndex="0">
+                    <ComboBox 
+                        Name="SortingComboBox"
+                        ToolTip="Sort shown words by some criterion"
+                        SelectionChanged="SortingComboBox_SelectionChanged"
+                        SelectedIndex="0">
                         <ComboBoxItem ToolTip="Sort by word's frequency in language">Frequency</ComboBoxItem>
                         <ComboBoxItem ToolTip="Sort by word's number of strokes">Strokes</ComboBoxItem>
                         <ComboBoxItem ToolTip="Sort alphabetically by word's pronounciation">Pinyin</ComboBoxItem>
@@ -95,36 +70,19 @@
                     </ComboBox>
                 </StackPanel>
 
-                <Button Grid.Column="2" Click="RandomButton_Click"
-                        Content="Random Words" 
-                        Margin="0,10,10,5">
-                    <Button.ToolTip>
-                        <ToolTip>
-                            Show 200 random words
-                        </ToolTip>
-                    </Button.ToolTip>
-                    <Button.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="test1"/>
-                            <MenuItem Header="test2"/>
-                        </ContextMenu>
-                    </Button.ContextMenu>
-                </Button>
+                <Button Grid.Column="2"
+                        Click="RandomButton_Click"
+                        Style="{StaticResource RandomButtonStyle}" />
 
-                <TextBlock Grid.Column="3" 
-                           Name="WordsCount" 
-                           ToolTip="Number of words found by the current search"
-                           Margin="0,15,0,0">
-
-                </TextBlock>
+                <TextBlock Name="WordsCount" 
+                           Grid.Column="3"
+                           Style="{StaticResource WordsCountStyle}" />
             </Grid>
 
 
             <ListBox Name="WordsList" 
                      Grid.Row="2" 
-                    
-                     HorizontalContentAlignment="Stretch"
-                     Background="WhiteSmoke">
+                     Style="{StaticResource WordsListStyle}">
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -140,64 +98,47 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Vertical" Background="White">
                                             <TextBlock
-                                                    Text="{Binding ChineseCharacter}"
-                                                    FontSize="48"
-                                                    Foreground="{Binding CharacterColor}"
-                                                    HorizontalAlignment="Center"
-                                                    MouseUp="CharacterAndPinyin_MouseUp"
-                                                    MouseEnter="CharacterAndPinyin_MouseEnter"
-                                                    MouseLeave="CharacterAndPinyin_MouseLeave" >
+                                                Text="{Binding ChineseCharacter}"
+                                                Foreground="{Binding CharacterColor}"
+                                                Style="{StaticResource ChineseCharacterStyle}"
+                                                MouseUp="CharacterAndPinyin_MouseUp"
+                                                MouseEnter="CharacterAndPinyin_MouseEnter"
+                                                MouseLeave="CharacterAndPinyin_MouseLeave" >
 
                                                 <TextBlock.ContextMenu>
                                                     <ContextMenu>
-                                                        <MenuItem Header="Show characters which contain this component"
-                                                                      Tag="{Binding ChineseCharacter}"
-                                                                      Click="CharactersWithComponent_Click"
-                                                                      Cursor="Hand"
-                                                                      FontSize="16"
-                                                                      Padding="10" />
+                                                        <MenuItem 
+                                                            Header="Show characters which contain this component"
+                                                            Style="{StaticResource ContextMenuItemStyle}"
+                                                            Tag="{Binding ChineseCharacter}"
+                                                            Click="CharactersWithComponent_Click" />
                                                         <Separator />
-                                                        <MenuItem Header="Show words with this character"
-                                                                      Tag="{Binding ChineseCharacter}"
-                                                                      Click="WordsWithCharacter_Click"
-                                                                      Cursor="Hand"
-                                                                      FontSize="16"
-                                                                      Padding="10" />
+                                                        <MenuItem 
+                                                            Header="Show words with this character"
+                                                            Style="{StaticResource ContextMenuItemStyle}"
+                                                            Tag="{Binding ChineseCharacter}"
+                                                            Click="WordsWithCharacter_Click" />
                                                         <Separator />
-
                                                     </ContextMenu>
                                                 </TextBlock.ContextMenu>
-
                                             </TextBlock>
-
                                             <TextBlock
-                                                    Name="caracterPronuntie"
-                                                    HorizontalAlignment="Center"
-                                                    Margin="-10"
-                                                    
->
-                                                <TextBlock.Inlines>
-                                                    <Run Text="{Binding Pinyin}"
-                                                             FontSize="12" 
-                                                             FontWeight="Bold"
-                                                             />
-                                                </TextBlock.Inlines>
-                                            </TextBlock>
+                                                Name="caracterPronuntie"
+                                                Style="{StaticResource PronounciationStyle}"
+                                                Text="{Binding Pinyin}" />
 
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
-
                             </ItemsControl>
 
                             <WrapPanel>
-                                <StackPanel Orientation="Vertical" 
-                                            Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
+                                <StackPanel 
+                                    Orientation="Vertical" 
+                                    Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
                                     <TextBlock
                                        Text="{Binding Definitions}" 
-                                       FontSize="16"
-                                       TextWrapping="WrapWithOverflow"
-                                       />
+                                       Style="{StaticResource DefinitionsStyle}" />
                                 </StackPanel>
                             </WrapPanel>
 
@@ -207,21 +148,15 @@
                                 </Separator.RenderTransform>
                             </Separator>
                         </StackPanel>
-
-
-
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-
             </ListBox>
         </Grid>
 
         <TabControl Name="MyTabControl"
                     Grid.Column="1">
-            <TabItem Header="Words" 
-                     ToolTip="Show a character's decomposition down to radicals level">
+            <TabItem Header="Words">
                 <Grid>
-
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
@@ -238,29 +173,18 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" 
-                                   Name="DeompositionPanelCounter"
-                                   Padding="40,6,0,0"
-                                   FontSize="18"
-                                   Background="Gainsboro"
-                                   Text="Decomposition to radicals of selected character " Grid.ColumnSpan="2" />
+                            <TextBlock 
+                                Name="DecompositionPanelTitle"
+                                Grid.Row="0" 
+                                Style="{StaticResource DecompositionPanelStyle}"
+                                Text="Decomposition to radicals of selected character " 
+                                Grid.ColumnSpan="2" />
 
-                            <TreeView Name="tView" Grid.Row="1" Background="WhiteSmoke" Grid.ColumnSpan="2">
-                                <TreeView.Resources>
-                                    <SolidColorBrush
-                                    x:Key="{x:Static SystemColors.HighlightBrushKey}" 
-                                    Color="Transparent" />
-                                    <SolidColorBrush
-                                    x:Key="{x:Static SystemColors.ControlBrushKey}" 
-                                    Color="Transparent" />
-                                    <SolidColorBrush
-                                    x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
-                                    Color="Black" />
-                                </TreeView.Resources>
-                            </TreeView>
-
+                            <TreeView Name="tView" 
+                                      Grid.Row="1" 
+                                      Style="{StaticResource tViewStyle}"
+                                      Grid.ColumnSpan="2" />
                         </Grid>
-
                     </Border>
 
 
@@ -269,7 +193,6 @@
                             <ColumnDefinition Width="3*" />
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
-
 
                         <Border Grid.Column="0" BorderThickness="4,2,2,4" BorderBrush="DarkSlateGray">
                             <Grid>
@@ -281,18 +204,13 @@
 
                                 <TextBlock Grid.Row="0" 
                                    Name="LeftPanelCounter"
-                                   Padding="40,6,0,0"
-                                   FontSize="18"
-                                   Background="Gainsboro"
+                                   Style="{StaticResource ExtraPanelCounterStyle}"
                                    Text="Words with selected character: " />
 
-                                <ListBox Name="CharRightPanel" 
+                                <ListBox Name="WordsExtraPanel" 
                                      Grid.Row="1" 
-                                     VirtualizingStackPanel.IsVirtualizing="True"
-                                     VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                     HorizontalContentAlignment="Stretch"
-                                     Background="WhiteSmoke">
-
+                                     Style="{StaticResource WordsListStyle}" >
+                                    
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Background="White" Margin="0">
@@ -308,43 +226,33 @@
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Vertical" Background="White">
                                                                 <TextBlock
-                                                            Text="{Binding ChineseCharacter}"
-                                                            FontSize="36"
-                                                            Foreground="{Binding CharacterColor}"
-                                                            HorizontalAlignment="Center"
-                                                            MouseEnter="CharacterAndPinyin_MouseEnter"
-                                                            MouseLeave="CharacterAndPinyin_MouseLeave" >
+                                                                    Text="{Binding ChineseCharacter}"
+                                                                    Foreground="{Binding CharacterColor}"
+                                                                    Style="{StaticResource ExtraPanelCharacterStyle}"
+                                                                    MouseEnter="CharacterAndPinyin_MouseEnter"
+                                                                    MouseLeave="CharacterAndPinyin_MouseLeave" >
                                                                     <TextBlock.ContextMenu>
                                                                         <ContextMenu>
-                                                                            <MenuItem Header="Show characters which contain this component"
-                                                                      Tag="{Binding ChineseCharacter}"
-                                                                      Click="CharactersWithComponent_Click"
-                                                                      Cursor="Hand"
-                                                                      FontSize="16"
-                                                                      Padding="10" />
+                                                                            <MenuItem 
+                                                                                Header="Show characters which contain this component"
+                                                                                Tag="{Binding ChineseCharacter}"
+                                                                                Click="CharactersWithComponent_Click"
+                                                                                Style="{StaticResource ContextMenuItemStyle}" />
                                                                             <Separator />
-                                                                            <MenuItem Header="Show words with this character"
-                                                                      Tag="{Binding ChineseCharacter}"
-                                                                      Click="WordsWithCharacter_Click"
-                                                                      Cursor="Hand"
-                                                                      FontSize="16"
-                                                                      Padding="10" />
+                                                                            <MenuItem 
+                                                                                Header="Show words with this character"
+                                                                                Tag="{Binding ChineseCharacter}"
+                                                                                Click="WordsWithCharacter_Click"
+                                                                                Style="{StaticResource ContextMenuItemStyle}"/>
                                                                             <Separator />
-
                                                                         </ContextMenu>
                                                                     </TextBlock.ContextMenu>
                                                                 </TextBlock>
 
                                                                 <TextBlock
-                                                            Name="caracterPronuntie"
-                                                            HorizontalAlignment="Center"
-                                                            Margin="-10">
-                                                                    <TextBlock.Inlines>
-                                                                        <Run Text="{Binding Pinyin}"
-                                                                     FontSize="9" 
-                                                                     FontWeight="Bold"/>
-                                                                    </TextBlock.Inlines>
-                                                                </TextBlock>
+                                                                    Name="caracterPronuntie"
+                                                                    Text="{Binding Pinyin}"
+                                                                    Style="{StaticResource ExtraPanelPinyinStyle}" />
 
                                                             </StackPanel>
                                                         </DataTemplate>
@@ -353,12 +261,12 @@
                                                 </ItemsControl>
 
                                                 <WrapPanel>
-                                                    <StackPanel Orientation="Vertical" 
-                                            Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
+                                                    <StackPanel 
+                                                        Orientation="Vertical" 
+                                                        Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
                                                         <TextBlock
-                                                   Text="{Binding Definitions}" 
-                                                   FontSize="12"
-                                                   TextWrapping="WrapWithOverflow" />
+                                                            Text="{Binding Definitions}" 
+                                                            Style="{StaticResource ExtraPanelDefinitionStyle}" />
                                                     </StackPanel>
                                                 </WrapPanel>
 
@@ -368,17 +276,11 @@
                                                     </Separator.RenderTransform>
                                                 </Separator>
                                             </StackPanel>
-
-
-
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
-
                                 </ListBox>
                             </Grid>
-
                         </Border>
-
 
 
                         <Border Grid.Column="1" BorderThickness="2,2,4,4" BorderBrush="DarkSlateGray">
@@ -389,25 +291,23 @@
                                 </Grid.RowDefinitions>
 
 
-                                <TextBlock Grid.Row="0" 
-                                   Name="RightPanelCounter"
-                                   Padding="40,6,0,0"
-                                   FontSize="18"
-                                   Background="Gainsboro"
-                                   Text="Characters with selected component: " />
+                                <TextBlock 
+                                    Name="RightPanelCounter"
+                                    Grid.Row="0" 
+                                    Style="{StaticResource ExtraPanelCounterStyle}"
+                                    Text="Characters with selected component: " />
 
 
-                                <ListBox Name="CharLeftPanel" 
+                                <ListBox Name="CharsExtraPanel" 
                                      Grid.Row="1" 
+                                         
                                      VirtualizingStackPanel.IsVirtualizing="True"
                                      VirtualizingStackPanel.VirtualizationMode="Recycling"
-                                     HorizontalContentAlignment="Stretch"
-                                     Background="WhiteSmoke">
+                                     Style="{StaticResource WordsListStyle}">
 
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Background="White" Margin="0">
-
                                                 <ItemsControl ItemsSource="{Binding SimplifiedPinyinPairs}">
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
@@ -419,58 +319,45 @@
                                                         <DataTemplate>
                                                             <StackPanel Orientation="Vertical" Background="White">
                                                                 <TextBlock
-                                                            Text="{Binding ChineseCharacter}"
-                                                            FontSize="36"
-                                                            Foreground="{Binding CharacterColor}"
-                                                            HorizontalAlignment="Center"
-                                                            MouseEnter="CharacterAndPinyin_MouseEnter"
-                                                            MouseLeave="CharacterAndPinyin_MouseLeave" >
+                                                                    Text="{Binding ChineseCharacter}"
+                                                                    Foreground="{Binding CharacterColor}"
+                                                                    Style="{StaticResource ExtraPanelCharacterStyle}"
+                                                                    MouseEnter="CharacterAndPinyin_MouseEnter"
+                                                                    MouseLeave="CharacterAndPinyin_MouseLeave" >
                                                                     <TextBlock.ContextMenu>
                                                                         <ContextMenu>
-                                                                            <MenuItem Header="Show characters which contain this component"
-                                                                      Tag="{Binding ChineseCharacter}"
-                                                                      Click="CharactersWithComponent_Click"
-                                                                      Cursor="Hand"
-                                                                      FontSize="16"
-                                                                      Padding="10" />
+                                                                            <MenuItem 
+                                                                                Header="Show characters which contain this component"
+                                                                                Tag="{Binding ChineseCharacter}"
+                                                                                Click="CharactersWithComponent_Click"
+                                                                                Style="{StaticResource ContextMenuItemStyle}" />
                                                                             <Separator />
-                                                                            <MenuItem Header="Show words with this character"
-                                                                      Tag="{Binding ChineseCharacter}"
-                                                                      Click="WordsWithCharacter_Click"
-                                                                      Cursor="Hand"
-                                                                      FontSize="16"
-                                                                      Padding="10" />
+                                                                            <MenuItem 
+                                                                                Header="Show words with this character"
+                                                                                Tag="{Binding ChineseCharacter}"
+                                                                                Click="WordsWithCharacter_Click"
+                                                                                Style="{StaticResource ContextMenuItemStyle}" />
                                                                             <Separator />
-
                                                                         </ContextMenu>
                                                                     </TextBlock.ContextMenu>
                                                                 </TextBlock>
 
                                                                 <TextBlock
-                                                            Name="caracterPronuntie"
-                                                            HorizontalAlignment="Center"
-                                                            Margin="-10">
-                                                                    <TextBlock.Inlines>
-                                                                        <Run Text="{Binding Pinyin}"
-                                                             FontSize="9" 
-                                                             FontWeight="Bold"
-                                                             />
-                                                                    </TextBlock.Inlines>
-                                                                </TextBlock>
-
+                                                                    Name="caracterPronuntie"
+                                                                    Text="{Binding Pinyin}"
+                                                                    Style="{StaticResource ExtraPanelPinyinStyle}" />
                                                             </StackPanel>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
-
                                                 </ItemsControl>
 
                                                 <WrapPanel>
-                                                    <StackPanel Orientation="Vertical" 
-                                            Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
+                                                    <StackPanel 
+                                                        Orientation="Vertical" 
+                                                        Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}">
                                                         <TextBlock
-                                                   Text="{Binding Definitions}" 
-                                                   FontSize="12"
-                                                   TextWrapping="WrapWithOverflow" />
+                                                            Text="{Binding Definitions}" 
+                                                            Style="{StaticResource ExtraPanelDefinitionStyle}" />
                                                     </StackPanel>
                                                 </WrapPanel>
 
@@ -484,9 +371,7 @@
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </Grid>
-
                         </Border>
-
                     </Grid>
                 </Grid>
             </TabItem>
@@ -511,23 +396,14 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,-1,0" 
-                                   />
-
+                        <WrapPanel Name="SentenceAnalysisBox" Grid.Row="0" Grid.ColumnSpan="4" Margin="0,0,-1,0" />
 
                         <TextBox Name="SentenceAnalysisInputBox"
-                                 KeyUp="SentenceAnalysis_KeyUp"
-                                 ToolTip="Type here the sentence which will be analyzed. Hover the word to see definition"
                                  Grid.Row="1"
-                                 FontSize="16"
-                                 Margin="10,10,9,10" Grid.ColumnSpan="4" />
+                                 KeyUp="SentenceAnalysis_KeyUp"
+                                 Style="{StaticResource SentenceAnalysisInputBoxStyle}"
+                                 Grid.ColumnSpan="4" />
                     </Grid>
-
-                    <Border BorderThickness="3" 
-                            BorderBrush="Black" 
-                            Grid.Column="2" Grid.ColumnSpan="2" Margin="914,0,0,0">
-                        <StackPanel Name="PatternsPanel" />
-                    </Border>
                 </Grid>
             </TabItem>
 
@@ -557,10 +433,10 @@
                                 </Grid.RowDefinitions>
                                 <TextBox Name="TestSentenceInputBox"
                                          Grid.Row="0"
-                                         Margin="10" />
+                                         Style="{StaticResource TestSentenceInputBoxStyle}" />
                                 <TextBox Name="TestSentenceResultBox"
                                          Grid.Row="1"
-                                         Margin="10" />
+                                         Style="{StaticResource TestSentenceResultBoxStyle}" />
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -570,14 +446,12 @@
                                     <Button Grid.Column="0"
                                             Click="AnalyseSentence_Click"
                                             Content="Analyse sentence"
-                                            Margin="25" />
+                                            Style="{StaticResource AnalyseSentenceButtonStyle}" />
                                     <Button Grid.Column="1"
                                             Click="SaveSentence_Click"
                                             Content="Save sentence"
-                                            Margin="25" />
-
+                                            Style="{StaticResource SaveSentenceButtonStyle}" />
                                 </Grid>
-
                             </Grid>
 
                             <Grid Grid.Column="1">
@@ -585,8 +459,9 @@
                                     <RowDefinition Height="4*" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Name="AnalysisStatisticsBox"
-                                           Grid.Row="0" />
+                                <TextBlock 
+                                    Name="AnalysisStatisticsBox"
+                                    Grid.Row="0" />
                                 <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -595,33 +470,29 @@
                                     </Grid.ColumnDefinitions>
                                     <Button Grid.Column="1"
                                             Content="Hide words"
-                                            Margin="20"/>
+                                            Style="{StaticResource HideWordsButtonStyle}" />
                                     <Button Grid.Column="2"
                                             Content="Hide examples"
-                                            Margin="20"/>
-
+                                            Style="{StaticResource HideExamplesButtonStyle}" />
                                 </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
 
-                    <ListBox Name="ExamplesList"
-                             Grid.Column="1" >
+                    <ListBox 
+                        Name="ExamplesList"
+                        Grid.Column="1" >
+                        <!--
                         <StackPanel Name="StatisticsBox">
-                            <TextBlock Name="DecompositionBlock2"
-                           FontSize="20"
-                           Margin="10" />
+                            <TextBlock 
+                                Name="DecompositionBlock2"
+                                FontSize="20"
+                                Margin="10" />
                         </StackPanel>
+                        -->
                     </ListBox>
                 </Grid>
             </TabItem>
-
-            <TabItem Header="testSearch">
-                <ListBox Name="fastWordsList">
-                    
-                </ListBox>
-            </TabItem>
-
         </TabControl>
     </Grid>
 </Window>

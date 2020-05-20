@@ -19,20 +19,20 @@ namespace ChineseAppWPF.Controllers
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
             mainWindow.tView.ItemsSource = GetTreeDecomposition(characterToBeDecomposed.ToString());
-            mainWindow.DeompositionPanelCounter.Text = $"Decomposition to radicals of character {characterToBeDecomposed}";
+            mainWindow.DecompositionPanelTitle.Text = $"Decomposition to radicals of character {characterToBeDecomposed}";
         }
 
         // ch, from string to ch
         internal static IEnumerable<TreeViewItem> GetTreeDecomposition(string ch)
         {
-            if (Kangxi.CheckIfKangxiRadical(ch[0]) || Kangxi.CheckIfStroke(ch[0]))
-            {
-                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch[0], true) } };
-            }
-
             if (!basicDict.ContainsKey(ch.ToString()))
             {
                 return new List<TreeViewItem>();
+            }
+
+            if (Kangxi.CheckIfKangxiRadical(ch[0]) || Kangxi.CheckIfStroke(ch[0]))
+            {
+                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch[0], true) } };
             }
 
             List<TreeViewItem> result = basicDict[ch.ToString()]

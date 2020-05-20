@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 using ChineseAppWPF.Models;
 
@@ -11,11 +12,19 @@ namespace ChineseAppWPF.Logic
     {
         private const string decompPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\cjk-decomp.txt";
         
+        private const string savedBasicDictPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\basicDict";
+
         private static Dictionary<string, List<string>> basicDict = new Dictionary<string, List<string>>();
 
         internal static Dictionary<string, List<string>> GetBasicDict() => basicDict;
 
         public static void BuildDecompositionDict()
+        {
+            //BuildDictionary();
+            BuildDictionary_FromSerialized();
+        }
+
+        private static void BuildDictionary()
         {
             File.ReadAllLines(decompPath)
                 .ToList()
@@ -50,6 +59,25 @@ namespace ChineseAppWPF.Logic
                 }
                 if (!basicDict.ContainsKey(toBeDecomposed))
                     basicDict.Add(toBeDecomposed, components);
+            }
+        }
+
+        private static void BuildDictionary_FromSerialized()
+        {
+            using (Stream stream = File.Open(savedBasicDictPath, FileMode.Open))
+            {
+                var bformatter = new BinaryFormatter();
+                basicDict = (Dictionary<string, List<string>>)bformatter.Deserialize(stream);
+            }
+        }
+
+        internal static void SerializeWordsDecomposition()
+        {
+            return;
+            using (Stream stream = File.Open(savedBasicDictPath, FileMode.Create))
+            {
+                var bformatter = new BinaryFormatter();
+                bformatter.Serialize(stream, basicDict);
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Policy;
 using System.Text;
 using System.Windows;
@@ -20,6 +21,12 @@ namespace ChineseAppWPF.Logic
         private const string wordsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\allWords.utf8";
         private const string strokesPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\ucs-strokes.txt";
 
+        private const string savedWordsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedWords";
+        private const string savedDetailedPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedDetailedWords";
+        private const string savedAllWordsSetPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedAllWordsSet";
+        private const string savedCharacterSetPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedCharacterSet";
+        private const string savedOnlyTraditionalSetPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedOnlyTraditionalSet";
+        private const string savedStrokesDictPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedStrokesDict";
 
         private static List<Word> allWords = new List<Word>();
         private static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
@@ -27,131 +34,77 @@ namespace ChineseAppWPF.Logic
         private static HashSet<char> characterSet = new HashSet<char>();                  // chars
         private static HashSet<string> onlyTraditionalSet = new HashSet<string>();        // words
         private static Dictionary<char, int> strokesDict = new Dictionary<char, int>();
-        private static List<FastWord> allFastWords = new List<FastWord>();
-        private static int lineNumber = 0;
 
         public static void InitializeData()
         {
-            //BuildFastWords();
-            BuildAllWords();
-            BuildAllDetailedWords();
-            BuildAllWordsSet();
-            BuildCharacterSet();
-            BuildOnlyTraditionalSet();
-            BuilStrokesDict();
+            
+            //BuildAllWords();
+            BuildAllWords_FromSerialized();
+
+            //BuildAllDetailedWords();
+            BuildAllDetailedWords_FromSerialized();
+
+            //BuildAllWordsSet();
+            BuildAllWordsSet_FromSerialized();
+
+            //BuildCharacterSet();
+            BuildCharacterSet_FromSerialized();
+
+            //BuildOnlyTraditionalSet();
+            BuildOnlyTraditionalSet_FromSerialized();
+
+            BuildStrokesDict();
+            //BuildStrokesDict_FromSerialized();
+            
         }
 
-        public static List<FastWord> GetFastWords() => allFastWords;
         public static List<Word> GetAllWords() => allWords;
 
         public static Dictionary<string, DetailedWord> GetAllDetailedWords() => allDetailedWords;
 
-        private static void BuildFastWords()
+
+        internal static void SaveWordsToFile()
         {
-            allFastWords = File.ReadAllLines(wordsPath)
-                               //.AsParallel()
-                               .Select(getFastWordFromLine)
-                               .ToList();
+            //using (Stream stream = File.Open(savedWordsPath, FileMode.Create))
+            //{
+            //    var bformatter = new BinaryFormatter();
+            //    bformatter.Serialize(stream, allWords);
+            //}
 
-            static FastWord getFastWordFromLine(string line)
-            {
-                string[] tokens = line.Split('\t');
-                return new FastWord
-                {
-                    Traditional = tokens[0],
-                    Simplified = tokens[1],
-                    Pinyin = tokens[2],
-                    Definitions = tokens[3],
-                    Frequency = int.Parse(tokens[4]),
-                    elem = generateControl(tokens) // TODO modify here
-                };
-            }
+            //using (Stream stream = File.Open(savedDetailedPath, FileMode.Create))
+            //{
+            //    var bformatter = new BinaryFormatter();
+            //    bformatter.Serialize(stream, allDetailedWords);
+            //}
+
+            //using (Stream stream = File.Open(savedAllWordsSetPath, FileMode.Create))
+            //{
+            //    var bformatter = new BinaryFormatter();
+            //    bformatter.Serialize(stream, wordsSet);
+            //}
+
+            //using (Stream stream = File.Open(savedCharacterSetPath, FileMode.Create))
+            //{
+            //    var bformatter = new BinaryFormatter();
+            //    bformatter.Serialize(stream, characterSet);
+            //}
+
+            //using (Stream stream = File.Open(savedOnlyTraditionalSetPath, FileMode.Create))
+            //{
+            //    var bformatter = new BinaryFormatter();
+            //    bformatter.Serialize(stream, onlyTraditionalSet);
+            //}
+
+            //using (Stream stream = File.Open(savedStrokesDictPath, FileMode.Create))
+            //{
+            //    var bformatter = new BinaryFormatter();
+            //    bformatter.Serialize(stream, strokesDict);
+            //}
         }
-
-        private static StackPanel generateControl(string[] tokens)
-        {
-            //Console.WriteLine(tokens[0]);
-            StackPanel charPronPairs = generatePairs(tokens);
-            TextBlock defBlock = new TextBlock 
-            { 
-                Text = tokens[3], 
-                FontSize = 16
-            };
-            
-
-            StackPanel control = new StackPanel { Orientation = Orientation.Vertical };
-            control.Children.Add(charPronPairs);
-            control.Children.Add(defBlock);
-            control.Children.Add(new Separator());
-            return control;
-        }
-
-        private static Brush calculateColor(string pron)
-        {
-            if (pron.Contains("1")) return Brushes.Red;
-            if (pron.Contains("2")) return Brushes.LimeGreen;   //Green
-            if (pron.Contains("3")) return Brushes.Blue;
-            if (pron.Contains("4")) return Brushes.DarkMagenta; // Purple
-            return Brushes.Gray;
-        }
-
-        private static StackPanel generatePairs(string[] tokens)
-        {
-            StackPanel pairsPanel = new StackPanel { Orientation = Orientation.Horizontal };
-            List<string> singlePron = tokens[2].Split(" ").ToList();
-            string simplified = tokens[1];
-            string traditional = tokens[0];
-
-            for (int i = 0; i < singlePron.Count && i < simplified.Length; i++)
-            {
-                StackPanel singlePair = new StackPanel { Orientation = Orientation.Vertical };
-                TextBlock charBlock = new TextBlock 
-                { 
-                    Text = simplified[i].ToString(), 
-                    FontSize = 48, 
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    Foreground = calculateColor(singlePron[i])
-                };
-                //MenuItem item1 = new MenuItem { Header = "Show words" };
-                //MenuItem item2 = new MenuItem { Header = "Show chars" };
-
-                //charBlock.ContextMenu.Items.Add(item1);
-                //charBlock.ContextMenu.Items.Add(item2);
-
-                string st = simplified[i].ToString();
-                charBlock.MouseEnter += (s,e) =>
-                {
-                    
-                    charBlock.Text = "";
-                    charBlock.Inlines.Add(new Run(st) { FontWeight = FontWeights.Bold });
-                    charBlock.Cursor = Cursors.Hand;
-                };
-
-                charBlock.MouseLeave += (s, e) =>
-                {
-                    charBlock.Text = st;
-                    charBlock.Cursor = Cursors.Arrow;
-                };
-
-                TextBlock pronBlock = new TextBlock
-                {
-                    //Text = tokens[2][i].ToString(),
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                };
-                pronBlock.Inlines.Add(new Run(singlePron[i]) { FontWeight = FontWeights.Bold });
-
-                singlePair.Children.Add(charBlock);
-                singlePair.Children.Add(pronBlock);
-                pairsPanel.Children.Add(singlePair);
-            }
-            return pairsPanel;
-        }
-
-        //private const string longerPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\longer.utf8";
 
         private static void BuildAllWords()
         {
-            allWords = File.ReadAllLines(wordsPath)//(wordsPath)
+            allWords = File.ReadAllLines(wordsPath)
                            .AsParallel()
                            .Select(getWordFromLine)
                            .ToList();
@@ -167,35 +120,61 @@ namespace ChineseAppWPF.Logic
                     Pinyin = tokens[2],
                     Definitions = tokens[3],
                     Frequency = int.Parse(tokens[4]),
-                    //Longer = tokens[5]
                 };
-                /*
-                if (tokens.Length >= 5)
-                {
-                    return new Word
-                    {
-                        Traditional = tokens[0],
-                        Simplified = tokens[1],
-                        Pinyin = tokens[2],
-                        Definitions = tokens[3],
-                        Frequency = int.Parse(tokens[4]),
-                        Longer = tokens[5]
-                    };
-                }
-                else
-                {
-                    return new Word
-                    {
-                        Traditional = tokens[0],
-                        Simplified = tokens[1],
-                        Pinyin = tokens[2],
-                        Definitions = tokens[3],
-                        Frequency = int.Parse(tokens[4]),
-                        //Longer = tokens[5]
-                    };
-                }
-                */
+            }
+        }
 
+        private static void BuildAllWords_FromSerialized()
+        {
+            using (Stream stream = File.Open(savedWordsPath, FileMode.Open))
+            {
+                var bformatter = new BinaryFormatter();
+                allWords = (List<Word>)bformatter.Deserialize(stream);
+            }
+        }
+
+        private static void BuildAllDetailedWords_FromSerialized()
+        {
+            using (Stream stream = File.Open(savedDetailedPath, FileMode.Open))
+            {
+                var bformatter = new BinaryFormatter();
+                allDetailedWords = (Dictionary<string, DetailedWord>)bformatter.Deserialize(stream);
+            }
+        }
+
+        private static void BuildAllWordsSet_FromSerialized()
+        {
+            using (Stream stream = File.Open(savedAllWordsSetPath, FileMode.Open))
+            {
+                var bformatter = new BinaryFormatter();
+                wordsSet = (HashSet<string>)bformatter.Deserialize(stream);
+            }
+        }
+
+        private static void BuildCharacterSet_FromSerialized()
+        {
+            using (Stream stream = File.Open(savedCharacterSetPath, FileMode.Open))
+            {
+                var bformatter = new BinaryFormatter();
+                characterSet = (HashSet<char>)bformatter.Deserialize(stream);
+            }
+        }
+
+        private static void BuildOnlyTraditionalSet_FromSerialized()
+        {
+            using (Stream stream = File.Open(savedOnlyTraditionalSetPath, FileMode.Open))
+            {
+                var bformatter = new BinaryFormatter();
+                onlyTraditionalSet = (HashSet<string>)bformatter.Deserialize(stream);
+            }
+        }
+
+        private static void BuildStrokesDict_FromSerialized()
+        {
+            using (Stream stream = File.Open(savedOnlyTraditionalSetPath, FileMode.Open))
+            {
+                var bformatter = new BinaryFormatter();
+                strokesDict = (Dictionary<char, int>)bformatter.Deserialize(stream);
             }
         }
 
@@ -229,6 +208,8 @@ namespace ChineseAppWPF.Logic
                 };
             }
         }
+
+
 
         private static void BuildAllWordsSet()
         {
@@ -264,7 +245,7 @@ namespace ChineseAppWPF.Logic
 
 
 
-        private static void BuilStrokesDict()
+        private static void BuildStrokesDict()
         {
             foreach (string line in File.ReadAllLines(strokesPath))
             {
@@ -285,6 +266,8 @@ namespace ChineseAppWPF.Logic
                     strokesDict.Add(character, count);
             }
         }
+        
+
 
         public static IEnumerable<Word> SortByFrequency(this IEnumerable<Word> words)
         {

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -24,18 +21,9 @@ namespace ChineseAppWPF
             Controller.SetWindow(this);
 
             Controller.InitializeRules();
-            Controller.InitializeStatistics();
-            Controller.InitializeSentenceExamples();
-
-            UndoButton.IsEnabled = false;
+            //Controller.InitializeStatistics();
+            //Controller.InitializeSentenceExamples();
         }
-
-        private void Undo_Click(object sender, RoutedEventArgs e) => Controller.Undo();
-
-        private void ChangeLanguage_Click(object sender, RoutedEventArgs e) => Controller.ChangeLanguage();
-
-        private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
-
         private void SearchBar_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -43,6 +31,12 @@ namespace ChineseAppWPF
                 Controller.ShowResult();
             }
         }
+
+        private void ChangeLanguage_Click(object sender, RoutedEventArgs e) => Controller.ChangeLanguage();
+
+        private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
+
+
 
         private void CharacterAndPinyin_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -97,6 +91,9 @@ namespace ChineseAppWPF
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Controller.SaveTestSentences();
+
+            //Controller.SerializeWords();
+            //Decomposition.SerializeWordsDecomposition();
         }
 
         private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();

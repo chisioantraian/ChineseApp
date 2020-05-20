@@ -10,7 +10,7 @@ namespace ChineseAppWPF.Controllers
     {
         private const string rulesPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\rules_1.utf8";
 
-        public static List<Rule> rules = null;
+        private static List<Rule> rules = null;
 
         public static void InitializeRules()
         {

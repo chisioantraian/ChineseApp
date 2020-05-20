@@ -18,28 +18,24 @@ namespace ChineseAppWPF.Controllers
         private static MainWindow mainWindow;
         private static Dictionary<string, DetailedWord> allDetailedWords;
         private const string testsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\testSentences.utf8";
-        private const string longerPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\longer2.utf8";
         private static List<Sentence> sentences = new List<Sentence>();
         private static readonly List<Sentence> wrongSentences = new List<Sentence>();
         private static Dictionary<string, List<string>> basicDict;
-        //private static List<FastWord> fastWords;
 
         private static IEnumerable<Word> currentWords = new List<Word>();
-        private static IEnumerable<Word> previousWords = new List<Word>();
+        //private static IEnumerable<Word> previousWords = new List<Word>();
 
         private static SelectedLanguage selectedLanguage = SelectedLanguage.English;
         private static SortingMethod sortingMethod = SortingMethod.Frequency;
 
         private delegate void ShowLanguageResult();
         private static ShowLanguageResult showLanguageResult = ShowEnglishResult;
-        private static Stopwatch stopwatch = new Stopwatch();
 
         public static void SetWindow(MainWindow window)
         {
             mainWindow = window;
             allDetailedWords = ChineseService.GetAllDetailedWords();
             basicDict = Decomposition.GetBasicDict();
-            //fastWords = ChineseService.GetFastWords();
         }
 
 
@@ -71,46 +67,16 @@ namespace ChineseAppWPF.Controllers
                 return;
             }
 
-            stopwatch.Restart();
+            //stopwatch.Restart();
             showLanguageResult();
 
-            stopwatch.Stop();
+            //stopwatch.Stop();
 
-            Console.WriteLine($"\nsearch time: {stopwatch.ElapsedMilliseconds} ms");
+            //Console.WriteLine($"\nsearch time: {stopwatch.ElapsedMilliseconds} ms");
         }
 
-        /*
-        public static void ShowFastResult()
-        {
-            if (mainWindow == null)
-                return;
-            if (string.IsNullOrEmpty(mainWindow.SearchBar.Text))
-            {
-                return;
-            }
-            string text = mainWindow.SearchBar.Text;
-            List<StackPanel> words = fastWords.Where(w => w.Definitions.Contains(text))
-                                            .Select(w => w.elem)
-                                            .ToList();
 
-            mainWindow.fastWordsList.ItemsSource = words;
-        }
-        */
-
-
-        public static void ShowEnglishThread()
-        {
-            mainWindow.Dispatcher.BeginInvoke(new Action(() => ShowEnglishResult()));
-        }
-
-        public static void Undo()
-        {
-            currentWords = previousWords;
-            currentWords.UpdateShownWords();
-            mainWindow.UndoButton.IsEnabled = false;
-        }
-
-        private static SortingMethod getSorting(string text)
+        private static SortingMethod GetSorting(string text)
         {
             return text switch
             {
@@ -129,7 +95,7 @@ namespace ChineseAppWPF.Controllers
             //TODO bind enum to combobox?
             //TODO or change combobox to button
             ComboBoxItem sortItem = (ComboBoxItem)mainWindow.SortingComboBox.SelectedItem;
-            SortingMethod selectedSorting = getSorting(sortItem.Content.ToString());
+            SortingMethod selectedSorting = GetSorting(sortItem.Content.ToString());
 
             if (sortingMethod != selectedSorting)
             {

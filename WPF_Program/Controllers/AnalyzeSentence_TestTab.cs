@@ -18,11 +18,9 @@ namespace ChineseAppWPF.Controllers
         // Split a sentence into words, show these words and then, analyze the sentence.
         internal static void AnalyseSentence_TestTab()
         {
-            //Console.WriteLine("Begin AnalyzeSentence_TestTab");
             string sentence = mainWindow.TestSentenceInputBox.Text;
-            //IEnumerable<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence);
+
             List<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence).ToList();
-            //Console.WriteLine("After GetSimplifiedWordsFromSentence, inside analyze tab");
             ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords();
             string myText = sentence + "\t";
 
@@ -39,14 +37,12 @@ namespace ChineseAppWPF.Controllers
 
             myText = myText.Remove(myText.Length - 1);
             mainWindow.TestSentenceResultBox.Text = myText;
-            //Console.WriteLine("End AnalyzeSentence_TestTab");
         }
 
         internal static IEnumerable<(string, string, string)> GetDescription(IEnumerable<string> simplifiedList)
         {
             foreach (string simp in simplifiedList)
             {
-                //Console.WriteLine(simp);
                 if (allDetailedWords.ContainsKey(simp))
                 {
                     yield return (simp, allDetailedWords[simp].DominantPos, allDetailedWords[simp].AllPos + "\n" + allDetailedWords[simp].AllPosFreq);
@@ -210,55 +206,12 @@ namespace ChineseAppWPF.Controllers
             Console.WriteLine("Saved sentences to file");
         }
 
-        internal static void CreateLongerWords()
+
+        internal static void SerializeWords()
         {
-            using StreamWriter sw = new StreamWriter(longerPath);
-
-            foreach (Word w in ChineseService.GetAllWords().Skip(116939))
-            {
-                try {
-                    sw.WriteLine($"{w.Traditional}	{w.Simplified}	{w.Pinyin}	{w.Definitions}	{w.Frequency}	{getCombined(w)}");
-                }
-                catch
-                {
-                    Console.WriteLine("shit");
-                }
-            }
-
+            ChineseService.SaveWordsToFile();
         }
 
-        private static string getCombined(Word word)
-        {
-            StringBuilder result = new StringBuilder(word.Simplified);
-            List<string> singlePron = word.Pinyin.Split(" ").ToList();
-
-            bool addBrackets = false;
-            for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
-            {
-                if (word.Simplified[i] != word.Traditional[i])
-                {
-                    addBrackets = true;
-                    break;
-                }
-            }
-            if (addBrackets)
-            {
-                result.Append(" 〔");
-                for (int i = 0; i < word.Traditional.Length && i < singlePron.Count; i++)
-                {
-                    if (word.Simplified[i] == word.Traditional[i])
-                    {
-                        result.Append("-");
-                    }
-                    else
-                    {
-                        result.Append(word.Traditional[i]);
-                    }
-                }
-                result.Append("〕");
-            }
-            return result.ToString();
-        }
 
     }
 }

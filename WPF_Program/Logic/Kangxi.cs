@@ -8,10 +8,10 @@ namespace ChineseAppWPF.Logic
     public static class Kangxi
     {
         private static readonly List<KangxiRadical> kangxiRadicals = BuildRadicalList();
-        private static HashSet<char> kangxiSet = BuildKangxiSet();//new HashSet<char>();
+        private static readonly HashSet<char> kangxiSet = BuildKangxiSet();//new HashSet<char>();
 
         //+ other components
-        private static List<char> strokes = new List<char>
+        private static readonly List<char> strokes = new List<char>
         {
             '龶',
             '㇒',
