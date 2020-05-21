@@ -1,9 +1,8 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:ChineseAppWPF"
-                    >
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:ChineseAppWPF">
 
-    
     <Style x:Key="WindowStyle" TargetType="Window">
         <Setter Property="Height" Value="1080" />
         <Setter Property="Width" Value="1920" />
@@ -20,7 +19,7 @@
         <Setter Property="Content" Value="Input: English &#xa;Change to Chinese" />
         <Setter Property="Margin" Value="0,10,10,0" />
     </Style>
-    
+
     <Style x:Key="RandomButtonStyle" TargetType="Button">
         <Setter Property="Content" Value="Random Words" />
         <Setter Property="Margin" Value="10,4,10,4" />
@@ -70,15 +69,9 @@
         <Setter Property="Background" Value="WhiteSmoke" />
         <Setter Property="ToolTip" Value="Show a character's decomposition down to radicals level" />
         <Style.Resources>
-            <SolidColorBrush 
-                x:Key="{x:Static SystemColors.HighlightBrushKey}" 
-                Color="Transparent" />
-            <SolidColorBrush 
-                x:Key="{x:Static SystemColors.ControlBrushKey}" 
-                Color="Transparent" />
-            <SolidColorBrush 
-                x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
-                Color="Black" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
         </Style.Resources>
     </Style>
 
@@ -134,4 +127,6 @@
     <Style x:Key="HideExamplesButtonStyle" TargetType="Button">
         <Setter Property="Margin" Value="20" />
     </Style>
+
+
 </ResourceDictionary>
