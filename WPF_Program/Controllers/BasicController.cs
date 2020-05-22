@@ -38,14 +38,14 @@ namespace ChineseAppWPF.Controllers
                 selectedLanguage = SelectedLanguage.Chinese;
                 mainWindow.SearchBarPlaceholder.Text = "Enter your characters/pinyin, then press enter";
                 showLanguageResult = ShowChineseResult;
-                mainWindow.ChangeLanguageButton.Content = "Input: Chinese\nChange to English";
+                mainWindow.ChangeLanguageButton.Content = "Change to english input";
             }
             else
             {
                 selectedLanguage = SelectedLanguage.English;
                 mainWindow.SearchBarPlaceholder.Text = "Enter your english word, then press enter";
                 showLanguageResult = ShowEnglishResult;
-                mainWindow.ChangeLanguageButton.Content = "Input: English\nChange to Chinese";
+                mainWindow.ChangeLanguageButton.Content = "Change to chinese input";
             }
         }
 

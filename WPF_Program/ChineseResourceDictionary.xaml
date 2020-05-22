@@ -11,13 +11,13 @@
     <Style x:Key="SearchBarStyle" TargetType="TextBox">
         <Setter Property="FontSize" Value="16" />
         <Setter Property="Padding" Value="12" />
-        <Setter Property="Margin" Value="12" />
-        <Setter Property="ToolTip" Value="Search something automatically by typing in english or chinese" />
+        <Setter Property="Margin" Value="12,16,3,12" />
+        <Setter Property="Foreground" Value="DarkSlateGray" />
     </Style>
 
     <Style x:Key="ChangeLanguageButtonStyle" TargetType="Button">
-        <Setter Property="Content" Value="Input: English &#xa;Change to Chinese" />
-        <Setter Property="Margin" Value="0,10,10,0" />
+        <Setter Property="Content" Value="Change to chinese input" />
+        <Setter Property="Margin" Value="8,4,10,2" />
     </Style>
 
     <Style x:Key="RandomButtonStyle" TargetType="Button">
@@ -67,7 +67,6 @@
 
     <Style x:Key="tViewStyle" TargetType="TreeView">
         <Setter Property="Background" Value="WhiteSmoke" />
-        <Setter Property="ToolTip" Value="Show a character's decomposition down to radicals level" />
         <Style.Resources>
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
             <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />

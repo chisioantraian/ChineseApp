@@ -113,6 +113,8 @@
                 </StackPanel>
             </DataTemplate>
 
+            <Image x:Key="ChangeLanguageImage" Source="C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\translate-512.png" />
+
         </ResourceDictionary>
     </Window.Resources>
 
@@ -129,20 +131,39 @@
                 <RowDefinition Height="8*" />
             </Grid.RowDefinitions>
 
-            <TextBox
-                Name="SearchBar"
-                Grid.Column="1"
-                KeyUp="SearchBar_KeyUp"
-                Style="{StaticResource SearchBarStyle}">
-                <TextBox.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="5" />
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    Name="SearchBar"
+                    Grid.Column="0"
+                    KeyUp="SearchBar_KeyUp"
+                    Style="{StaticResource SearchBarStyle}">
+                    <TextBox.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="16" />
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <Button
+                    Grid.Column="1"
+                    Margin="3,16,6,12"
+                    Padding="6"
+                    Click="ChangeLanguage_Click"
+                    Content="{StaticResource ChangeLanguageImage}">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="16" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
+
             <TextBlock
                 Name="SearchBarPlaceholder"
-                Margin="12,4,0,20"
+                Margin="12,12,0,20"
                 Padding="16,0,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -174,7 +195,13 @@
                     Name="ChangeLanguageButton"
                     Grid.Column="0"
                     Click="ChangeLanguage_Click"
-                    Style="{StaticResource ChangeLanguageButtonStyle}" />
+                    Style="{StaticResource ChangeLanguageButtonStyle}">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="12" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
 
                 <StackPanel
                     Grid.Column="1"
@@ -196,7 +223,13 @@
                 <Button
                     Grid.Column="2"
                     Click="RandomButton_Click"
-                    Style="{StaticResource RandomButtonStyle}" />
+                    Style="{StaticResource RandomButtonStyle}">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="16" />
+                        </Style>
+                    </Button.Resources>
+                </Button>
 
                 <TextBlock
                     Name="WordsCount"
