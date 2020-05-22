@@ -13,8 +13,12 @@ namespace ChineseAppWPF.UiFactory
     public static class BoxFactory
     {
         //TODO duplicate code 
-        public static Border CreateWordBox((SolidColorBrush, string) posTuple, string simp, string details)
+        public static Border CreateWordBox((string, string, string) bd)//((SolidColorBrush, string) posTuple, string simp, string details)
         {
+            (SolidColorBrush, string) posTuple = PosInformation.GetPosInfo(bd.Item2);
+            string simp = bd.Item1;
+            string details = bd.Item3;
+
             TextBlock wBlock = new TextBlock
             {
                 FontSize = 14,

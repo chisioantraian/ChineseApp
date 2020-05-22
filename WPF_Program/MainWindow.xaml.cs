@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,9 +14,10 @@ namespace ChineseAppWPF
     {
         public MainWindow()
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
             InitializeComponent();
+
+            //Needed to be able to print asian characters to the console
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             ChineseService.InitializeData();
             Decomposition.BuildDecompositionDict();
@@ -24,16 +26,19 @@ namespace ChineseAppWPF
             Controller.InitializeRules();
             //Controller.InitializeStatistics();
             //Controller.InitializeSentenceExamples();
+            Controller.ShowSomeRandomWords();
+
         }
         private void SearchBar_KeyUp(object sender, KeyEventArgs e)
         {
+            //TODO if search too slow, change to search on enter; 
             if (e.Key == Key.Enter)
-            {
                 Controller.ShowResult();
-            }
         }
 
         private void ChangeLanguage_Click(object sender, RoutedEventArgs e) => Controller.ChangeLanguage();
+
+        private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();
 
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
 
@@ -55,30 +60,34 @@ namespace ChineseAppWPF
         private void CharacterAndPinyin_MouseLeave(object sender, MouseEventArgs e)
         {
             TextBlock textBlock = (TextBlock)sender;
-            char character = textBlock.Text[0];
-
-            if (character != '〔' &&
-                character != '〕' &&
-                character != '-' &&
-                character != ' ')
-            {
-                textBlock.Text = $"{character}";
-                textBlock.FontWeight = FontWeights.Normal;
-            }
+            textBlock.FontWeight = FontWeights.Normal;
         }
 
         private void CharacterAndPinyin_MouseUp(object sender, RoutedEventArgs e)
         {
-            TextBlock textBlock = (TextBlock)sender;
             MouseButtonEventArgs ev = (MouseButtonEventArgs)e;
-            char character = textBlock.Text[0];
-
             if (ev.ChangedButton == MouseButton.Left)
             {
+                TextBlock textBlock = (TextBlock)sender;
+                char character = textBlock.Text[0];
                 Controller.ShowWordWithThisCharacter(character);
                 Controller.ShowCharsWithComponent_SidePanel(character);
                 Controller.ShowWordsWithCharacter_SidePanel(character);
             }
+        }
+
+        private void WordsWithCharacter_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            string value = item.Tag.ToString();
+            Controller.ShowChineseResult(value);
+        }
+
+        private void CharactersWithComponent_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            char component = item.Tag.ToString()[0];
+            Controller.ShowComposeResult(component);
         }
 
         private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();
@@ -87,30 +96,12 @@ namespace ChineseAppWPF
 
         private void SaveSentence_Click(object sender, RoutedEventArgs e) => Controller.AddSentenceBreakdownToTests();
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             Controller.SaveTestSentences();
 
             //Controller.SerializeWords();
             //Decomposition.SerializeWordsDecomposition();
-        }
-
-        private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();
-
-        private void CharactersWithComponent_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem item = (MenuItem)sender;
-            char component = item.Tag.ToString()[0];
-
-            Controller.ShowComposeResult(component);
-        }
-
-        private void WordsWithCharacter_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem item = (MenuItem)sender;
-            string value = item.Tag.ToString();
-
-            Controller.ShowChineseResult(value);
         }
     }
 }

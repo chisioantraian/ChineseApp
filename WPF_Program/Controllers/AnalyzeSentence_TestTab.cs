@@ -1,10 +1,12 @@
 ﻿using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
+using ChineseAppWPF.UiFactory;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace ChineseAppWPF.Controllers
@@ -19,24 +21,23 @@ namespace ChineseAppWPF.Controllers
         internal static void AnalyseSentence_TestTab()
         {
             string sentence = mainWindow.TestSentenceInputBox.Text;
-
+            string annotatedSentence = sentence + "\t";
             List<string> simplifiedList = ChineseService.GetSimplifiedWordsFromSentence(sentence).ToList();
-            ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords();
-            string myText = sentence + "\t";
 
-            mainWindow.MiddleWordBox.Children.Clear();
-            IEnumerable<(string, string, string)> breadownDescription = GetDescription(simplifiedList);
-            foreach ((string, string, string) bd in breadownDescription)
+            mainWindow.TestSentenceAnalysisBox.Children.Clear();
+            foreach ((string, string, string) bd in GetDescription(simplifiedList))
             {
-                (SolidColorBrush, string) posTuple = PosInformation.GetPosInfo(bd.Item2);
-                var wordBorder = UiFactory.BoxFactory.CreateWordBox(posTuple, bd.Item1, bd.Item3);
-                mainWindow.MiddleWordBox.Children.Add(wordBorder);
+                Border wordBorder = BoxFactory.CreateWordBox(bd);
+                mainWindow.TestSentenceAnalysisBox.Children.Add(wordBorder);
 
-                myText += $"{bd.Item1}_{bd.Item2}\t";
+                annotatedSentence += $"{bd.Item1}_{bd.Item2}\t";
             }
 
-            myText = myText.Remove(myText.Length - 1);
-            mainWindow.TestSentenceResultBox.Text = myText;
+            annotatedSentence = annotatedSentence.Remove(annotatedSentence.Length - 1);
+            mainWindow.TestSentenceResultBox.Text = annotatedSentence;
+
+            //todo modify here
+            //ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords();
         }
 
         internal static IEnumerable<(string, string, string)> GetDescription(IEnumerable<string> simplifiedList)
@@ -129,7 +130,7 @@ namespace ChineseAppWPF.Controllers
             }
 
             //
-            // split later
+            //TODO split later
             //
             if (sentence.Algorithm.Count != sentence.Correct.Count)
             {

@@ -22,7 +22,7 @@ namespace ChineseAppWPF.Controllers
             mainWindow.DecompositionPanelTitle.Text = $"Decomposition to radicals of character {characterToBeDecomposed}";
         }
 
-        // ch, from string to ch
+        //TODO ch, from string to ch
         internal static IEnumerable<TreeViewItem> GetTreeDecomposition(string ch)
         {
             if (!basicDict.ContainsKey(ch))
@@ -32,16 +32,16 @@ namespace ChineseAppWPF.Controllers
 
             if (Kangxi.CheckIfKangxiRadical(ch[0]) || Kangxi.CheckIfStroke(ch[0]))
             {
-                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch[0], true) } };
+                return new List<TreeViewItem> { new TreeViewItem { Header = CreateTreeInfoBox(ch[0], true) } };
             }
 
             List<TreeViewItem> result = basicDict[ch]
-                                            .SelectMany(c => GetTreeDecomposition(c))
+                                            .SelectMany(GetTreeDecomposition)
                                             .ToList();
 
             if (ChineseService.IsCharacter(ch[0]))
             {
-                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch[0], false), ItemsSource = result, IsExpanded = true } };
+                return new List<TreeViewItem> { new TreeViewItem { Header = CreateTreeInfoBox(ch[0], false), ItemsSource = result, IsExpanded = true } };
             }
             else
             {
@@ -50,109 +50,136 @@ namespace ChineseAppWPF.Controllers
         }
 
         //TODO remove isKangxi inside this method?
-        internal static Border CreateBranchWord(char ch, bool isKangxi)
+        internal static Border CreateTreeInfoBox(char character, bool isKangxi)
         {
             List<Word> words = ChineseService
-                                .GetAllWordsFrom(new List<string> { ch.ToString() })
+                                .GetAllWordsFrom(character)
                                 .ToList();
-            //if (words.Count() == 0)
-            //{
-            //    return null;
-            //}
-
-            string description = GetOnlyDetails(words);
-
-            Brush color = Brushes.Gray;
-            if (isKangxi)
-                color = Brushes.Green;
-
-            Border border = new Border
+            if (words.Count() == 0)
             {
-                BorderBrush = color,
+                Console.WriteLine($"{character} has no definition");
+                return null;
+            }
+
+            Brush borderColor = isKangxi ? Brushes.Green : Brushes.Gray;
+            Border charBorder = DecompositionTreeCharBorder(character, borderColor);
+            Border detailBorder = DecompositionTreeDetailBorder(words);
+            StackPanel wordPanel = DecompositionTreeWordPanel(charBorder, detailBorder);
+
+            return DecompositionTreeWordBorder(wordPanel, borderColor);
+        }
+
+        private static Border DecompositionTreeWordBorder(StackPanel wordPanel, Brush borderColor)
+        {
+            return new Border
+            {
+                BorderBrush = borderColor,
                 BorderThickness = new Thickness(2),
                 CornerRadius = new CornerRadius(5),
-                Margin = new Thickness(0,1,1,1),
+                Margin = new Thickness(0, 1, 1, 1),
                 Padding = new Thickness(1),
+                Child = wordPanel
             };
-            StackPanel panel = new StackPanel
-            {
-                Orientation = Orientation.Horizontal
-            };
+        }
 
-            string shownText = ch.ToString();
-
-            MenuItem item1 = new MenuItem
+        private static Border DecompositionTreeCharBorder(char character, Brush borderColor)
+        {
+            return new Border
             {
-                Header = "Show characters which contain this component",
-                FontSize = 16,
-                Padding = new Thickness(10),
-            };
-            //item1.Click += (s,e) => Controller.ShowComposeResult(shownText);
-            item1.Click += (s, e) => Controller.ShowComposeResult(ch);
-
-            MenuItem item2 = new MenuItem
-            {
-                Header = "Show words with this character",
-                FontSize = 16,
-                Padding = new Thickness(10)
-            };
-            item2.Click += (s, e) => Controller.ShowChineseResult(shownText);
-
-            ContextMenu menu = new ContextMenu
-            {
-                Items = { item1, item2 }
-            };
-            TextBlock charBlock = new TextBlock
-            {
-                Text = shownText,
-                FontSize = 30,
-                Foreground = Brushes.DarkSlateGray,
-                Cursor = Cursors.Hand,
-                ContextMenu = menu,
-                Background = Brushes.White
-            };
-            charBlock.MouseEnter += (s, e) =>
-            {
-                charBlock.Text = "";
-                charBlock.Foreground = Brushes.Black;
-                charBlock.Inlines.Add(new Run(shownText) { FontWeight = FontWeights.Bold });
-            };
-            charBlock.MouseLeave += (s, e) =>
-            {
-                charBlock.Text = shownText;
-                charBlock.Foreground = Brushes.DarkSlateGray;
-            };
-            TextBlock detailBlock = new TextBlock
-            {
-                Text = description,
-                FontSize = 12,
-                Background = Brushes.White
-            };
-
-            Border charBorder = new Border
-            {
-                BorderBrush = color,
+                BorderBrush = borderColor,
                 BorderThickness = new Thickness(2),
                 CornerRadius = new CornerRadius(5),
                 Padding = new Thickness(2),
+                Child = DecompositionTreeCharacterBlock(character)
             };
-            Border detailBorder = new Border
+        }
+
+        private static Border DecompositionTreeDetailBorder(List<Word> words)
+        {
+            return new Border
             {
                 BorderBrush = Brushes.White,
                 BorderThickness = new Thickness(3),
                 CornerRadius = new CornerRadius(5),
                 Padding = new Thickness(2),
+                Child = new TextBlock
+                {
+                    Text = GetOnlyDetails(words),
+                    FontSize = 12,
+                    Background = Brushes.White
+                }
             };
+        }
 
-            charBorder.Child = charBlock;
-            detailBorder.Child = detailBlock;
-
+        private static StackPanel DecompositionTreeWordPanel(Border charBorder, Border detailBorder)
+        {
+            StackPanel panel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+            };
             panel.Children.Add(charBorder);
             panel.Children.Add(detailBorder);
+            return panel;
+        }
 
-            border.Child = panel;
+        private static TextBlock DecompositionTreeCharacterBlock(char character)
+        {
+            TextBlock charBlock = new TextBlock
+            {
+                Text = character.ToString(),
+                FontSize = 30,
+                Foreground = Brushes.DarkSlateGray,
+                Cursor = Cursors.Hand,
+                Background = Brushes.White,
+                ContextMenu = DecompositionTreeContextMenu(character),
+            };
+            charBlock.MouseEnter += (s, e) =>
+            {
+                charBlock.Foreground = Brushes.Black;
+                charBlock.FontWeight = FontWeights.Bold;
+            };
+            charBlock.MouseLeave += (s, e) =>
+            {
+                charBlock.Foreground = Brushes.DarkSlateGray;
+                charBlock.FontWeight = FontWeights.Normal;
+            };
+            return charBlock;
+        }
 
-            return border;
+        private static ContextMenu DecompositionTreeContextMenu(char character)
+        {
+            return new ContextMenu
+            {
+                Items =
+                {
+                    CharsWithComponentMenuItem(character),
+                    WordsWithCaracterMenuItem(character)
+                }
+            };
+        }
+
+        private static MenuItem CharsWithComponentMenuItem(char character)
+        {
+            MenuItem menuItem = new MenuItem
+            {
+                Header = "Show characters which contain this component",
+                FontSize = 16,
+                Padding = new Thickness(10),
+            };
+            menuItem.Click += (s, e) => ShowComposeResult(character);
+            return menuItem;
+        }
+
+        private static MenuItem WordsWithCaracterMenuItem(char character)
+        {
+            MenuItem menuItem = new MenuItem
+            {
+                Header = "Show words with this character",
+                FontSize = 16,
+                Padding = new Thickness(10)
+            };
+            menuItem.Click += (s, e) => ShowChineseResult(character.ToString());
+            return menuItem;
         }
 
         internal static string GetOnlyDetails(List<Word> words)

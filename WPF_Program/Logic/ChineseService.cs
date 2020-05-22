@@ -394,6 +394,19 @@ namespace ChineseAppWPF.Logic
             return wordsSet.Contains(simplOfWord);
         }
 
+        public static IEnumerable<Word> GetAllWordsFrom(char character)
+        {
+            string ch = character.ToString();
+            if (GetWritingSystem(ch) == ChineseSystem.Simplified)
+            {
+                return allWords.Where(w => w.Simplified == ch);
+            }
+            else
+            {
+                return allWords.Where(w => w.Traditional == ch);
+            }
+        }
+
         public static IEnumerable<Word> GetAllWordsFrom(IEnumerable<string> simpList)
         {
             ChineseSystem writingSystem = GetWritingSystem(simpList);

@@ -36,12 +36,14 @@ namespace ChineseAppWPF.Controllers
             if (selectedLanguage == SelectedLanguage.English)
             {
                 selectedLanguage = SelectedLanguage.Chinese;
+                mainWindow.SearchBarPlaceholder.Text = "Enter your characters/pinyin, then press enter";
                 showLanguageResult = ShowChineseResult;
                 mainWindow.ChangeLanguageButton.Content = "Input: Chinese\nChange to English";
             }
             else
             {
                 selectedLanguage = SelectedLanguage.English;
+                mainWindow.SearchBarPlaceholder.Text = "Enter your english word, then press enter";
                 showLanguageResult = ShowEnglishResult;
                 mainWindow.ChangeLanguageButton.Content = "Input: English\nChange to Chinese";
             }
@@ -57,13 +59,7 @@ namespace ChineseAppWPF.Controllers
                 currentWords.UpdateShownWords();
                 return;
             }
-
-            //stopwatch.Restart();
             showLanguageResult();
-
-            //stopwatch.Stop();
-
-            //Console.WriteLine($"\nsearch time: {stopwatch.ElapsedMilliseconds} ms");
         }
 
         private static SortingMethod GetSorting(string text)
@@ -96,10 +92,9 @@ namespace ChineseAppWPF.Controllers
 
         public static IEnumerable<Breakdown> GetNoAlgBreakdown(string sentence)
         {
-            Console.WriteLine("Begin GetNoAlgBreakdown");
-
+            //Console.WriteLine("Begin GetNoAlgBreakdown");
             List<string> wordParts = ChineseService.GetSimplifiedWordsFromSentence(sentence).ToList();
-            Console.WriteLine("After GetSimplifiedWordsFromSentence");
+            //Console.WriteLine("After GetSimplifiedWordsFromSentence");
             foreach (string part in wordParts)
             {
                 if (allDetailedWords.ContainsKey(part))
@@ -107,12 +102,12 @@ namespace ChineseAppWPF.Controllers
                 else
                     yield return new Breakdown { Part = part, Description = part }; // = "-"
             }
-            Console.WriteLine("End GetNoAlgBreakdown");
+            //Console.WriteLine("End GetNoAlgBreakdown");
         }
 
         internal static List<Breakdown> GetAlgBreakdown(List<Breakdown> noAlg)
         {
-            Console.WriteLine("Begin GetAlgBreakdown");
+            //Console.WriteLine("Begin GetAlgBreakdown");
             List<Breakdown> algList = new List<Breakdown>();
             foreach (Breakdown bd in noAlg)
             {
@@ -126,7 +121,7 @@ namespace ChineseAppWPF.Controllers
                     BreakdownService.ApplyRule(rule, algList, i);
                 }
             }
-            Console.WriteLine("End GetAlgBreakdown");
+            //Console.WriteLine("End GetAlgBreakdown");
 
             return algList;
         }
