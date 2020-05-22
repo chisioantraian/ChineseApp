@@ -16,7 +16,6 @@ namespace ChineseAppWPF.Controllers
                 };
                 item.MouseLeftButtonUp += (s, e) =>
                 {
-                    //Console.WriteLine("inside sentence item event ");
                     mainWindow.TestSentenceInputBox.Text = sentence.Text;
                     AnalyseSentence_TestTab();
                 };

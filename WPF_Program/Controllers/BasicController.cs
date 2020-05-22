@@ -2,17 +2,11 @@
 using ChineseAppWPF.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Security;
-using System.Threading;
 using System.Windows.Controls;
 
 namespace ChineseAppWPF.Controllers
 {
-
-
     public static partial class Controller
     {
         private static MainWindow mainWindow;
@@ -23,7 +17,6 @@ namespace ChineseAppWPF.Controllers
         private static Dictionary<string, List<string>> basicDict;
 
         private static IEnumerable<Word> currentWords = new List<Word>();
-        //private static IEnumerable<Word> previousWords = new List<Word>();
 
         private static SelectedLanguage selectedLanguage = SelectedLanguage.English;
         private static SortingMethod sortingMethod = SortingMethod.Frequency;
@@ -37,7 +30,6 @@ namespace ChineseAppWPF.Controllers
             allDetailedWords = ChineseService.GetAllDetailedWords();
             basicDict = Decomposition.GetBasicDict();
         }
-
 
         public static void ChangeLanguage()
         {
@@ -55,14 +47,13 @@ namespace ChineseAppWPF.Controllers
             }
         }
 
-
         public static void ShowResult()
         {
             if (mainWindow == null)
                 return;
             if (string.IsNullOrEmpty(mainWindow.SearchBar.Text))
             {
-                currentWords = new List<Word>(); 
+                currentWords = new List<Word>();
                 currentWords.UpdateShownWords();
                 return;
             }
@@ -74,7 +65,6 @@ namespace ChineseAppWPF.Controllers
 
             //Console.WriteLine($"\nsearch time: {stopwatch.ElapsedMilliseconds} ms");
         }
-
 
         private static SortingMethod GetSorting(string text)
         {
@@ -118,7 +108,6 @@ namespace ChineseAppWPF.Controllers
                     yield return new Breakdown { Part = part, Description = part }; // = "-"
             }
             Console.WriteLine("End GetNoAlgBreakdown");
-
         }
 
         internal static List<Breakdown> GetAlgBreakdown(List<Breakdown> noAlg)
@@ -141,6 +130,5 @@ namespace ChineseAppWPF.Controllers
 
             return algList;
         }
-
     }
 }

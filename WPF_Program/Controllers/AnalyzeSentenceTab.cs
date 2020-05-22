@@ -22,8 +22,6 @@ namespace ChineseAppWPF.Controllers
             string sentenceText = mainWindow.SentenceAnalysisInputBox.Text;
 
             Console.WriteLine($"Begin analyzeSentence: {sentenceText}");
-
-
             Sentence st = ComputeSentenceBreakdown(sentenceText);
 
             //TODO delete or separate thread
@@ -37,7 +35,6 @@ namespace ChineseAppWPF.Controllers
                 var posTuple = PosInformation.GetPosInfo(b.Description);
                 var wordBorder = BoxFactory.CreateAnalysisWordBox(posTuple, b.Part);
                 mainWindow.SentenceAnalysisBox.Children.Add(wordBorder);
-
             }
             Console.WriteLine("\n\n");
         }

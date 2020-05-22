@@ -93,7 +93,6 @@ namespace ChineseAppWPF.Controllers
             ModifyStatisticsBox();
         }
 
-
         internal static void InitializeStatistics()
         {
             sentences = File.ReadAllLines(testsPath)
@@ -203,15 +202,11 @@ namespace ChineseAppWPF.Controllers
                 breakdownText = breakdownText.Remove(breakdownText.Length - 1);
                 sw.WriteLine(breakdownText);
             }
-            Console.WriteLine("Saved sentences to file");
         }
-
 
         internal static void SerializeWords()
         {
             ChineseService.SaveWordsToFile();
         }
-
-
     }
 }

@@ -10,6 +10,5 @@ namespace ChineseAppWPF.Models
         public List<Breakdown> Correct { get; set; } = null;
         public List<Breakdown> NoAlgorithm { get; set; } = null;
         public List<Breakdown> Algorithm { get; set; } = null;
-
     }
 }

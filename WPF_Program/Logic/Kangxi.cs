@@ -28,7 +28,6 @@ namespace ChineseAppWPF.Logic
             '㇖'
         };
 
-        //public static bool CheckIfKangxiRadical(char character) => kangxiRadicals.Any(kr => kr.Symbol == character);
         public static bool CheckIfKangxiRadical(char character) => kangxiSet.Contains(character);
 
         public static bool CheckIfStroke(char character) => strokes.Any(s => s == character);
@@ -248,7 +247,7 @@ namespace ChineseAppWPF.Logic
                 new KangxiRadical { Symbol = '艸', Number = 140 },
                 new KangxiRadical { Symbol = '⺿', Number = 140 },
                 new KangxiRadical { Symbol = '⺾', Number = 140 },
-                               
+
                 new KangxiRadical { Symbol = '艹', Number = 140 },
 
                 new KangxiRadical { Symbol = '虍', Number = 141 },

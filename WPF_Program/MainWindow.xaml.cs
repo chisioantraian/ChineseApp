@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -36,21 +37,33 @@ namespace ChineseAppWPF
 
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
 
-
-
         private void CharacterAndPinyin_MouseEnter(object sender, MouseEventArgs e)
         {
             TextBlock textBlock = (TextBlock)sender;
             char character = textBlock.Text[0];
 
-            if (character != '〔' && 
-                character != '〕' && 
+            if (character != '〔' &&
+                character != '〕' &&
                 character != '-' &&
                 character != ' ')
             {
                 textBlock.Cursor = Cursors.Hand;
-                textBlock.Text = "";
-                textBlock.Inlines.Add(new Run(character.ToString()) { FontWeight = FontWeights.Bold });
+                textBlock.FontWeight = FontWeights.Bold;
+            }
+        }
+
+        private void CharacterAndPinyin_MouseLeave(object sender, MouseEventArgs e)
+        {
+            TextBlock textBlock = (TextBlock)sender;
+            char character = textBlock.Text[0];
+
+            if (character != '〔' &&
+                character != '〕' &&
+                character != '-' &&
+                character != ' ')
+            {
+                textBlock.Text = $"{character}";
+                textBlock.FontWeight = FontWeights.Normal;
             }
         }
 
@@ -65,20 +78,6 @@ namespace ChineseAppWPF
                 Controller.ShowWordWithThisCharacter(character);
                 Controller.ShowCharsWithComponent_SidePanel(character);
                 Controller.ShowWordsWithCharacter_SidePanel(character);
-            }
-        }
-
-        private void CharacterAndPinyin_MouseLeave(object sender, MouseEventArgs e)
-        {
-            TextBlock textBlock = (TextBlock)sender;
-            char character = textBlock.Text[0];
-
-            if (character != '〔' &&
-                character != '〕' &&
-                character != '-' &&
-                character != ' ')
-            {
-                textBlock.Text = character.ToString();
             }
         }
 
@@ -113,6 +112,5 @@ namespace ChineseAppWPF
 
             Controller.ShowChineseResult(value);
         }
-
     }
 }

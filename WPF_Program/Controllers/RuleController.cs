@@ -18,8 +18,6 @@ namespace ChineseAppWPF.Controllers
                         .Select(GetRuleFromLine)
                         .ToList();
 
-            Console.WriteLine("Finished reading rules from file");
-
             static Rule GetRuleFromLine(string line)
             {
                 string[] tokens = line.Split('\t');
@@ -36,7 +34,5 @@ namespace ChineseAppWPF.Controllers
                 };
             }
         }
-
-
     }
 }

@@ -25,7 +25,7 @@ namespace ChineseAppWPF.Controllers
         // ch, from string to ch
         internal static IEnumerable<TreeViewItem> GetTreeDecomposition(string ch)
         {
-            if (!basicDict.ContainsKey(ch.ToString()))
+            if (!basicDict.ContainsKey(ch))
             {
                 return new List<TreeViewItem>();
             }
@@ -35,7 +35,7 @@ namespace ChineseAppWPF.Controllers
                 return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch[0], true) } };
             }
 
-            List<TreeViewItem> result = basicDict[ch.ToString()]
+            List<TreeViewItem> result = basicDict[ch]
                                             .SelectMany(c => GetTreeDecomposition(c))
                                             .ToList();
 
@@ -47,35 +47,7 @@ namespace ChineseAppWPF.Controllers
             {
                 return result;
             }
-
         }
-        /*
-        internal static IEnumerable<TreeViewItem> GetTreeDecomposition(char ch)
-        {
-            if (Kangxi.CheckIfKangxiRadical(ch) || Kangxi.CheckIfStroke(ch))
-            {
-                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch, true) } };
-            }
-
-            if (!basicDict.ContainsKey(ch.ToString()))
-            {
-                return new List<TreeViewItem>();
-            }
-
-            List<TreeViewItem> result = basicDict[ch.ToString()]
-                                            .SelectMany(c => GetTreeDecomposition(c[0]))
-                                            .ToList();
-
-            if (ChineseService.IsCharacter(ch))
-            {
-                return new List<TreeViewItem> { new TreeViewItem { Header = CreateBranchWord(ch, false), ItemsSource = result, IsExpanded = true } };
-            }
-            else
-            {
-                return result;
-            }
-        }*/
-        
 
         //TODO remove isKangxi inside this method?
         internal static Border CreateBranchWord(char ch, bool isKangxi)
@@ -83,7 +55,6 @@ namespace ChineseAppWPF.Controllers
             List<Word> words = ChineseService
                                 .GetAllWordsFrom(new List<string> { ch.ToString() })
                                 .ToList();
-            
             //if (words.Count() == 0)
             //{
             //    return null;
@@ -193,6 +164,5 @@ namespace ChineseAppWPF.Controllers
             }
             return definition.ToString();
         }
-
     }
 }

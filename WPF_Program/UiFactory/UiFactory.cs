@@ -81,10 +81,7 @@ namespace ChineseAppWPF.UiFactory
             {
                 Orientation = Orientation.Vertical,
             };
-            wordPanel.MouseEnter += (s, e) =>
-            {
-                ChineseService.GetAllWordsFrom(new List<string>() { simp }).UpdateShownWords();
-            };
+            wordPanel.MouseEnter += (s, e) => ChineseService.GetAllWordsFrom(new List<string>() { simp }).UpdateShownWords();
 
             wordPanel.Children.Add(wBlock);
             wordPanel.Children.Add(posBox);

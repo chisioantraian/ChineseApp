@@ -27,7 +27,7 @@ namespace ChineseAppWPF.Controllers
         {
             string text = mainWindow.SearchBar.Text;
 
-            if (value != "")
+            if (string.IsNullOrEmpty(value))
                 text = value;
 
             //TODO create Set with all possible pinyins
@@ -57,7 +57,6 @@ namespace ChineseAppWPF.Controllers
 
         internal static void ShowWordWithThisCharacter(char character) => ShowCharacterDecomposition(character);
 
-
         internal static void ShowCharsWithComponent_SidePanel(char character)
         {
             IEnumerable<Word> words = Decomposition.GetCharactersWithComponent(character.ToString());
@@ -77,7 +76,6 @@ namespace ChineseAppWPF.Controllers
             if (pron.Contains("4")) return Brushes.DarkMagenta; // Purple
             return Brushes.Gray;
         }
-
 
         internal static void Update_ShownCharsWithComponent(this IEnumerable<Word> filteredWords, char character)
         {
@@ -128,10 +126,8 @@ namespace ChineseAppWPF.Controllers
 
             filteredWords = filteredWords.SortByFrequency();
             mainWindow.CharsExtraPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
-            mainWindow.RightPanelCounter.Text = $"Characters with component {character} : {filteredWords.Count()}";
+            mainWindow.CharsExtraCounter.Text = $"Characters with component {character} : {filteredWords.Count()}";
         }
-
-
 
         internal static void Update_ShownWordsWithCharacters(this IEnumerable<Word> filteredWords, char character)
         {
@@ -180,17 +176,11 @@ namespace ChineseAppWPF.Controllers
                 };
             }
 
-
-
             filteredWords = filteredWords.SortByFrequency();
 
-
-
             mainWindow.WordsExtraPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
-            mainWindow.LeftPanelCounter.Text = $"Words with character {character} : {filteredWords.Count()}";
+            mainWindow.WordsExtraCounter.Text = $"Words with character {character} : {filteredWords.Count()}";
         }
-
-
 
         internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, bool showSorted = true)
         {
@@ -260,7 +250,6 @@ namespace ChineseAppWPF.Controllers
                         break;
                 }
             }
-
 
             mainWindow.WordsList.ItemsSource = filteredWords.Select(ResultedWordFromWord);
             mainWindow.WordsCount.Text = $"{filteredWords.Count()} words found";

@@ -3,15 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Policy;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using ChineseAppWPF.Models;
-using Ubiety.Dns.Core;
 
 namespace ChineseAppWPF.Logic
 {
@@ -26,7 +18,6 @@ namespace ChineseAppWPF.Logic
         private const string savedAllWordsSetPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedAllWordsSet";
         private const string savedCharacterSetPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedCharacterSet";
         private const string savedOnlyTraditionalSetPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedOnlyTraditionalSet";
-        private const string savedStrokesDictPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\savedStrokesDict";
 
         private static List<Word> allWords = new List<Word>();
         private static Dictionary<string, DetailedWord> allDetailedWords = new Dictionary<string, DetailedWord>();
@@ -37,7 +28,6 @@ namespace ChineseAppWPF.Logic
 
         public static void InitializeData()
         {
-            
             //BuildAllWords();
             BuildAllWords_FromSerialized();
 
@@ -54,14 +44,12 @@ namespace ChineseAppWPF.Logic
             BuildOnlyTraditionalSet_FromSerialized();
 
             BuildStrokesDict();
-            //BuildStrokesDict_FromSerialized();
-            
+            //BuildStrokesDict_FromSerialized();            
         }
 
         public static List<Word> GetAllWords() => allWords;
 
         public static Dictionary<string, DetailedWord> GetAllDetailedWords() => allDetailedWords;
-
 
         internal static void SaveWordsToFile()
         {
@@ -209,8 +197,6 @@ namespace ChineseAppWPF.Logic
             }
         }
 
-
-
         private static void BuildAllWordsSet()
         {
             foreach (var word in allWords)
@@ -249,7 +235,7 @@ namespace ChineseAppWPF.Logic
         {
             foreach (string line in File.ReadAllLines(strokesPath))
             {
-                if (line == "")
+                if (string.IsNullOrEmpty(line))
                     continue;
                 string[] token = line.Split("	");
                 char character = token[1][0];
@@ -267,8 +253,6 @@ namespace ChineseAppWPF.Logic
             }
         }
         
-
-
         public static IEnumerable<Word> SortByFrequency(this IEnumerable<Word> words)
         {
             return words.OrderByDescending(w => w.Frequency);
@@ -451,7 +435,6 @@ namespace ChineseAppWPF.Logic
             return ChineseSystem.Simplified;
         }
 
-
         public static IEnumerable<string> GetSimplifiedWordsFromSentence(string sentence)
         {
             int i = 0;
@@ -474,6 +457,5 @@ namespace ChineseAppWPF.Logic
             }
             return result;
         }
-
     }
 }

@@ -22,36 +22,44 @@ namespace ChineseAppWPF.Logic
         }
 
         // todo remove duplicate code
-        public static void ApplyRule(Rule _rule, List<Breakdown> bd, int i)
+        public static void ApplyRule(Rule ruleToApply, List<Breakdown> bd, int i)
         {
-            switch (_rule)
+            switch (ruleToApply)
             {
                 case PrevTagRule rule:
                     if (i > 0 && rule.PrevTag == bd[i - 1].Description && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                    {
                         bd[i].Description = rule.DesiredTag;
+                    }
                     break;
 
                 case NextTagRule rule:
                     if (i < bd.Count - 1 && rule.NextTag == bd[i + 1].Description && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                    {
                         bd[i].Description = rule.DesiredTag;
+                    }
                     break;
 
                 case NextWordRule rule:
                     if (i < bd.Count - 1 && rule.NextWord == bd[i + 1].Part && rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                    {
                         bd[i].Description = rule.DesiredTag;
+                    }
                     break;
 
                 case BetweenTagsRule rule:
                     if (i > 0 && i < bd.Count - 1 &&
                         rule.LeftTag == bd[i - 1].Description && rule.RightTag == bd[i + 1].Description &&
                         rule.CurrentWord == bd[i].Part && rule.CurrentTag == bd[i].Description)
+                    {
                         bd[i].Description = rule.DesiredTag;
+                    }
                     break;
 
                 case BetweenWordsRule rule:
                     if ((i > 0) && (i < bd.Count - 1) &&
-                        (rule.LeftWord == bd[i - 1].Part) && 
-                        (rule.RightWord == bd[i + 1].Part) && 
+                        (rule.LeftWord == bd[i - 1].Part) &&
+                        (rule.RightWord == bd[i + 1].Part) &&
                         (rule.CurrentTag == bd[i].Description))
                     {
                         bd[i].Description = rule.DesiredTag;
@@ -61,19 +69,18 @@ namespace ChineseAppWPF.Logic
                 case NoMoreVerbsRule rule:
                     bool thereAreVerbs = false;
                     for (int j = i + 1; j < bd.Count; j++)
+                    {
                         if (bd[j].Description == "v")
                         {
                             thereAreVerbs = true;
                             break;
                         }
+                    }
                     if ((rule.CurrentChar == bd[i].Part) && thereAreVerbs)
                     {
                         bd[i].Description = rule.DesiredTag;
                     }
                     break;
-                
-
-
             }
         }
     }

@@ -10,8 +10,7 @@ namespace ChineseAppWPF.Logic
 {
     public static class Decomposition
     {
-        private const string decompPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\cjk-decomp.txt";
-        
+        private const string decompPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\cjk-decomp.txt";        
         private const string savedBasicDictPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\basicDict";
 
         private static Dictionary<string, List<string>> basicDict = new Dictionary<string, List<string>>();
