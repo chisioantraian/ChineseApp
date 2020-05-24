@@ -90,6 +90,30 @@ namespace ChineseAppWPF.Controllers
             }
         }
 
+        public static void SortByFrequency()
+        {
+            sortingMethod = SortingMethod.Frequency;
+            currentWords.UpdateShownWords();
+        }
+
+        public static void SortByNumberOfStrokes()
+        {
+            sortingMethod = SortingMethod.Strokes;
+            currentWords.UpdateShownWords();
+        }
+
+        public static void SortByPinyin()
+        {
+            sortingMethod = SortingMethod.Pinyin;
+            currentWords.UpdateShownWords();
+        }
+
+        public static void SortByExact()
+        {
+            sortingMethod = SortingMethod.Exact;
+            currentWords.UpdateShownWords();
+        }
+
         public static IEnumerable<Breakdown> GetNoAlgBreakdown(string sentence)
         {
             //Console.WriteLine("Begin GetNoAlgBreakdown");

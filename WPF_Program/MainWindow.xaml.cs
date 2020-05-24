@@ -129,6 +129,14 @@ namespace ChineseAppWPF
             }
         }
 
+        private void SortByFrequency_Click(object sender, RoutedEventArgs e) => Controller.SortByFrequency();
+
+        private void SortByNumberOfStrokes_Click(object sender, RoutedEventArgs e) => Controller.SortByNumberOfStrokes();
+
+        private void SortByPinyin_Click(object sender, RoutedEventArgs e) => Controller.SortByPinyin();
+
+        private void SortByExact_Click(object sender, RoutedEventArgs e) => Controller.SortByExact();
+
         private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();
 
         private void AnalyseSentence_Click(object sender, RoutedEventArgs e) => Controller.AnalyseSentence_TestTab();
