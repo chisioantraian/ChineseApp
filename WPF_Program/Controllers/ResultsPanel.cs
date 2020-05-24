@@ -129,7 +129,7 @@ namespace ChineseAppWPF.Controllers
 
             filteredWords = filteredWords.SortByFrequency();
             mainWindow.CharsExtraPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
-            mainWindow.CharsExtraCounter.Text = $"Characters with component {character} : {filteredWords.Count()}";
+            mainWindow.CharsExtraCounter.Text = $"Characters with component {character}";
         }
 
         internal static void Update_ShownWordsWithCharacters(this IEnumerable<Word> filteredWords, char character)
@@ -182,7 +182,7 @@ namespace ChineseAppWPF.Controllers
             filteredWords = filteredWords.SortByFrequency();
 
             mainWindow.WordsExtraPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
-            mainWindow.WordsExtraCounter.Text = $"Words with character {character} : {filteredWords.Count()}";
+            mainWindow.WordsExtraCounter.Text = $"Words with character {character}";
         }
 
         internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, bool showSorted = true)
