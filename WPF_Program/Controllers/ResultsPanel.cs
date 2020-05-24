@@ -255,7 +255,6 @@ namespace ChineseAppWPF.Controllers
             }
 
             mainWindow.WordsList.ItemsSource = filteredWords.Select(ResultedWordFromWord);
-            mainWindow.WordsCount.Text = $"{filteredWords.Count()} words found";
             //
             currentWords = filteredWords;
         }

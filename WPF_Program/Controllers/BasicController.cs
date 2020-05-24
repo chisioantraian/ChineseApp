@@ -75,7 +75,7 @@ namespace ChineseAppWPF.Controllers
 
         public static void SortResult()
         {
-            if (mainWindow == null)
+            /*if (mainWindow == null)
                 return;
 
             //TODO bind enum to combobox?
@@ -87,7 +87,7 @@ namespace ChineseAppWPF.Controllers
             {
                 sortingMethod = selectedSorting;
                 currentWords.UpdateShownWords();
-            }
+            }*/
         }
 
         public static void SortByFrequency()

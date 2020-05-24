@@ -40,6 +40,8 @@ namespace ChineseAppWPF
 
         private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();
 
+        private void ShowRandomWords_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
+
         private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
 
         private void CharacterAndPinyin_MouseEnter(object sender, MouseEventArgs e)
