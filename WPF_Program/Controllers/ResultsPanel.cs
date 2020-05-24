@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ChineseAppWPF.Logic;
@@ -80,6 +81,28 @@ namespace ChineseAppWPF.Controllers
             return Brushes.Gray;
         }
 
+        internal static List<TextBlock> ComputeDefinitionBlocks(string definition)
+        {
+
+            string text = mainWindow.SearchBar.Text;
+            List<TextBlock> result = new List<TextBlock>();
+
+            string pattern = $"({text})";
+            string[] substrings = Regex.Split(definition, pattern);
+
+            foreach (string match in substrings)
+            {
+                Brush textColor = (match == text) ? Brushes.Orange : Brushes.Black;
+
+                result.Add(new TextBlock
+                {
+                    Text = match,
+                    Foreground = textColor
+                });
+            }
+            return result;
+        }
+
         internal static void Update_ShownCharsWithComponent(this IEnumerable<Word> filteredWords, char character)
         {
             static ResultWord ResultedWordFromWord(Word word)
@@ -123,7 +146,9 @@ namespace ChineseAppWPF.Controllers
                 return new ResultWord
                 {
                     SimplifiedPinyinPairs = sPPairs,
-                    Definitions = word.Definitions,
+                    //Definitions = word.Definitions,
+                    //DefinitionBlocks = ComputeDefinitionBlocks()
+                    DefinitionBlocks = new List<TextBlock> { new TextBlock { Text = word.Definitions } }
                 };
             }
 
@@ -175,7 +200,8 @@ namespace ChineseAppWPF.Controllers
                 return new ResultWord
                 {
                     SimplifiedPinyinPairs = sPPairs,
-                    Definitions = word.Definitions,
+                    //Definitions = word.Definitions,
+                    DefinitionBlocks = new List<TextBlock> { new TextBlock { Text = word.Definitions } }
                 };
             }
 
@@ -228,7 +254,9 @@ namespace ChineseAppWPF.Controllers
                 return new ResultWord
                 {
                     SimplifiedPinyinPairs = sPPairs,
-                    Definitions = word.Definitions,
+                    //Definitions = word.Definitions,
+                    //DefinitionBlocks = new List<TextBlock> { new TextBlock { Text = word.Definitions } }
+                    DefinitionBlocks = ComputeDefinitionBlocks(word.Definitions)
                 };
             }
 
