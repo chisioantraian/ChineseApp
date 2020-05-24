@@ -22,30 +22,30 @@ namespace ChineseAppWPF.Controllers
         private static SortingMethod sortingMethod = SortingMethod.Frequency;
 
         private delegate void ShowLanguageResult();
-        private static ShowLanguageResult showLanguageResult = ShowEnglishResult;
+        private static ShowLanguageResult showLanguageResult;// = ShowEnglishResult;
 
         public static void SetWindow(MainWindow window)
         {
             mainWindow = window;
             allDetailedWords = ChineseService.GetAllDetailedWords();
             basicDict = Decomposition.GetBasicDict();
+            showLanguageResult = ShowEnglishResult;
         }
 
         public static void ChangeLanguage()
         {
+            mainWindow.SearchBar.Text = "";
             if (selectedLanguage == SelectedLanguage.English)
             {
                 selectedLanguage = SelectedLanguage.Chinese;
                 mainWindow.SearchBarPlaceholder.Text = "Enter your characters/pinyin, then press enter";
                 showLanguageResult = ShowChineseResult;
-                mainWindow.ChangeLanguageButton.Content = "Change to english input";
             }
             else
             {
                 selectedLanguage = SelectedLanguage.English;
                 mainWindow.SearchBarPlaceholder.Text = "Enter your english word, then press enter";
                 showLanguageResult = ShowEnglishResult;
-                mainWindow.ChangeLanguageButton.Content = "Change to chinese input";
             }
         }
 

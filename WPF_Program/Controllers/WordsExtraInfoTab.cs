@@ -166,7 +166,7 @@ namespace ChineseAppWPF.Controllers
                 FontSize = 16,
                 Padding = new Thickness(10),
             };
-            menuItem.Click += (s, e) => ShowComposeResult(character);
+            menuItem.Click += (s, e) => ShowCharsWithComponent_SidePanel(character);//ShowComposeResult(character);
             return menuItem;
         }
 
@@ -178,7 +178,7 @@ namespace ChineseAppWPF.Controllers
                 FontSize = 16,
                 Padding = new Thickness(10)
             };
-            menuItem.Click += (s, e) => ShowChineseResult(character.ToString());
+            menuItem.Click += (s, e) => ShowWordsWithCharacter_SidePanel(character);//ShowChineseResult(character.ToString());
             return menuItem;
         }
 

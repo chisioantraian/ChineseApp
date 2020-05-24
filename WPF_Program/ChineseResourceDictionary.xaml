@@ -13,6 +13,17 @@
         <Setter Property="Padding" Value="12" />
         <Setter Property="Margin" Value="12,16,3,12" />
         <Setter Property="Foreground" Value="DarkSlateGray" />
+
+        <Style.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+
     </Style>
 
     <Style x:Key="ChangeLanguageButtonStyle" TargetType="Button">
@@ -20,15 +31,37 @@
         <Setter Property="Margin" Value="8,4,10,2" />
     </Style>
 
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD" />
+
     <Style x:Key="RandomButtonStyle" TargetType="Button">
         <Setter Property="Content" Value="Random Words" />
         <Setter Property="Margin" Value="10,4,10,4" />
-        <Setter Property="ToolTip" Value="Show 200 random words" />
+        <Setter Property="ToolTip" Value="Show 50 random words" />
+        <Setter Property="Background" Value="GhostWhite" />
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect BlurRadius="15" ShadowDepth="0" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="WordsCountStyle" TargetType="TextBlock">
-        <Setter Property="Margin" Value="0,15,0,0" />
+        <Setter Property="Margin" Value="10,0,5,5" />
+        <Setter Property="Background" Value="GhostWhite" />
+        <Setter Property="Padding" Value="15,5,15,15" />
+        <Setter Property="FontSize" Value="16" />
         <Setter Property="ToolTip" Value="Number of words found by the current search" />
+
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="5" ShadowDepth="0" />
+            </Setter.Value>
+        </Setter>
+
     </Style>
 
     <Style x:Key="WordsListStyle" TargetType="ListBox">
@@ -72,6 +105,7 @@
             <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
         </Style.Resources>
+
     </Style>
 
     <Style x:Key="ExtraPanelCounterStyle" TargetType="TextBlock">

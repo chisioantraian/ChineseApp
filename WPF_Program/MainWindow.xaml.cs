@@ -76,18 +76,28 @@ namespace ChineseAppWPF
             }
         }
 
+        private void ShowDecompositionTree_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            char character = item.Tag.ToString()[0];
+            //TODO must rename
+            Controller.ShowWordWithThisCharacter(character);
+        }
+
         private void WordsWithCharacter_Click(object sender, RoutedEventArgs e)
         {
             MenuItem item = (MenuItem)sender;
             string value = item.Tag.ToString();
-            Controller.ShowChineseResult(value);
+            //Controller.ShowChineseResult(value);
+            Controller.ShowWordsWithCharacter_SidePanel(value[0]);
         }
 
         private void CharactersWithComponent_Click(object sender, RoutedEventArgs e)
         {
             MenuItem item = (MenuItem)sender;
             char component = item.Tag.ToString()[0];
-            Controller.ShowComposeResult(component);
+            //Controller.ShowComposeResult(component);
+            Controller.ShowCharsWithComponent_SidePanel(component);
         }
 
         private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();

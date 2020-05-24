@@ -20,7 +20,10 @@ namespace ChineseAppWPF.Controllers
 
         public static void ShowChineseResult()
         {
-            ShowChineseResult("");
+            if (mainWindow.SearchBar.Text != "")
+                ShowChineseResult(mainWindow.SearchBar.Text);
+            else
+                ShowChineseResult("");
         }
 
         public static void ShowChineseResult(string value = "")
