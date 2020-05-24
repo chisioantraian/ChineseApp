@@ -61,7 +61,7 @@
 
             <DataTemplate x:Key="wordsListItemTemplate">
                 <StackPanel Margin="0" Background="White">
-                    <StackPanel.ContextMenu>
+                    <!--<StackPanel.ContextMenu>
                         <ContextMenu>
                             <MenuItem
                                 Click="SortByFrequency_Click"
@@ -88,7 +88,7 @@
                                 Style="{StaticResource ContextMenuItemStyle}" />
 
                         </ContextMenu>
-                    </StackPanel.ContextMenu>
+                    </StackPanel.ContextMenu>-->
                     <ItemsControl
                         ItemTemplate="{StaticResource charPinyinMainTemplate}"
                         ItemsPanel="{StaticResource charPinyinHorizontalPanelTemplate}"
@@ -146,7 +146,7 @@
                 </StackPanel>
             </DataTemplate>
 
-            <Image x:Key="ChangeLanguageImage" Source="C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\settings.png" />
+            <Image x:Key="ChangeLanguageImage" Source="C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\settings-android.png" />
 
         </ResourceDictionary>
     </Window.Resources>
@@ -160,7 +160,6 @@
         <Grid Grid.Column="0" Background="WhiteSmoke">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="45px" />
                 <RowDefinition Height="8*" />
             </Grid.RowDefinitions>
 
@@ -173,9 +172,7 @@
                 <Button
                     Grid.Column="0"
                     Margin="3,16,6,12"
-                    Padding="6"
-                    Background="GhostWhite"
-                    Click="ChangeLanguage_Click"
+                    Background="LightGray"
                     Content="{StaticResource ChangeLanguageImage}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
@@ -201,10 +198,48 @@
                                 Click="ShowRandomWords_Click"
                                 Header="Show 20 random words"
                                 Style="{StaticResource ContextMenuItemStyle}" />
+                            <Separator>
+                                <Separator.RenderTransform>
+                                    <ScaleTransform ScaleY="4" />
+                                </Separator.RenderTransform>
+                            </Separator>
+                            <MenuItem
+                                Click="ChangeToEnglishInput_Click"
+                                Header="Change to english input"
+                                Style="{StaticResource ContextMenuItemStyle}" />
                             <Separator />
-                            <MenuItem Header="Change to english input" Style="{StaticResource ContextMenuItemStyle}" />
+                            <MenuItem
+                                Click="ChangeToChineseInput_Click"
+                                Header="Change to chinese input"
+                                Style="{StaticResource ContextMenuItemStyle}" />
+                            <Separator>
+                                <Separator.RenderTransform>
+                                    <ScaleTransform ScaleY="4" />
+                                </Separator.RenderTransform>
+                            </Separator>
+                            <MenuItem
+                                Click="SortByFrequency_Click"
+                                Foreground="Brown"
+                                Header="Sort by frequency"
+                                Style="{StaticResource ContextMenuItemStyle}" />
                             <Separator />
-                            <MenuItem Header="Change to chinese input" Style="{StaticResource ContextMenuItemStyle}" />
+                            <MenuItem
+                                Click="SortByNumberOfStrokes_Click"
+                                Foreground="Brown"
+                                Header="Sort by number of strokes"
+                                Style="{StaticResource ContextMenuItemStyle}" />
+                            <Separator />
+                            <MenuItem
+                                Click="SortByPinyin_Click"
+                                Foreground="Brown"
+                                Header="Sort by pinyin"
+                                Style="{StaticResource ContextMenuItemStyle}" />
+                            <Separator />
+                            <MenuItem
+                                Click="SortByExact_Click"
+                                Foreground="Brown"
+                                Header="Exact typed word shown first"
+                                Style="{StaticResource ContextMenuItemStyle}" />
                         </ContextMenu>
                     </Button.ContextMenu>
                 </Button>
@@ -224,7 +259,7 @@
 
             <TextBlock
                 Name="SearchBarPlaceholder"
-                Margin="90,12,0,20"
+                Margin="80,8,0,20"
                 Padding="16,0,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -244,70 +279,15 @@
                 </TextBlock.Style>
             </TextBlock>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <!--
-                <Button
-                    Grid.Column="0"
-                    Click="RandomButton_Click"
-                    Style="{StaticResource RandomButtonStyle}">
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="12" />
-                        </Style>
-                    </Button.Resources>
-                </Button>-->
-
-            </Grid>
-
             <ListBox
                 Name="WordsList"
-                Grid.Row="2"
+                Grid.Row="1"
                 Background="White"
                 ItemTemplate="{StaticResource wordsListItemTemplate}"
                 Style="{StaticResource WordsListStyle}" />
         </Grid>
 
         <TabControl Name="MyTabControl" Grid.Column="1">
-            <!--<TabControl.Resources>
-                <Style TargetType="TabItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TabItem">
-                                <Border
-                                    Name="Border"
-                                    Margin="1,-2"
-                                    BorderBrush="DarkGray"
-                                    BorderThickness="2,2,2,0"
-                                    CornerRadius="24,24,0,0">
-                                    <ContentPresenter
-                                        Margin="10,2"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        ContentSource="Header" />
-
-                                </Border>
-
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="Border" Property="Background" Value="White" />
-                                        <Setter TargetName="Border" Property="BorderThickness" Value="2,2,2,0" />
-                                        <Setter TargetName="Border" Property="BorderBrush" Value="Gray" />
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="False">
-                                        <Setter TargetName="Border" Property="Background" Value="LightGray" />
-                                        <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0" />
-
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TabControl.Resources>-->
             <TabItem>
                 <TabItem.Header>
                     <TextBlock FontSize="24" Text="Words" />

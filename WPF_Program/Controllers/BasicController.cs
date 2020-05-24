@@ -49,6 +49,20 @@ namespace ChineseAppWPF.Controllers
             }
         }
 
+        public static void ChangeToEnglishInput()
+        {
+            selectedLanguage = SelectedLanguage.English;
+            mainWindow.SearchBarPlaceholder.Text = "Enter your english word, then press enter";
+            showLanguageResult = ShowEnglishResult;
+        }
+
+        public static void ChangeToChineseInput()
+        {
+            selectedLanguage = SelectedLanguage.Chinese;
+            mainWindow.SearchBarPlaceholder.Text = "Enter your characters/pinyin, then press enter";
+            showLanguageResult = ShowChineseResult;
+        }
+
         public static void ShowResult()
         {
             if (mainWindow == null)

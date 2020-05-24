@@ -36,6 +36,11 @@ namespace ChineseAppWPF
                 Controller.ShowResult();
         }
 
+        private void ChangeToEnglishInput_Click(object sender, RoutedEventArgs e) => Controller.ChangeToEnglishInput();
+
+        private void ChangeToChineseInput_Click(object sender, RoutedEventArgs e) => Controller.ChangeToChineseInput();
+
+
         private void ChangeLanguage_Click(object sender, RoutedEventArgs e) => Controller.ChangeLanguage();
 
         private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();
