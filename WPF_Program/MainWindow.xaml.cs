@@ -50,7 +50,8 @@ namespace ChineseAppWPF
             if (character != '〔' &&
                 character != '〕' &&
                 character != '-' &&
-                character != ' ')
+                character != ' ' &&
+                character != '·')
             {
                 textBlock.Cursor = Cursors.Hand;
                 textBlock.FontWeight = FontWeights.Bold;
@@ -70,9 +71,16 @@ namespace ChineseAppWPF
             {
                 TextBlock textBlock = (TextBlock)sender;
                 char character = textBlock.Text[0];
-                Controller.ShowWordWithThisCharacter(character);
-                Controller.ShowCharsWithComponent_SidePanel(character);
-                Controller.ShowWordsWithCharacter_SidePanel(character);
+                if (character != '〔' &&
+                    character != '〕' &&
+                    character != '-' &&
+                    character != ' ' &&
+                    character != '·')
+                {
+                    Controller.ShowWordWithThisCharacter(character);
+                    Controller.ShowCharsWithComponent_SidePanel(character);
+                    Controller.ShowWordsWithCharacter_SidePanel(character);
+                }
             }
         }
 
@@ -81,7 +89,14 @@ namespace ChineseAppWPF
             MenuItem item = (MenuItem)sender;
             char character = item.Tag.ToString()[0];
             //TODO must rename
-            Controller.ShowWordWithThisCharacter(character);
+            if (character != '〔' &&
+                character != '〕' &&
+                character != '-' &&
+                character != ' ' &&
+                character != '·')
+            {
+                Controller.ShowWordWithThisCharacter(character);
+            }
         }
 
         private void WordsWithCharacter_Click(object sender, RoutedEventArgs e)
@@ -89,7 +104,14 @@ namespace ChineseAppWPF
             MenuItem item = (MenuItem)sender;
             string value = item.Tag.ToString();
             //Controller.ShowChineseResult(value);
-            Controller.ShowWordsWithCharacter_SidePanel(value[0]);
+            if (value[0] != '〔' &&
+                value[0] != '〕' &&
+                value[0] != '-' &&
+                value[0] != ' ' &&
+                value[0] != '·')
+            {
+                Controller.ShowWordsWithCharacter_SidePanel(value[0]);
+            }
         }
 
         private void CharactersWithComponent_Click(object sender, RoutedEventArgs e)
@@ -97,7 +119,14 @@ namespace ChineseAppWPF
             MenuItem item = (MenuItem)sender;
             char component = item.Tag.ToString()[0];
             //Controller.ShowComposeResult(component);
-            Controller.ShowCharsWithComponent_SidePanel(component);
+            if (component != '〔' &&
+                component != '〕' &&
+                component != '-' &&
+                component != ' ' &&
+                component != '·')
+            {
+                Controller.ShowCharsWithComponent_SidePanel(component);
+            }
         }
 
         private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();
