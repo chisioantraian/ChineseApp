@@ -36,6 +36,12 @@ namespace ChineseAppWPF
                 Controller.ShowResult();
         }
 
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            button.ContextMenu.IsOpen = true;
+        }
+
         private void ChangeToEnglishInput_Click(object sender, RoutedEventArgs e) => Controller.ChangeToEnglishInput();
 
         private void ChangeToChineseInput_Click(object sender, RoutedEventArgs e) => Controller.ChangeToChineseInput();

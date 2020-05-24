@@ -61,34 +61,6 @@
 
             <DataTemplate x:Key="wordsListItemTemplate">
                 <StackPanel Margin="0" Background="White">
-                    <!--<StackPanel.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem
-                                Click="SortByFrequency_Click"
-                                Foreground="Brown"
-                                Header="Sort by frequency"
-                                Style="{StaticResource ContextMenuItemStyle}" />
-                            <Separator />
-                            <MenuItem
-                                Click="SortByNumberOfStrokes_Click"
-                                Foreground="Brown"
-                                Header="Sort by number of strokes"
-                                Style="{StaticResource ContextMenuItemStyle}" />
-                            <Separator />
-                            <MenuItem
-                                Click="SortByPinyin_Click"
-                                Foreground="Brown"
-                                Header="Sort by pinyin"
-                                Style="{StaticResource ContextMenuItemStyle}" />
-                            <Separator />
-                            <MenuItem
-                                Click="SortByExact_Click"
-                                Foreground="Brown"
-                                Header="Exact typed word shown first"
-                                Style="{StaticResource ContextMenuItemStyle}" />
-
-                        </ContextMenu>
-                    </StackPanel.ContextMenu>-->
                     <ItemsControl
                         ItemTemplate="{StaticResource charPinyinMainTemplate}"
                         ItemsPanel="{StaticResource charPinyinHorizontalPanelTemplate}"
@@ -173,6 +145,7 @@
                     Grid.Column="0"
                     Margin="3,16,6,12"
                     Background="LightGray"
+                    Click="SettingsButton_Click"
                     Content="{StaticResource ChangeLanguageImage}">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
@@ -193,7 +166,7 @@
                         </Style>
                     </Button.Style>
                     <Button.ContextMenu>
-                        <ContextMenu>
+                        <ContextMenu Name="SettingsContextMenu">
                             <MenuItem
                                 Click="ShowRandomWords_Click"
                                 Header="Show 20 random words"
