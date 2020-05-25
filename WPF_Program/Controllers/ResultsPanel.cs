@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
@@ -81,24 +83,42 @@ namespace ChineseAppWPF.Controllers
             return Brushes.Gray;
         }
 
-        internal static List<TextBlock> ComputeDefinitionBlocks(string definition)
+        internal static TextBlock ComputeDefinitionBlock(string definition)
         {
 
             string text = mainWindow.SearchBar.Text;
-            List<TextBlock> result = new List<TextBlock>();
+            TextBlock result = new TextBlock
+            {
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0,2,0,0)
+            };
 
-            string pattern = $"({text})";
-            string[] substrings = Regex.Split(definition, pattern);
+            text = text.Replace("(", @"\(");
+            text = text.Replace(")", @"\)");
+            
+            string pattern = @$"({text})";
+            string[] substrings = Regex.Split(definition, pattern, RegexOptions.IgnoreCase);
 
             foreach (string match in substrings)
             {
-                Brush textColor = (match == text) ? Brushes.Orange : Brushes.Black;
-
-                result.Add(new TextBlock
+                if (match.ToLower() == text.ToLower())
                 {
-                    Text = match,
-                    Foreground = textColor
-                });
+                    result.Inlines.Add(new Run(match)
+                    {
+                        FontSize = 16,
+                        FontWeight = FontWeights.Bold,
+                        //Foreground = Brushes.Chocolate,
+                        Background = Brushes.BurlyWood//.LightSteelBlue
+                    });
+                }
+                else
+                {
+                    result.Inlines.Add(new Run(match)
+                    {
+                        FontSize = 16,
+                        Foreground = Brushes.Black,
+                    });
+                }
             }
             return result;
         }
@@ -146,9 +166,12 @@ namespace ChineseAppWPF.Controllers
                 return new ResultWord
                 {
                     SimplifiedPinyinPairs = sPPairs,
-                    //Definitions = word.Definitions,
-                    //DefinitionBlocks = ComputeDefinitionBlocks()
-                    DefinitionBlocks = new List<TextBlock> { new TextBlock { Text = word.Definitions } }
+                    DefinitionBlock = new TextBlock 
+                    {
+                        Text = word.Definitions,
+                        Foreground = Brushes.Black,
+                        TextWrapping = TextWrapping.Wrap, 
+                    }
                 };
             }
 
@@ -200,8 +223,12 @@ namespace ChineseAppWPF.Controllers
                 return new ResultWord
                 {
                     SimplifiedPinyinPairs = sPPairs,
-                    //Definitions = word.Definitions,
-                    DefinitionBlocks = new List<TextBlock> { new TextBlock { Text = word.Definitions } }
+                    DefinitionBlock = new TextBlock
+                    {
+                        Text = word.Definitions,
+                        Foreground = Brushes.Black,
+                        TextWrapping = TextWrapping.Wrap,
+                    }
                 };
             }
 
@@ -256,7 +283,7 @@ namespace ChineseAppWPF.Controllers
                     SimplifiedPinyinPairs = sPPairs,
                     //Definitions = word.Definitions,
                     //DefinitionBlocks = new List<TextBlock> { new TextBlock { Text = word.Definitions } }
-                    DefinitionBlocks = ComputeDefinitionBlocks(word.Definitions)
+                    DefinitionBlock = ComputeDefinitionBlock(word.Definitions)
                 };
             }
 

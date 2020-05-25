@@ -8,6 +8,6 @@ namespace ChineseAppWPF.Models
     {
         public IEnumerable<SPPair> SimplifiedPinyinPairs { get; set; }
         //public string Definitions { get; set; }
-        public IEnumerable<TextBlock> DefinitionBlocks {get;set;}
+        public TextBlock DefinitionBlock {get;set;}
     }
 }

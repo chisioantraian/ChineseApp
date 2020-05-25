@@ -68,20 +68,10 @@
 
                     <WrapPanel>
                         <StackPanel Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Orientation="Vertical">
-                            <!--
-                            <TextBlock Style="{StaticResource DefinitionsStyle}" Text="{Binding Definitions}" />
-                            -->
-
-                            <ItemsControl x:Name="DefinitionStack" ItemsSource="{Binding DefinitionBlocks}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel Orientation="Horizontal" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-
+                            <ContentPresenter Content="{Binding DefinitionBlock}" />
                         </StackPanel>
                     </WrapPanel>
+
 
                     <Separator>
                         <Separator.RenderTransform>
@@ -115,9 +105,17 @@
                         ItemsPanel="{StaticResource charPinyinHorizontalPanelTemplate}"
                         ItemsSource="{Binding SimplifiedPinyinPairs}" />
 
+                    <!--
                     <WrapPanel>
                         <StackPanel Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Orientation="Vertical">
                             <TextBlock Style="{StaticResource ExtraPanelDefinitionStyle}" Text="{Binding Definitions}" />
+                        </StackPanel>
+                    </WrapPanel>
+                    -->
+
+                    <WrapPanel>
+                        <StackPanel Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Orientation="Vertical">
+                            <ContentPresenter Content="{Binding DefinitionBlock}" />
                         </StackPanel>
                     </WrapPanel>
 
