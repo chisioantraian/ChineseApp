@@ -313,10 +313,20 @@ namespace ChineseAppWPF.Logic
             return source?.IndexOf(value, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
 
+        private static bool WordFitsCriteria(Word w, string text)
+        {
+            char[] sep = new char[] { ' ', '(', '/' };
+            List<string> tokens = w.Definitions.Split(sep).ToList();
+            return tokens.Any(t => t.StartsWith(text));
+        }
+
         public static IEnumerable<Word> GetEnglishResult(string text)
         {
             return allWords.AsParallel()
                            .Where(w => w.Definitions.ContainsInsensitive(text));
+            //return allWords.AsParallel()
+            //               .Where(w => WordFitsCriteria(w, text))
+            //               .ToList();
         }
 
         public static IEnumerable<Word> SearchBySimplified(string text)
@@ -469,6 +479,35 @@ namespace ChineseAppWPF.Logic
                 }
             }
             return result;
+        }
+
+        public static List<Word> GetWordsWithSimplified(string simplified)
+        {
+            return allWords.Where(w => w.Simplified == simplified).ToList();
+        }
+
+        public static List<Word> SearchWordsInside(string simplified)
+        {
+            List<Word> result = new List<Word>();
+
+            for (int i = 0; i < simplified.Length; i++)
+            {
+                List<Word> intermediate = new List<Word>();
+                for (int j = i+1; j <= simplified.Length; j++)
+                {
+                    string possible = simplified[i..j];
+                    if (WordExists(possible))
+                    {
+                        //result.AddRange(GetWordsWithSimplified(possible));
+                        GetWordsWithSimplified(possible).ForEach(w => intermediate.Add(w));
+                    }
+                }
+                //intermediate.Reverse();
+                intermediate.ForEach(w => result.Add(w));
+                //result.AddRange(intermediate);
+            }
+            result.Reverse();
+            return result.OrderBy(w => w.Simplified.Length).Reverse().ToList();
         }
     }
 }

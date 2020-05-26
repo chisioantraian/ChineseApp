@@ -17,6 +17,13 @@
             </ResourceDictionary.MergedDictionaries>
 
             <ContextMenu x:Key="characterContextMenu">
+
+                <MenuItem
+                    Click="ShowWordsInside_Click"
+                    Header="Show Words Inside"
+                    Style="{StaticResource ContextMenuItemStyle}"
+                    Tag="{Binding SimplifiedWord}" />
+                <Separator />
                 <MenuItem
                     Click="CharactersWithComponent_Click"
                     Header="Show characters which contain this component"
@@ -34,6 +41,19 @@
                     Header="Show decomposition to radicals of this character"
                     Style="{StaticResource ContextMenuItemStyle}"
                     Tag="{Binding ChineseCharacter}" />
+                <Separator />
+                <MenuItem
+                    Click="ActivateAllOptions_Click"
+                    Header="Show all"
+                    Style="{StaticResource ContextMenuItemStyle}"
+                    Tag="{Binding ChineseCharacter}" />
+
+                <!--
+                    HERE
+                -->
+
+
+
             </ContextMenu>
 
             <ItemsPanelTemplate x:Key="charPinyinHorizontalPanelTemplate">
@@ -61,6 +81,7 @@
 
             <DataTemplate x:Key="wordsListItemTemplate">
                 <StackPanel Margin="0" Background="White">
+
                     <ItemsControl
                         ItemTemplate="{StaticResource charPinyinMainTemplate}"
                         ItemsPanel="{StaticResource charPinyinHorizontalPanelTemplate}"
@@ -71,6 +92,8 @@
                             <ContentPresenter Content="{Binding DefinitionBlock}" />
                         </StackPanel>
                     </WrapPanel>
+
+
 
 
                     <Separator>
@@ -104,14 +127,6 @@
                         ItemTemplate="{StaticResource charPinyinExtraTemplate}"
                         ItemsPanel="{StaticResource charPinyinHorizontalPanelTemplate}"
                         ItemsSource="{Binding SimplifiedPinyinPairs}" />
-
-                    <!--
-                    <WrapPanel>
-                        <StackPanel Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Orientation="Vertical">
-                            <TextBlock Style="{StaticResource ExtraPanelDefinitionStyle}" Text="{Binding Definitions}" />
-                        </StackPanel>
-                    </WrapPanel>
-                    -->
 
                     <WrapPanel>
                         <StackPanel Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}" Orientation="Vertical">
@@ -284,31 +299,60 @@
                         Grid.Row="0"
                         BorderBrush="DarkSlateGray"
                         BorderThickness="4,4,4,2">
+
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="19*" />
-                                <ColumnDefinition Width="117*" />
-                                <ColumnDefinition Width="9*" />
-                                <ColumnDefinition Width="993*" />
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="2*" />
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="35" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
 
-                            <TextBlock
-                                Name="DecompositionPanelTitle"
-                                Grid.Row="0"
-                                Grid.ColumnSpan="4"
-                                Style="{StaticResource DecompositionPanelStyle}"
-                                Text="Decomposition to radicals of selected character " />
 
-                            <TreeView
-                                Name="tView"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="4"
-                                Style="{StaticResource tViewStyle}" />
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock
+                                    Name="DecompositionPanelTitle"
+                                    Grid.Row="0"
+                                    Style="{StaticResource DecompositionPanelStyle}"
+                                    Text="Decomposition to radicals of selected character " />
+
+                                <TreeView
+                                    Name="tView"
+                                    Grid.Row="1"
+                                    Style="{StaticResource tViewStyle}" />
+                            </Grid>
+
+                            <Border
+                                Grid.Column="1"
+                                BorderBrush="DarkSlateGray"
+                                BorderThickness="4,0,0,0">
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="35" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock
+                                        Name="WordsInsideCounter"
+                                        Grid.Row="0"
+                                        Style="{StaticResource DecompositionPanelStyle}"
+                                        Text="Words inside " />
+                                    <ListBox
+                                        Name="WordsInsidePanel"
+                                        Grid.Row="1"
+                                        ItemTemplate="{StaticResource extraPanelItemTemplate}"
+                                        Style="{StaticResource WordsListStyle}" />
+                                </Grid>
+                            </Border>
+
+
+
+
                         </Grid>
+
+
                     </Border>
 
 

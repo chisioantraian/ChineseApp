@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -16,7 +17,8 @@ namespace ChineseAppWPF.Controllers
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
             mainWindow.tView.ItemsSource = GetTreeDecomposition(characterToBeDecomposed.ToString());
-            mainWindow.DecompositionPanelTitle.Text = $"Decomposition to radicals of character {characterToBeDecomposed}";
+            mainWindow.DecompositionPanelTitle.Text = $"Decomposition to radicals of character {characterToBeDecomposed}"; 
+            //mainWindow.DecompositionPanelTitle.Inlines.Add(new Run(characterToBeDecomposed.ToString()) { FontSize = 30, FontWeight = FontWeights.Bold, AllowDrop=true });
         }
 
         //TODO ch, from string to ch
@@ -103,7 +105,9 @@ namespace ChineseAppWPF.Controllers
                 {
                     Text = GetOnlyDetails(words),
                     FontSize = 12,
-                    Background = Brushes.White
+                    Background = Brushes.White,
+                    MaxWidth=300,
+                    TextWrapping=TextWrapping.WrapWithOverflow
                 }
             };
         }

@@ -32,25 +32,9 @@ namespace ChineseAppWPF.Controllers
             showLanguageResult = ShowEnglishResult;
         }
 
-        public static void ChangeLanguage()
-        {
-            mainWindow.SearchBar.Text = "";
-            if (selectedLanguage == SelectedLanguage.English)
-            {
-                selectedLanguage = SelectedLanguage.Chinese;
-                mainWindow.SearchBarPlaceholder.Text = "Enter your characters/pinyin, then press enter";
-                showLanguageResult = ShowChineseResult;
-            }
-            else
-            {
-                selectedLanguage = SelectedLanguage.English;
-                mainWindow.SearchBarPlaceholder.Text = "Enter your english word, then press enter";
-                showLanguageResult = ShowEnglishResult;
-            }
-        }
-
         public static void ChangeToEnglishInput()
         {
+            mainWindow.SearchBar.Text = "";
             selectedLanguage = SelectedLanguage.English;
             mainWindow.SearchBarPlaceholder.Text = "Enter your english word, then press enter";
             showLanguageResult = ShowEnglishResult;
@@ -58,6 +42,7 @@ namespace ChineseAppWPF.Controllers
 
         public static void ChangeToChineseInput()
         {
+            mainWindow.SearchBar.Text = "";
             selectedLanguage = SelectedLanguage.Chinese;
             mainWindow.SearchBarPlaceholder.Text = "Enter your characters/pinyin, then press enter";
             showLanguageResult = ShowChineseResult;
@@ -74,34 +59,6 @@ namespace ChineseAppWPF.Controllers
                 return;
             }
             showLanguageResult();
-        }
-
-        private static SortingMethod GetSorting(string text)
-        {
-            return text switch
-            {
-                "Frequency" => SortingMethod.Frequency,
-                "Strokes" => SortingMethod.Strokes,
-                "Pinyin" => SortingMethod.Pinyin,
-                _ => SortingMethod.Exact
-            };
-        }
-
-        public static void SortResult()
-        {
-            /*if (mainWindow == null)
-                return;
-
-            //TODO bind enum to combobox?
-            //TODO or change combobox to button
-            ComboBoxItem sortItem = (ComboBoxItem)mainWindow.SortingComboBox.SelectedItem;
-            SortingMethod selectedSorting = GetSorting(sortItem.Content.ToString());
-
-            if (sortingMethod != selectedSorting)
-            {
-                sortingMethod = selectedSorting;
-                currentWords.UpdateShownWords();
-            }*/
         }
 
         public static void SortByFrequency()

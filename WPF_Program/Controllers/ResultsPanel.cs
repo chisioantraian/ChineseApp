@@ -74,6 +74,11 @@ namespace ChineseAppWPF.Controllers
             ChineseService.SearchBySimplified(character.ToString()).Update_ShownWordsWithCharacters(character);
         }
 
+        internal static void ShowWordsInside_SidePanel(string simplified)
+        {
+            ChineseService.SearchWordsInside(simplified).Update_ShownInsideWords(simplified);
+        }
+
         internal static Brush ComputeColor(string pron)
         {
             if (pron.Contains("1")) return Brushes.Red;
@@ -90,7 +95,7 @@ namespace ChineseAppWPF.Controllers
             TextBlock result = new TextBlock
             {
                 TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0,2,0,0)
+                Margin = new Thickness(0,4,0,0)
             };
 
             text = text.Replace("(", @"\(");
@@ -107,8 +112,8 @@ namespace ChineseAppWPF.Controllers
                     {
                         FontSize = 16,
                         FontWeight = FontWeights.Bold,
-                        //Foreground = Brushes.Chocolate,
-                        Background = Brushes.BurlyWood//.LightSteelBlue
+                        Foreground = Brushes.Orange//.Chocolate,
+                        //Background = Brushes.Orange//.BurlyWood//.LightSteelBlue
                     });
                 }
                 else
@@ -132,7 +137,7 @@ namespace ChineseAppWPF.Controllers
 
                 for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
                 {
-                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i] });
+                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i], SimplifiedWord = word.Simplified });
                 }
 
                 bool addBrackets = false;
@@ -147,20 +152,20 @@ namespace ChineseAppWPF.Controllers
 
                 if (addBrackets)
                 {
-                    sPPairs.Add(new SPPair { ChineseCharacter = ' ', CharacterColor = Brushes.Black, Pinyin = "" });
-                    sPPairs.Add(new SPPair { ChineseCharacter = '〔', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
+                    sPPairs.Add(new SPPair { ChineseCharacter = ' ', CharacterColor = Brushes.Black, Pinyin = "", SimplifiedWord = word.Simplified });
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〔', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
                     for (int i = 0; i < word.Traditional.Length && i < singlePron.Count; i++)
                     {
                         if (word.Simplified[i] == word.Traditional[i])
                         {
-                            sPPairs.Add(new SPPair { ChineseCharacter = '-', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
+                            sPPairs.Add(new SPPair { ChineseCharacter = '-', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
                         }
                         else
                         {
-                            sPPairs.Add(new SPPair { ChineseCharacter = word.Traditional[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i] });
+                            sPPairs.Add(new SPPair { ChineseCharacter = word.Traditional[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i], SimplifiedWord = word.Simplified });
                         }
                     }
-                    sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
                 }
 
                 return new ResultWord
@@ -178,7 +183,68 @@ namespace ChineseAppWPF.Controllers
             filteredWords = filteredWords.SortByFrequency();
             mainWindow.CharsExtraPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
             mainWindow.CharsExtraCounter.Text = $"Characters with component {character}";
+            //mainWindow.CharsExtraCounter.Text = "Characters with component ";
+            //mainWindow.CharsExtraCounter.Inlines.Add(new Run(character.ToString()) { FontSize = 30, FontWeight = FontWeights.Bold });
         }
+
+
+        internal static void Update_ShownInsideWords(this IEnumerable<Word> filteredWords, string simplified)
+        {
+            static ResultWord ResultedWordFromWord(Word word)
+            {
+                List<string> singlePron = word.Pinyin.Split(" ").ToList();
+                List<SPPair> sPPairs = new List<SPPair>();
+
+                for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
+                {
+                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i], SimplifiedWord = word.Simplified });
+                }
+
+                bool addBrackets = false;
+                for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
+                {
+                    if (word.Simplified[i] != word.Traditional[i])
+                    {
+                        addBrackets = true;
+                        break;
+                    }
+                }
+
+                if (addBrackets)
+                {
+                    sPPairs.Add(new SPPair { ChineseCharacter = ' ', CharacterColor = Brushes.Black, Pinyin = "", SimplifiedWord = word.Simplified });
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〔', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
+                    for (int i = 0; i < word.Traditional.Length && i < singlePron.Count; i++)
+                    {
+                        if (word.Simplified[i] == word.Traditional[i])
+                        {
+                            sPPairs.Add(new SPPair { ChineseCharacter = '-', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
+                        }
+                        else
+                        {
+                            sPPairs.Add(new SPPair { ChineseCharacter = word.Traditional[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i], SimplifiedWord = word.Simplified });
+                        }
+                    }
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
+                }
+
+                return new ResultWord
+                {
+                    SimplifiedPinyinPairs = sPPairs,
+                    DefinitionBlock = new TextBlock
+                    {
+                        Text = word.Definitions,
+                        Foreground = Brushes.Black,
+                        TextWrapping = TextWrapping.Wrap,
+                    }
+                };
+            }
+
+            //filteredWords = filteredWords.SortByFrequency();
+            mainWindow.WordsInsidePanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
+            mainWindow.WordsInsideCounter.Text = $"Words inside {simplified}";
+        }
+
 
         internal static void Update_ShownWordsWithCharacters(this IEnumerable<Word> filteredWords, char character)
         {
@@ -236,6 +302,9 @@ namespace ChineseAppWPF.Controllers
 
             mainWindow.WordsExtraPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
             mainWindow.WordsExtraCounter.Text = $"Words with character {character}";
+            //mainWindow.WordsExtraCounter.Text = "Words with character ";
+            //mainWindow.WordsExtraCounter.Inlines.Add(new Run(character.ToString()) { FontSize = 30, FontWeight = FontWeights.Bold });
+
         }
 
         internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, bool showSorted = true)
@@ -247,7 +316,7 @@ namespace ChineseAppWPF.Controllers
 
                 for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
                 {
-                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i] });
+                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i], SimplifiedWord = word.Simplified });
                 }
 
                 bool addBrackets = false;
@@ -262,20 +331,20 @@ namespace ChineseAppWPF.Controllers
 
                 if (addBrackets)
                 {
-                    sPPairs.Add(new SPPair { ChineseCharacter = ' ', CharacterColor = Brushes.Black, Pinyin = "" });
-                    sPPairs.Add(new SPPair { ChineseCharacter = '〔', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
+                    sPPairs.Add(new SPPair { ChineseCharacter = ' ', CharacterColor = Brushes.Black, Pinyin = "", SimplifiedWord = word.Simplified });
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〔', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
                     for (int i = 0; i < word.Traditional.Length && i < singlePron.Count; i++)
                     {
                         if (word.Simplified[i] == word.Traditional[i])
                         {
-                            sPPairs.Add(new SPPair { ChineseCharacter = '-', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
+                            sPPairs.Add(new SPPair { ChineseCharacter = '-', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
                         }
                         else
                         {
-                            sPPairs.Add(new SPPair { ChineseCharacter = word.Traditional[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i]});
+                            sPPairs.Add(new SPPair { ChineseCharacter = word.Traditional[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i], SimplifiedWord = word.Simplified });
                         }
                     }
-                    sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
                 }
 
                 return new ResultWord

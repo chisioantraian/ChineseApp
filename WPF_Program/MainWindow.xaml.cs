@@ -46,14 +46,7 @@ namespace ChineseAppWPF
 
         private void ChangeToChineseInput_Click(object sender, RoutedEventArgs e) => Controller.ChangeToChineseInput();
 
-
-        private void ChangeLanguage_Click(object sender, RoutedEventArgs e) => Controller.ChangeLanguage();
-
-        private void SortingComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) => Controller.SortResult();
-
         private void ShowRandomWords_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
-
-        private void RandomButton_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
 
         private void CharacterAndPinyin_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -83,7 +76,7 @@ namespace ChineseAppWPF
             if (ev.ChangedButton == MouseButton.Left)
             {
                 TextBlock textBlock = (TextBlock)sender;
-                char character = textBlock.Text[0];
+                /*char character = textBlock.Text[0];
                 if (character != '〔' &&
                     character != '〕' &&
                     character != '-' &&
@@ -93,7 +86,8 @@ namespace ChineseAppWPF
                     Controller.ShowWordWithThisCharacter(character);
                     Controller.ShowCharsWithComponent_SidePanel(character);
                     Controller.ShowWordsWithCharacter_SidePanel(character);
-                }
+                }*/
+                //textBlock.ContextMenu.IsOpen = true;
             }
         }
 
@@ -109,6 +103,23 @@ namespace ChineseAppWPF
                 character != '·')
             {
                 Controller.ShowWordWithThisCharacter(character);
+            }
+        }
+
+        private void ActivateAllOptions_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            char character = item.Tag.ToString()[0];
+            Console.WriteLine($"char: {character}");
+            if (character != '〔' &&
+                character != '〕' &&
+                character != '-' &&
+                character != ' ' &&
+                character != '·')
+            {
+                Controller.ShowWordWithThisCharacter(character);
+                Controller.ShowCharsWithComponent_SidePanel(character);
+                Controller.ShowWordsWithCharacter_SidePanel(character);
             }
         }
 
@@ -140,6 +151,14 @@ namespace ChineseAppWPF
             {
                 Controller.ShowCharsWithComponent_SidePanel(component);
             }
+        }
+
+        private void ShowWordsInside_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            string simplified = item.Tag.ToString();
+            //Console.WriteLine($"Simplified : {simplified}");
+            Controller.ShowWordsInside_SidePanel(simplified);
         }
 
         private void SortByFrequency_Click(object sender, RoutedEventArgs e) => Controller.SortByFrequency();
