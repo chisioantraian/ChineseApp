@@ -95,20 +95,22 @@ namespace ChineseAppWPF.Controllers
 
         private static Border DecompositionTreeDetailBorder(List<Word> words)
         {
+            TextBlock decompositionTextBlock = new TextBlock
+            {
+                //Text = GetOnlyDetails(words),
+                FontSize = 12,
+                Background = Brushes.White,
+                MaxWidth = 300,
+                TextWrapping = TextWrapping.WrapWithOverflow
+            };
+            ComputeDetails(decompositionTextBlock, words);
             return new Border
             {
                 BorderBrush = Brushes.White,
                 BorderThickness = new Thickness(3),
                 CornerRadius = new CornerRadius(5),
                 Padding = new Thickness(2),
-                Child = new TextBlock
-                {
-                    Text = GetOnlyDetails(words),
-                    FontSize = 12,
-                    Background = Brushes.White,
-                    MaxWidth=300,
-                    TextWrapping=TextWrapping.WrapWithOverflow
-                }
+                Child = decompositionTextBlock
             };
         }
 
@@ -182,6 +184,16 @@ namespace ChineseAppWPF.Controllers
             menuItem.Click += (s, e) => ShowWordsWithCharacter_SidePanel(character);//ShowChineseResult(character.ToString());
             return menuItem;
         }
+
+        internal static void ComputeDetails(TextBlock block, List<Word> words)
+        {
+            foreach (Word w in words)
+            {
+                block.Inlines.Add(new Run(w.Pinyin) { FontWeight = FontWeights.Bold });
+                block.Inlines.Add(new Run($" : {w.Definitions}\n"));
+            }
+        }
+
 
         internal static string GetOnlyDetails(List<Word> words)
         {

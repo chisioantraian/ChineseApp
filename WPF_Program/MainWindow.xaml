@@ -17,41 +17,51 @@
             </ResourceDictionary.MergedDictionaries>
 
             <ContextMenu x:Key="characterContextMenu">
+                <MenuItem
+                    Click="ShowDecompositionTree_Click"
+                    Header="Decomposition to radicals of this character"
+                    Style="{StaticResource ContextMenuItemStyle}"
+                    Tag="{Binding ChineseCharacter}" />
+                <Separator Background="Black">
+                    <Separator.RenderTransform>
+                        <ScaleTransform ScaleY="3" />
+                    </Separator.RenderTransform>
+                </Separator>
 
                 <MenuItem
                     Click="ShowWordsInside_Click"
-                    Header="Show Words Inside"
+                    Header="Split into smaller words"
                     Style="{StaticResource ContextMenuItemStyle}"
                     Tag="{Binding SimplifiedWord}" />
-                <Separator />
-                <MenuItem
-                    Click="CharactersWithComponent_Click"
-                    Header="Show characters which contain this component"
-                    Style="{StaticResource ContextMenuItemStyle}"
-                    Tag="{Binding ChineseCharacter}" />
-                <Separator />
+                <Separator Background="Black">
+                    <Separator.RenderTransform>
+                        <ScaleTransform ScaleY="4" />
+                    </Separator.RenderTransform>
+                </Separator>
+
                 <MenuItem
                     Click="WordsWithCharacter_Click"
-                    Header="Show words with this character"
+                    Header="Words with highlighted character"
                     Style="{StaticResource ContextMenuItemStyle}"
                     Tag="{Binding ChineseCharacter}" />
                 <Separator />
+
                 <MenuItem
-                    Click="ShowDecompositionTree_Click"
-                    Header="Show decomposition to radicals of this character"
+                    Click="WordsContainingWord_Click"
+                    Header="Words containing this entire word"
+                    Style="{StaticResource ContextMenuItemStyle}"
+                    Tag="{Binding SimplifiedWord}" />
+                <Separator Background="Black">
+                    <Separator.RenderTransform>
+                        <ScaleTransform ScaleY="3" />
+                    </Separator.RenderTransform>
+                </Separator>
+
+                <MenuItem
+                    Click="CharactersWithComponent_Click"
+                    Header="Characters which contain this component"
                     Style="{StaticResource ContextMenuItemStyle}"
                     Tag="{Binding ChineseCharacter}" />
-                <Separator />
-                <MenuItem
-                    Click="ActivateAllOptions_Click"
-                    Header="Show all"
-                    Style="{StaticResource ContextMenuItemStyle}"
-                    Tag="{Binding ChineseCharacter}" />
-
-                <!--
-                    HERE
-                -->
-
 
 
             </ContextMenu>
@@ -92,8 +102,6 @@
                             <ContentPresenter Content="{Binding DefinitionBlock}" />
                         </StackPanel>
                     </WrapPanel>
-
-
 
 
                     <Separator>

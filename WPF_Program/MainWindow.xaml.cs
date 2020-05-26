@@ -76,7 +76,7 @@ namespace ChineseAppWPF
             if (ev.ChangedButton == MouseButton.Left)
             {
                 TextBlock textBlock = (TextBlock)sender;
-                /*char character = textBlock.Text[0];
+                char character = textBlock.Text[0];
                 if (character != '〔' &&
                     character != '〕' &&
                     character != '-' &&
@@ -86,7 +86,7 @@ namespace ChineseAppWPF
                     Controller.ShowWordWithThisCharacter(character);
                     Controller.ShowCharsWithComponent_SidePanel(character);
                     Controller.ShowWordsWithCharacter_SidePanel(character);
-                }*/
+                }
                 //textBlock.ContextMenu.IsOpen = true;
             }
         }
@@ -136,6 +136,13 @@ namespace ChineseAppWPF
             {
                 Controller.ShowWordsWithCharacter_SidePanel(value[0]);
             }
+        }
+
+        private void WordsContainingWord_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            string simplified = item.Tag.ToString();
+            Controller.ShowWordsContainingWord_SidePanel(simplified);
         }
 
         private void CharactersWithComponent_Click(object sender, RoutedEventArgs e)

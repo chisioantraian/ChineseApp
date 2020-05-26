@@ -74,6 +74,11 @@ namespace ChineseAppWPF.Controllers
             ChineseService.SearchBySimplified(character.ToString()).Update_ShownWordsWithCharacters(character);
         }
 
+        internal static void ShowWordsContainingWord_SidePanel(string simplified)
+        {
+            ChineseService.SearchBySimplified(simplified).Update_ShownWordsContainingWord(simplified);
+        }
+
         internal static void ShowWordsInside_SidePanel(string simplified)
         {
             ChineseService.SearchWordsInside(simplified).Update_ShownInsideWords(simplified);
@@ -255,7 +260,7 @@ namespace ChineseAppWPF.Controllers
 
                 for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
                 {
-                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i] });
+                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i],SimplifiedWord = word.Simplified });
                 }
 
                 bool addBrackets = false;
@@ -270,20 +275,20 @@ namespace ChineseAppWPF.Controllers
 
                 if (addBrackets)
                 {
-                    sPPairs.Add(new SPPair { ChineseCharacter = ' ', CharacterColor = Brushes.Black, Pinyin = "" });
-                    sPPairs.Add(new SPPair { ChineseCharacter = '〔', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
+                    sPPairs.Add(new SPPair { ChineseCharacter = ' ', CharacterColor = Brushes.Black, Pinyin = "", SimplifiedWord = word.Simplified });
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〔', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
                     for (int i = 0; i < word.Traditional.Length && i < singlePron.Count; i++)
                     {
                         if (word.Simplified[i] == word.Traditional[i])
                         {
-                            sPPairs.Add(new SPPair { ChineseCharacter = '-', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
+                            sPPairs.Add(new SPPair { ChineseCharacter = '-', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
                         }
                         else
                         {
-                            sPPairs.Add(new SPPair { ChineseCharacter = word.Traditional[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i] });
+                            sPPairs.Add(new SPPair { ChineseCharacter = word.Traditional[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i], SimplifiedWord = word.Simplified });
                         }
                     }
-                    sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "" });
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
                 }
 
                 return new ResultWord
@@ -306,6 +311,67 @@ namespace ChineseAppWPF.Controllers
             //mainWindow.WordsExtraCounter.Inlines.Add(new Run(character.ToString()) { FontSize = 30, FontWeight = FontWeights.Bold });
 
         }
+
+
+        internal static void Update_ShownWordsContainingWord(this IEnumerable<Word> filteredWords, string simplified)
+        {
+            static ResultWord ResultedWordFromWord(Word word)
+            {
+                List<string> singlePron = word.Pinyin.Split(" ").ToList();
+                List<SPPair> sPPairs = new List<SPPair>();
+
+                for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
+                {
+                    sPPairs.Add(new SPPair { ChineseCharacter = word.Simplified[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i], SimplifiedWord = word.Simplified });
+                }
+
+                bool addBrackets = false;
+                for (int i = 0; i < word.Simplified.Length && i < singlePron.Count; i++)
+                {
+                    if (word.Simplified[i] != word.Traditional[i])
+                    {
+                        addBrackets = true;
+                        break;
+                    }
+                }
+
+                if (addBrackets)
+                {
+                    sPPairs.Add(new SPPair { ChineseCharacter = ' ', CharacterColor = Brushes.Black, Pinyin = "", SimplifiedWord = word.Simplified });
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〔', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
+                    for (int i = 0; i < word.Traditional.Length && i < singlePron.Count; i++)
+                    {
+                        if (word.Simplified[i] == word.Traditional[i])
+                        {
+                            sPPairs.Add(new SPPair { ChineseCharacter = '-', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
+                        }
+                        else
+                        {
+                            sPPairs.Add(new SPPair { ChineseCharacter = word.Traditional[i], CharacterColor = ComputeColor(singlePron[i]), Pinyin = singlePron[i], SimplifiedWord = word.Simplified });
+                        }
+                    }
+                    sPPairs.Add(new SPPair { ChineseCharacter = '〕', CharacterColor = Brushes.DarkSlateGray, Pinyin = "", SimplifiedWord = word.Simplified });
+                }
+
+                return new ResultWord
+                {
+                    SimplifiedPinyinPairs = sPPairs,
+                    DefinitionBlock = new TextBlock
+                    {
+                        Text = word.Definitions,
+                        Foreground = Brushes.Black,
+                        TextWrapping = TextWrapping.Wrap,
+                    }
+                };
+            }
+
+            filteredWords = filteredWords.SortByFrequency();
+
+            mainWindow.WordsExtraPanel.ItemsSource = filteredWords.Select(ResultedWordFromWord);
+            mainWindow.WordsExtraCounter.Text = $"Words containing word {simplified}";
+        }
+
+
 
         internal static void UpdateShownWords(this IEnumerable<Word> filteredWords, bool showSorted = true)
         {
