@@ -2,7 +2,7 @@
 {
     public class Breakdown
     {
-        public string Part { get; set; }
-        public string Description { get; set; }
+        public string FoundWord { get; set; }
+        public string Annotation { get; set; }
     }
 }

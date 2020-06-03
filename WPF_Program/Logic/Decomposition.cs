@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.RegularExpressions;
 using ChineseAppWPF.Models;
 
@@ -10,25 +8,21 @@ namespace ChineseAppWPF.Logic
 {
     public static class Decomposition
     {
-        private const string decompPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\cjk-decomp.txt";        
-        private const string savedBasicDictPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\basicDict";
+        private const string decompPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\cjk-decomp.txt";
 
-        private static Dictionary<string, List<string>> basicDict = new Dictionary<string, List<string>>();
+        private static Dictionary<string, List<string>> basicDict = BuildDecompositionDict();
 
         internal static Dictionary<string, List<string>> GetBasicDict() => basicDict;
 
-        public static void BuildDecompositionDict()
+        public static Dictionary<string, List<string>> BuildDecompositionDict()
         {
-            //BuildDictionary();
-            BuildDictionary_FromSerialized();
-        }
-
-        private static void BuildDictionary()
-        {
+            Dictionary<string, List<string>> dict = new Dictionary<string, List<string>>();
             File.ReadAllLines(decompPath)
                 .ToList()
                 .ForEach(AnalyzeLine);
-            static void AnalyzeLine(string line)
+            return dict;
+
+            void AnalyzeLine(string line)
             {
                 string toBeDecomposed = line.Split(':')[0];
 
@@ -56,28 +50,10 @@ namespace ChineseAppWPF.Logic
                 {
                     components.Add(afterParan.Split(')')[0]);
                 }
-                if (!basicDict.ContainsKey(toBeDecomposed))
-                    basicDict.Add(toBeDecomposed, components);
+                if (!dict.ContainsKey(toBeDecomposed))
+                    dict.Add(toBeDecomposed, components);
             }
-        }
 
-        private static void BuildDictionary_FromSerialized()
-        {
-            using (Stream stream = File.Open(savedBasicDictPath, FileMode.Open))
-            {
-                var bformatter = new BinaryFormatter();
-                basicDict = (Dictionary<string, List<string>>)bformatter.Deserialize(stream);
-            }
-        }
-
-        internal static void SerializeWordsDecomposition()
-        {
-            return;
-            using (Stream stream = File.Open(savedBasicDictPath, FileMode.Create))
-            {
-                var bformatter = new BinaryFormatter();
-                bformatter.Serialize(stream, basicDict);
-            }
         }
 
         private static bool IsComponentInTree(string wordChn, string component)

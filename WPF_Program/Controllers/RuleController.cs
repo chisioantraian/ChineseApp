@@ -10,13 +10,13 @@ namespace ChineseAppWPF.Controllers
     {
         private const string rulesPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\rules_1.utf8";
 
-        private static List<Rule> rules = null;
+        private static readonly List<Rule> rules = BuildRules();
 
-        public static void InitializeRules()
+        public static List<Rule> BuildRules()
         {
-            rules = File.ReadAllLines(rulesPath)
-                        .Select(GetRuleFromLine)
-                        .ToList();
+            return File.ReadAllLines(rulesPath)
+                       .Select(GetRuleFromLine)
+                       .ToList();
 
             static Rule GetRuleFromLine(string line)
             {

@@ -24,7 +24,7 @@
                     Tag="{Binding ChineseCharacter}" />
                 <Separator Background="Black">
                     <Separator.RenderTransform>
-                        <ScaleTransform ScaleY="3" />
+                        <ScaleTransform ScaleY="2" />
                     </Separator.RenderTransform>
                 </Separator>
 
@@ -35,7 +35,7 @@
                     Tag="{Binding SimplifiedWord}" />
                 <Separator Background="Black">
                     <Separator.RenderTransform>
-                        <ScaleTransform ScaleY="4" />
+                        <ScaleTransform ScaleY="2" />
                     </Separator.RenderTransform>
                 </Separator>
 
@@ -53,7 +53,7 @@
                     Tag="{Binding SimplifiedWord}" />
                 <Separator Background="Black">
                     <Separator.RenderTransform>
-                        <ScaleTransform ScaleY="3" />
+                        <ScaleTransform ScaleY="2" />
                     </Separator.RenderTransform>
                 </Separator>
 

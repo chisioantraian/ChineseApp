@@ -1,15 +1,24 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using ChineseAppWPF.Controllers;
-using ChineseAppWPF.Logic;
 
 namespace ChineseAppWPF
 {
+    public static class MyExtensions
+    {
+        public static bool IsNotExtraCharacter(this char character)
+        {
+            return  character != '〔' &&
+                    character != '〕' &&
+                    character != '-' &&
+                    character != ' ' &&
+                    character != '·';
+        }
+    }
+
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -19,19 +28,14 @@ namespace ChineseAppWPF
             //Needed to be able to print asian characters to the console
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            ChineseService.InitializeData();
-            Decomposition.BuildDecompositionDict();
             Controller.SetWindow(this);
-
-            Controller.InitializeRules();
-            //Controller.InitializeStatistics();
-            //Controller.InitializeSentenceExamples();
+            Controller.InitializeStatistics();
+            Controller.InitializeSentenceExamples();
             Controller.ShowSomeRandomWords();
-
         }
+
         private void SearchBar_KeyUp(object sender, KeyEventArgs e)
         {
-            //TODO if search too slow, change to search on enter; 
             if (e.Key == Key.Enter)
                 Controller.ShowResult();
         }
@@ -53,11 +57,7 @@ namespace ChineseAppWPF
             TextBlock textBlock = (TextBlock)sender;
             char character = textBlock.Text[0];
 
-            if (character != '〔' &&
-                character != '〕' &&
-                character != '-' &&
-                character != ' ' &&
-                character != '·')
+            if (character.IsNotExtraCharacter())
             {
                 textBlock.Cursor = Cursors.Hand;
                 textBlock.FontWeight = FontWeights.Bold;
@@ -70,24 +70,20 @@ namespace ChineseAppWPF
             textBlock.FontWeight = FontWeights.Normal;
         }
 
-        private void CharacterAndPinyin_MouseUp(object sender, RoutedEventArgs e)
+        private void CharacterAndPinyin_MouseUp(object sender, RoutedEventArgs e) 
         {
             MouseButtonEventArgs ev = (MouseButtonEventArgs)e;
+
             if (ev.ChangedButton == MouseButton.Left)
             {
                 TextBlock textBlock = (TextBlock)sender;
                 char character = textBlock.Text[0];
-                if (character != '〔' &&
-                    character != '〕' &&
-                    character != '-' &&
-                    character != ' ' &&
-                    character != '·')
+                if (character.IsNotExtraCharacter())
                 {
-                    Controller.ShowWordWithThisCharacter(character);
+                    Controller.ShowDecompositionTreeOfCharacter(character);
                     Controller.ShowCharsWithComponent_SidePanel(character);
                     Controller.ShowWordsWithCharacter_SidePanel(character);
                 }
-                //textBlock.ContextMenu.IsOpen = true;
             }
         }
 
@@ -95,46 +91,21 @@ namespace ChineseAppWPF
         {
             MenuItem item = (MenuItem)sender;
             char character = item.Tag.ToString()[0];
-            //TODO must rename
-            if (character != '〔' &&
-                character != '〕' &&
-                character != '-' &&
-                character != ' ' &&
-                character != '·')
-            {
-                Controller.ShowWordWithThisCharacter(character);
-            }
-        }
 
-        private void ActivateAllOptions_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem item = (MenuItem)sender;
-            char character = item.Tag.ToString()[0];
-            Console.WriteLine($"char: {character}");
-            if (character != '〔' &&
-                character != '〕' &&
-                character != '-' &&
-                character != ' ' &&
-                character != '·')
+            if (character.IsNotExtraCharacter())
             {
-                Controller.ShowWordWithThisCharacter(character);
-                Controller.ShowCharsWithComponent_SidePanel(character);
-                Controller.ShowWordsWithCharacter_SidePanel(character);
+                Controller.ShowDecompositionTreeOfCharacter(character);
             }
         }
 
         private void WordsWithCharacter_Click(object sender, RoutedEventArgs e)
         {
             MenuItem item = (MenuItem)sender;
-            string value = item.Tag.ToString();
-            //Controller.ShowChineseResult(value);
-            if (value[0] != '〔' &&
-                value[0] != '〕' &&
-                value[0] != '-' &&
-                value[0] != ' ' &&
-                value[0] != '·')
+            char character = item.Tag.ToString()[0];
+
+            if (character.IsNotExtraCharacter())
             {
-                Controller.ShowWordsWithCharacter_SidePanel(value[0]);
+                Controller.ShowWordsWithCharacter_SidePanel(character);
             }
         }
 
@@ -149,12 +120,8 @@ namespace ChineseAppWPF
         {
             MenuItem item = (MenuItem)sender;
             char component = item.Tag.ToString()[0];
-            //Controller.ShowComposeResult(component);
-            if (component != '〔' &&
-                component != '〕' &&
-                component != '-' &&
-                component != ' ' &&
-                component != '·')
+
+            if (component.IsNotExtraCharacter())
             {
                 Controller.ShowCharsWithComponent_SidePanel(component);
             }
@@ -164,7 +131,6 @@ namespace ChineseAppWPF
         {
             MenuItem item = (MenuItem)sender;
             string simplified = item.Tag.ToString();
-            //Console.WriteLine($"Simplified : {simplified}");
             Controller.ShowWordsInside_SidePanel(simplified);
         }
 
@@ -182,12 +148,6 @@ namespace ChineseAppWPF
 
         private void SaveSentence_Click(object sender, RoutedEventArgs e) => Controller.AddSentenceBreakdownToTests();
 
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            Controller.SaveTestSentences();
-
-            //Controller.SerializeWords();
-            //Decomposition.SerializeWordsDecomposition();
-        }
+        private void Window_Closing(object sender, CancelEventArgs e) => Controller.SaveTestSentences();
     }
 }

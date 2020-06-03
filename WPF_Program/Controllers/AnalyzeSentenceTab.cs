@@ -1,58 +1,72 @@
 ﻿using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
 using ChineseAppWPF.UiFactory;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace ChineseAppWPF.Controllers
 {
     public static partial class Controller
     {
-        private static int correctSentencesByAlg;
+        private static int correctSentencesByAlgorithm;
         private static int wrongNumberOfWordsAfterAlg;
         private static int wrongDecompositionFoundAfterAlg;
 
         internal static void AnalyseSentence()
         {
-            string sentenceText = mainWindow.SentenceAnalysisInputBox.Text;
-
-            Console.WriteLine($"Begin analyzeSentence: {sentenceText}");
-            Sentence st = ComputeSentenceBreakdown(sentenceText);
-
-            //TODO delete or separate thread
-            //List<string> simpList = st.Algorithm.Select(b => b.Part).ToList();	
-            //ChineseService.GetAllWordsFrom(simpList).UpdateShownWords();
-
             mainWindow.SentenceAnalysisBox.Children.Clear();
+            string sentenceText = mainWindow.SentenceAnalysisInputBox.Text;
+            Sentence sentence = ComputeSentenceBreakdown(sentenceText);
 
-            foreach (Breakdown b in st.Algorithm)
+            foreach (Breakdown breakdown in sentence.Algorithm)
             {
-                var posTuple = PosInformation.GetPosInfo(b.Description);
-                var wordBorder = BoxFactory.CreateAnalysisWordBox(posTuple, b.Part);
-                mainWindow.SentenceAnalysisBox.Children.Add(wordBorder);
+                var wordBox = BoxFactory.CreateAnalysisWordBox(breakdown);
+                mainWindow.SentenceAnalysisBox.Children.Add(wordBox);
             }
-            Console.WriteLine("\n\n");
         }
 
         private static Sentence ComputeSentenceBreakdown(string sentence)
         {
-            Console.WriteLine("Begin ComputeSentenceBreakdown");
-            List<Breakdown> noAlgBreakdown = GetNoAlgBreakdown(sentence).ToList();
-            List<Breakdown> algBreakdown = GetAlgBreakdown(noAlgBreakdown);
-            Console.WriteLine("End ComputeSentenceBreakdown");
+            List<Breakdown> noAlgorithmBreakdown = GetNoAlgorithmBreakdown(sentence).ToList();
+            List<Breakdown> algorithmBreakdown = GetAlgorithmBreakdown(noAlgorithmBreakdown);
 
             return new Sentence
             {
                 Text = sentence,
-                Correct = null,
-                NoAlgorithm = noAlgBreakdown,
-                Algorithm = algBreakdown
+                NoAlgorithm = noAlgorithmBreakdown,
+                Algorithm = algorithmBreakdown
             };
+        }
+
+        private static IEnumerable<Breakdown> GetNoAlgorithmBreakdown(string sentence)
+        {
+            List<string> wordParts = ChineseService.GetSimplifiedWordsFromSentence(sentence).ToList();
+            foreach (string part in wordParts)
+            {
+                if (allDetailedWords.ContainsKey(part))
+                    yield return new Breakdown { FoundWord = part, Annotation = allDetailedWords[part].DominantPos };
+                else
+                    yield return new Breakdown { FoundWord = part, Annotation = part };
+            }
+        }
+
+        internal static List<Breakdown> GetAlgorithmBreakdown(List<Breakdown> noAlg)
+        {
+            List<Breakdown> algList = new List<Breakdown>();
+            foreach (Breakdown bd in noAlg)
+            {
+                algList.Add(new Breakdown { FoundWord = bd.FoundWord, Annotation = bd.Annotation });
+            }
+
+            for (int i = 0; i < algList.Count; i++)
+            {
+                foreach (Rule rule in rules)
+                {
+                    BreakdownService.ApplyRule(rule, algList, i);
+                }
+            }
+
+            return algList;
         }
     }
 }

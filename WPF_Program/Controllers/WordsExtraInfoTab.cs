@@ -17,11 +17,9 @@ namespace ChineseAppWPF.Controllers
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {
             mainWindow.tView.ItemsSource = GetTreeDecomposition(characterToBeDecomposed.ToString());
-            mainWindow.DecompositionPanelTitle.Text = $"Decomposition to radicals of character {characterToBeDecomposed}"; 
-            //mainWindow.DecompositionPanelTitle.Inlines.Add(new Run(characterToBeDecomposed.ToString()) { FontSize = 30, FontWeight = FontWeights.Bold, AllowDrop=true });
+            mainWindow.DecompositionPanelTitle.Text = $"Decomposition to radicals of character {characterToBeDecomposed}";
         }
 
-        //TODO ch, from string to ch
         internal static IEnumerable<TreeViewItem> GetTreeDecomposition(string ch)
         {
             if (!basicDict.ContainsKey(ch))
@@ -34,27 +32,26 @@ namespace ChineseAppWPF.Controllers
                 return new List<TreeViewItem> { new TreeViewItem { Header = CreateTreeInfoBox(ch[0], true) } };
             }
 
-            List<TreeViewItem> result = basicDict[ch]
-                                            .SelectMany(GetTreeDecomposition)
-                                            .ToList();
+            List<TreeViewItem> childrenOfChar = basicDict[ch]
+                                                .SelectMany(GetTreeDecomposition)
+                                                .ToList();
 
             if (ChineseService.IsCharacter(ch[0]))
             {
-                return new List<TreeViewItem> { new TreeViewItem { Header = CreateTreeInfoBox(ch[0], false), ItemsSource = result, IsExpanded = true } };
+                return new List<TreeViewItem> { new TreeViewItem { Header = CreateTreeInfoBox(ch[0], false), ItemsSource = childrenOfChar, IsExpanded = true } };
             }
             else
             {
-                return result;
+                return childrenOfChar;
             }
         }
 
-        //TODO remove isKangxi inside this method?
         internal static Border CreateTreeInfoBox(char character, bool isKangxi)
         {
             List<Word> words = ChineseService
                                 .GetAllWordsFrom(character)
                                 .ToList();
-            if (words.Count() == 0)
+            if (!words.Any())
             {
                 Console.WriteLine($"{character} has no definition");
                 return null;
@@ -97,7 +94,6 @@ namespace ChineseAppWPF.Controllers
         {
             TextBlock decompositionTextBlock = new TextBlock
             {
-                //Text = GetOnlyDetails(words),
                 FontSize = 12,
                 Background = Brushes.White,
                 MaxWidth = 300,
@@ -192,17 +188,6 @@ namespace ChineseAppWPF.Controllers
                 block.Inlines.Add(new Run(w.Pinyin) { FontWeight = FontWeights.Bold });
                 block.Inlines.Add(new Run($" : {w.Definitions}\n"));
             }
-        }
-
-
-        internal static string GetOnlyDetails(List<Word> words)
-        {
-            StringBuilder definition = new StringBuilder();
-            foreach (Word w in words)
-            {
-                definition.Append($"{w.Pinyin}: {w.Definitions}\n");
-            }
-            return definition.ToString();
         }
     }
 }

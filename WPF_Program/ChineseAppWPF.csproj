@@ -9,12 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentWPF" Version="0.8.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MySql.Data" Version="8.0.19" />
+    <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.7.0.17535">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controllers\AnalyzeSentenceTemporaryTab.cs">
+      <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
   </ItemGroup>
 
 </Project>

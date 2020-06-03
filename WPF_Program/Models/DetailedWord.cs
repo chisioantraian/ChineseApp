@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace ChineseAppWPF.Models
+﻿namespace ChineseAppWPF.Models
 {
-    [Serializable]
     public class DetailedWord
     {
         public string Simplified { get; set; }

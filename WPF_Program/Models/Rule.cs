@@ -1,14 +1,7 @@
 ﻿
 namespace ChineseAppWPF.Models
 {
-    public abstract class Rule
-    {
-        /*public string Current { get; set; }
-        public string Tag1 { get; set; }
-        public string Tag2 { get; set; }
-        public string Cond { get; set; }
-        public string Tag3 { get; set; }*/
-    }
+    public abstract class Rule{ }
 
     public class NextTagRule : Rule
     {
@@ -55,8 +48,5 @@ namespace ChineseAppWPF.Models
     {
         public string CurrentChar { get; set; }
         public string DesiredTag { get; set; }
-
     }
-
-
 }

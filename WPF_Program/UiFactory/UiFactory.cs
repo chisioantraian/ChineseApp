@@ -1,19 +1,16 @@
 ﻿using ChineseAppWPF.Controllers;
 using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
-using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace ChineseAppWPF.UiFactory
 {
     public static class BoxFactory
     {
-        //TODO duplicate code 
-        public static Border CreateWordBox((string, string, string) bd)//((SolidColorBrush, string) posTuple, string simp, string details)
+        public static Border CreateWordBox((string, string, string) bd)
         {
             (SolidColorBrush, string) posTuple = PosInformation.GetPosInfo(bd.Item2);
             string simp = bd.Item1;
@@ -56,8 +53,11 @@ namespace ChineseAppWPF.UiFactory
             return wordBorder;
         }
 
-        public static Border CreateAnalysisWordBox((SolidColorBrush, string) posTuple, string simp)
+        public static Border CreateAnalysisWordBox(Breakdown breakdown)
         {
+            var posTuple = PosInformation.GetPosInfo(breakdown.Annotation);
+            string simp = breakdown.FoundWord;
+
             TextBlock wBlock = new TextBlock
             {
                 FontSize = 18,

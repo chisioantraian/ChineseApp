@@ -1,4 +1,4 @@
-﻿namespace WpfApp2
+﻿namespace AppLicenta
 {
     using System.Windows;
 

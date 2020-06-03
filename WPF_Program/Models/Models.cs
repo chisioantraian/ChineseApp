@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ChineseAppWPF.Models
+﻿namespace ChineseAppWPF.Models
 {
     public enum SelectedLanguage
     {
