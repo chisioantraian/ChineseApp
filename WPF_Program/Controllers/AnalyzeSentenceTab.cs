@@ -40,16 +40,6 @@ namespace ChineseAppWPF.Controllers
 
         private static List<Breakdown> GetNoAlgorithmBreakdown(string sentence)
         {
-            /*List<Breakdown> noAlgList = new List<Breakdown>();
-            List<string> wordParts = ChineseService.GetSimplifiedWordsFromSentence(sentence).ToList();
-            foreach (string part in wordParts)
-            {
-                if (allDetailedWords.ContainsKey(part))
-                    noAlgList.Add(new Breakdown { FoundWord = part, Annotation = allDetailedWords[part].DominantPos });
-                else
-                    noAlgList.Add(new Breakdown { FoundWord = part, Annotation = part });
-            }
-            return noAlgList;*/
             return ChineseService.GetSimplifiedWordsFromSentence(sentence)
                                     .Select(BreakdownFromPart)
                                     .ToList();
@@ -63,23 +53,26 @@ namespace ChineseAppWPF.Controllers
                 return new Breakdown { FoundWord = part, Annotation = part };
         }
 
+
         internal static List<Breakdown> GetAlgorithmBreakdown(List<Breakdown> noAlg)
         {
-            List<Breakdown> algList = new List<Breakdown>();
-            foreach (Breakdown bd in noAlg)
-            {
-                algList.Add(new Breakdown { FoundWord = bd.FoundWord, Annotation = bd.Annotation });
-            }
+            List<Breakdown> algList = CopyFromNoAlgorithm(noAlg);
 
             for (int i = 0; i < algList.Count; i++)
             {
-                foreach (Rule rule in rules)
+                foreach (Rule rule in RuleService.GetRules())
                 {
-                    BreakdownService.ApplyRule(rule, algList, i);
+                    rule.ApplyRule(algList, i);
                 }
             }
 
             return algList;
+        }
+
+        private static List<Breakdown> CopyFromNoAlgorithm(List<Breakdown> noAlg)
+        {
+            return noAlg.Select(bd => new Breakdown { FoundWord = bd.FoundWord, Annotation = bd.Annotation })
+                        .ToList();
         }
     }
 }

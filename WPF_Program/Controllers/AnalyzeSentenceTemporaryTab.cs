@@ -72,7 +72,7 @@ namespace ChineseAppWPF.Controllers
             string sentence = token[0];
             string breakdownLine = token[1];
 
-            List<Breakdown> correctBreakdown = BreakdownService.GetTupleListFrom(breakdownLine);
+            List<Breakdown> correctBreakdown = GetTupleListFrom(breakdownLine);
             List<Breakdown> noAlgBreakdown = GetNoAlgorithmBreakdown(sentence).ToList();
             List<Breakdown> algBreakdown = GetAlgorithmBreakdown(noAlgBreakdown);
 
@@ -83,6 +83,18 @@ namespace ChineseAppWPF.Controllers
                 NoAlgorithm = noAlgBreakdown,
                 Algorithm = algBreakdown
             };
+        }
+
+        internal static List<Breakdown> GetTupleListFrom(string line)
+        {
+            return line.Split('\t')
+                       .Select(BreakdownFromString)
+                       .ToList();
+            static Breakdown BreakdownFromString(string simplPOS)
+            {
+                string[] token = simplPOS.Split("_");
+                return new Breakdown { FoundWord = token[0], Annotation = token[1] };
+            }
         }
 
         internal static void AddSentenceBreakdownToTests()
@@ -150,46 +162,51 @@ namespace ChineseAppWPF.Controllers
 
         private static void ModifyStatisticsBox()
         {
-            string stats = "Statistics: \n\n";
-            stats += $"{sentences.Count} total sentences\n\n";
+            mainWindow.AnalysisStatisticsBox.Text =
+                "Statistics: \n\n"
+                + $"{sentences.Count} total sentences\n\n"
 
-            stats += $"{wrongNumberOfWords} - Sentences with wrong number of words detected\n";
-            stats += $"{wrongNumberOfWordsAfterAlg} --//-- After Algorithm\n\n";
+                + $"{wrongNumberOfWords} - Sentences with wrong number of words detected\n"
+                + $"{wrongNumberOfWordsAfterAlg} --//-- After Algorithm\n\n"
 
-            stats += $"{wrongDecompositionFound} - Sentences with wrong words detected\n";
-            stats += $"{wrongDecompositionFoundAfterAlg} --//-- After Algorithm\n\n";
+                + $"{wrongDecompositionFound} - Sentences with wrong words detected\n"
+                + $"{wrongDecompositionFoundAfterAlg} --//-- After Algorithm\n\n"
 
-            stats += $"{sentences.Count - correctSentencesByNoAlgorithm - wrongNumberOfWords} - Sentences with wrong POS assigned\n";
-            stats += $"{sentences.Count - correctSentencesByAlgorithm - wrongNumberOfWordsAfterAlg} --//-- After Algorithm\n\n";
+                + $"{sentences.Count - correctSentencesByNoAlgorithm - wrongNumberOfWords} - Sentences with wrong POS assigned\n"
+                + $"{sentences.Count - correctSentencesByAlgorithm - wrongNumberOfWordsAfterAlg} --//-- After Algorithm\n\n"
 
-            stats += $"{correctSentencesByNoAlgorithm} - Correct sentences with no algorithm (by default)\n";
-            stats += $"{correctSentencesByAlgorithm} --//-- After Algorithm\n\n";
+                + $"{correctSentencesByNoAlgorithm} - Correct sentences with no algorithm (by default)\n"
+                + $"{correctSentencesByAlgorithm} --//-- After Algorithm\n\n"
 
-            stats += $"{((double)correctSentencesByNoAlgorithm / sentences.Count) * 100}% - precision by default\n";
-            stats += $"{((double)correctSentencesByAlgorithm / sentences.Count) * 100}% - precision by using algorithm\n";
-
-            mainWindow.AnalysisStatisticsBox.Text = stats;
+                + $"{((double)correctSentencesByNoAlgorithm / sentences.Count) * 100}% - precision by default\n"
+                + $"{((double)correctSentencesByAlgorithm / sentences.Count) * 100}% - precision by using algorithm\n";
         }
 
         internal static void SaveTestSentences()
         {
             using StreamWriter sw = new StreamWriter(testsPath);
-            IEnumerable<Sentence> listResult =
-                sentences.GroupBy(s => s.Text)
-                         .Select(g => g.First())
-                         .OrderBy(s => s.Text.Length);
+            sentences.GroupBy(s => s.Text)
+                     .Select(g => g.First())
+                     .OrderBy(s => s.Text.Length)
+                     .Select(SavedSentenceLine)
+                     .ToList()
+                     .ForEach(line => sw.WriteLine(line));
+        }
 
-            foreach (Sentence sentence in listResult)
+        private static string SavedSentenceLine(Sentence sentence)
+        {
+            return sentence.Text + "\t" + GetBreakdownTextFromSentence(sentence);
+        }
+
+        private static string GetBreakdownTextFromSentence(Sentence sentence)
+        {
+            StringBuilder breakdownText = new StringBuilder("");
+            foreach (var breakdown in sentence.Correct)
             {
-                sw.Write(sentence.Text + "\t");
-                StringBuilder breakdownText = new StringBuilder("");
-                foreach (var breakdown in sentence.Correct)
-                {
-                    breakdownText.Append($"{breakdown.FoundWord}_{breakdown.Annotation}\t");
-                }
-                breakdownText.Length--;
-                sw.WriteLine(breakdownText.ToString());
+                breakdownText.Append($"{breakdown.FoundWord}_{breakdown.Annotation}\t");
             }
+            breakdownText.Length--;
+            return breakdownText.ToString();
         }
     }
 }

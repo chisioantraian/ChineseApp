@@ -39,10 +39,10 @@ namespace ChineseAppWPF.Logic
         {
             return File.ReadAllLines(detailedPath)
                        .AsParallel()
-                       .Select(getDetailedWordFromLine)
+                       .Select(GetDetailedWordFromLine)
                        .ToDictionary(w => w.Simplified);
 
-            static DetailedWord getDetailedWordFromLine(string line)
+            static DetailedWord GetDetailedWordFromLine(string line)
             {
                 string[] tokens = line.Split('\t');
                 return new DetailedWord
