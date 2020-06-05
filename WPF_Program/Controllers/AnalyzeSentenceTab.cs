@@ -25,29 +25,42 @@ namespace ChineseAppWPF.Controllers
             }
         }
 
-        private static Sentence ComputeSentenceBreakdown(string sentence)
+        private static Sentence ComputeSentenceBreakdown(string sentenceText)
         {
-            List<Breakdown> noAlgorithmBreakdown = GetNoAlgorithmBreakdown(sentence).ToList();
+            List<Breakdown> noAlgorithmBreakdown = GetNoAlgorithmBreakdown(sentenceText).ToList();
             List<Breakdown> algorithmBreakdown = GetAlgorithmBreakdown(noAlgorithmBreakdown);
 
             return new Sentence
             {
-                Text = sentence,
+                Text = sentenceText,
                 NoAlgorithm = noAlgorithmBreakdown,
                 Algorithm = algorithmBreakdown
             };
         }
 
-        private static IEnumerable<Breakdown> GetNoAlgorithmBreakdown(string sentence)
+        private static List<Breakdown> GetNoAlgorithmBreakdown(string sentence)
         {
+            /*List<Breakdown> noAlgList = new List<Breakdown>();
             List<string> wordParts = ChineseService.GetSimplifiedWordsFromSentence(sentence).ToList();
             foreach (string part in wordParts)
             {
                 if (allDetailedWords.ContainsKey(part))
-                    yield return new Breakdown { FoundWord = part, Annotation = allDetailedWords[part].DominantPos };
+                    noAlgList.Add(new Breakdown { FoundWord = part, Annotation = allDetailedWords[part].DominantPos });
                 else
-                    yield return new Breakdown { FoundWord = part, Annotation = part };
+                    noAlgList.Add(new Breakdown { FoundWord = part, Annotation = part });
             }
+            return noAlgList;*/
+            return ChineseService.GetSimplifiedWordsFromSentence(sentence)
+                                    .Select(BreakdownFromPart)
+                                    .ToList();
+        }
+
+        private static Breakdown BreakdownFromPart(string part)
+        {
+            if (allDetailedWords.ContainsKey(part))
+                return new Breakdown { FoundWord = part, Annotation = allDetailedWords[part].DominantPos };
+            else
+                return new Breakdown { FoundWord = part, Annotation = part };
         }
 
         internal static List<Breakdown> GetAlgorithmBreakdown(List<Breakdown> noAlg)

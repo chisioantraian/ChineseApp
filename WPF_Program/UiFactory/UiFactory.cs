@@ -10,6 +10,14 @@ namespace ChineseAppWPF.UiFactory
 {
     public static class BoxFactory
     {
+        public static int Property
+        {
+            get => default;
+            set
+            {
+            }
+        }
+
         public static Border CreateWordBox((string, string, string) bd)
         {
             (SolidColorBrush, string) posTuple = PosInformation.GetPosInfo(bd.Item2);

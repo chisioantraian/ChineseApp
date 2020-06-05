@@ -7,9 +7,7 @@ using System.Text;
 
 namespace ChineseAppWPF.Logic
 {
-
-    //TODO rename to AppBuilder
-    public static partial class ChineseService 
+    public static partial class ChineseService
     {
         private const string wordsPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\allWords.utf8";
         private const string detailedPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\allDetailedWords.utf8";
@@ -129,6 +127,5 @@ namespace ChineseAppWPF.Logic
             }
             return set;
         }
-
     }
 }

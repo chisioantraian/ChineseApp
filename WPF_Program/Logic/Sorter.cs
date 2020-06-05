@@ -61,6 +61,5 @@ namespace ChineseAppWPF.Logic
 
             return count;
         }
-
     }
 }

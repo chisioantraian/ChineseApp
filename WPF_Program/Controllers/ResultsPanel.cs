@@ -95,8 +95,7 @@ namespace ChineseAppWPF.Controllers
                 }
             }
             return block;
-        }
-        
+        }        
 
         internal static void Update_ShownCharsWithComponent(this IEnumerable<Word> filteredWords, char character)
         {

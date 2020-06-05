@@ -10,7 +10,7 @@ namespace ChineseAppWPF.Logic
     {
         private const string decompPath = @"C:\Users\chisi\source\repos\chisioantraian\ChineseApp\WPF_Program\Data\cjk-decomp.txt";
 
-        private static Dictionary<string, List<string>> basicDict = BuildDecompositionDict();
+        private static readonly Dictionary<string, List<string>> basicDict = BuildDecompositionDict();
 
         internal static Dictionary<string, List<string>> GetBasicDict() => basicDict;
 

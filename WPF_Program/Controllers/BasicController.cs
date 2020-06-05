@@ -54,8 +54,7 @@ namespace ChineseAppWPF.Controllers
             }
             showLanguageResult();
         }
-
-
+        
         public static void SortByFrequency()
         {
             sortingMethod = SortingMethod.Frequency;

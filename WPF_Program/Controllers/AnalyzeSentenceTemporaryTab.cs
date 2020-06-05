@@ -38,7 +38,7 @@ namespace ChineseAppWPF.Controllers
 
             ChineseService.GetAllWordsFrom(simplifiedList).UpdateShownWords(false);
         }
-        
+
         private static IEnumerable<(string, string, string)> GetAllFoundWordsWithAnnotation(IEnumerable<string> simplifiedList)
         {
             foreach (string simp in simplifiedList)
@@ -61,7 +61,7 @@ namespace ChineseAppWPF.Controllers
                         "！" => "chnExcl",
                         _ => "other",
                     };
-                    yield return (simp, "", "");
+                    yield return (simp, punctuation, "");
                 }
             }
         }
@@ -102,19 +102,19 @@ namespace ChineseAppWPF.Controllers
             ModifyStatisticsBox();
         }
 
-        private static int CorrectWordsFoundForSentence(Sentence sentence)
+        private static int CorrectWordsFoundForSentence(Sentence sentence, List<Breakdown> brList)
         {
             int correctWordsFoundForThisSentence = 0;
 
-            for (int i = 0; i < sentence.NoAlgorithm.Count; i++)
+            for (int i = 0; i < brList.Count; i++)
             {
-                if (sentence.NoAlgorithm[i].FoundWord != sentence.Correct[i].FoundWord)
+                if (brList[i].FoundWord != sentence.Correct[i].FoundWord)
                 {
                     wrongDecompositionFound++;
                     break;
                 }
-                if (sentence.NoAlgorithm[i].Annotation == sentence.Correct[i].Annotation ||
-                    ChineseService.IsPunctuation(sentence.NoAlgorithm[i].FoundWord))
+                if (brList[i].Annotation == sentence.Correct[i].Annotation ||
+                    ChineseService.IsPunctuation(brList[i].FoundWord))
                 {
                     correctWordsFoundForThisSentence++;
                 }
@@ -128,7 +128,7 @@ namespace ChineseAppWPF.Controllers
             {
                 wrongNumberOfWords++;
             }
-            else if (CorrectWordsFoundForSentence(sentence) == sentence.Correct.Count)
+            else if (CorrectWordsFoundForSentence(sentence, sentence.NoAlgorithm) == sentence.Correct.Count)
             {
                 correctSentencesByNoAlgorithm++;
             }
@@ -138,7 +138,7 @@ namespace ChineseAppWPF.Controllers
                 wrongNumberOfWordsAfterAlg++;
                 wrongSentences.Add(sentence);
             }
-            else if (CorrectWordsFoundForSentence(sentence) == sentence.Correct.Count)
+            else if (CorrectWordsFoundForSentence(sentence, sentence.Algorithm) == sentence.Correct.Count)
             {
                 correctSentencesByAlgorithm++;
             }
@@ -191,6 +191,5 @@ namespace ChineseAppWPF.Controllers
                 sw.WriteLine(breakdownText.ToString());
             }
         }
-
     }
 }

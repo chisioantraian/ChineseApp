@@ -20,7 +20,6 @@ namespace ChineseAppWPF.Logic
 
         public static Dictionary<string, DetailedWord> GetAllDetailedWords() => allDetailedWords;
 
-
         public static bool ContainsInsensitive(this string source, string value)
         {
             return source?.IndexOf(value, StringComparison.InvariantCultureIgnoreCase) >= 0;
