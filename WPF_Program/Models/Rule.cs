@@ -16,6 +16,14 @@ namespace ChineseAppWPF.Models
         public string CurrentTag { get; set; }
         public string DesiredTag { get; set; }
 
+        public NextTagRule(string[] tokens)
+        {
+            NextTag = tokens[1]; 
+            CurrentWord = tokens[2]; 
+            CurrentTag = tokens[3]; 
+            DesiredTag = tokens[4];
+        }
+
         public override void ApplyRule(List<Breakdown> bd, int i)
         {
             if (i < bd.Count - 1 &&
@@ -35,6 +43,14 @@ namespace ChineseAppWPF.Models
         public string CurrentTag { get; set; }
         public string DesiredTag { get; set; }
 
+        public PrevTagRule(string[] tokens)
+        {
+            PrevTag = tokens[1]; 
+            CurrentWord = tokens[2]; 
+            CurrentTag = tokens[3]; 
+            DesiredTag = tokens[4];
+        }
+
         public override void ApplyRule(List<Breakdown> bd, int i)
         {
             if (i > 0 &&
@@ -53,6 +69,14 @@ namespace ChineseAppWPF.Models
         public string CurrentWord { get; set; }
         public string CurrentTag { get; set; }
         public string DesiredTag { get; set; }
+
+        public NextWordRule(string[] tokens)
+        {
+            NextWord = tokens[1];
+            CurrentWord = tokens[2];
+            CurrentTag = tokens[3];
+            DesiredTag = tokens[4];
+        }
 
         public override void ApplyRule(List<Breakdown> bd, int i)
         {
@@ -74,6 +98,15 @@ namespace ChineseAppWPF.Models
         public string CurrentTag { get; set; }
         public string DesiredTag { get; set; }
 
+        public BetweenTagsRule(string[] tokens)
+        {
+            LeftTag = tokens[1];
+            RightTag = tokens[2];
+            CurrentWord = tokens[3];
+            CurrentTag = tokens[4];
+            DesiredTag = tokens[5];
+        }
+
         public override void ApplyRule(List<Breakdown> bd, int i)
         {
             if ((i > 0) && (i < bd.Count - 1) &&
@@ -94,6 +127,14 @@ namespace ChineseAppWPF.Models
         public string CurrentTag { get; set; }
         public string DesiredTag { get; set; }
 
+        public BetweenWordsRule(string[] tokens)
+        {
+            LeftWord = tokens[1]; 
+            RightWord = tokens[2]; 
+            CurrentTag = tokens[3]; 
+            DesiredTag = tokens[4];
+        }
+
         public override void ApplyRule(List<Breakdown> bd, int i)
         {
             if ((i > 0) && (i < bd.Count - 1) &&
@@ -111,6 +152,11 @@ namespace ChineseAppWPF.Models
         public string CurrentChar { get; set; }
         public string DesiredTag { get; set; }
 
+        public NoMoreVerbsRule(string[] tokens)
+        {
+            CurrentChar = tokens[1];
+            DesiredTag = tokens[2];
+        }
         public override void ApplyRule(List<Breakdown> bd, int i)
         {
             bool thereAreVerbs = false;

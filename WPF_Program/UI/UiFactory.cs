@@ -1,5 +1,4 @@
-﻿using ChineseAppWPF.Controllers;
-using ChineseAppWPF.Logic;
+﻿using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
 using System.Collections.Generic;
 using System.Windows;

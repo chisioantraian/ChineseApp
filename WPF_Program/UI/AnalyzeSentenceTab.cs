@@ -1,6 +1,5 @@
 ﻿using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
-using ChineseAppWPF.UiFactory;
 using System.Collections.Generic;
 using System.Linq;
 
