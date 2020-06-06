@@ -10,9 +10,9 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace ChineseAppWPF.Controllers
+namespace ChineseAppWPF.UI
 {
-    public static partial class Controller
+    public static partial class UiLayer
     {
         private static void ShowCharacterDecomposition(char characterToBeDecomposed)
         {

@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 
-namespace ChineseAppWPF.Controllers
+namespace ChineseAppWPF.UI
 {
-    public static partial class Controller
+    public static partial class UiLayer
     {
         private static int correctSentencesByNoAlgorithm;
         private static int wrongNumberOfWords;

@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controllers\AnalyzeSentenceTemporaryTab.cs">
+    <Compile Update="UI\AnalyzeSentenceTemporaryTab.cs">
       <ExcludeFromSourceAnalysis>True</ExcludeFromSourceAnalysis>
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

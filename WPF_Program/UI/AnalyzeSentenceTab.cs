@@ -4,9 +4,9 @@ using ChineseAppWPF.UiFactory;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ChineseAppWPF.Controllers
+namespace ChineseAppWPF.UI
 {
-    public static partial class Controller
+    public static partial class UiLayer
     {
         private static int correctSentencesByAlgorithm;
         private static int wrongNumberOfWordsAfterAlg;

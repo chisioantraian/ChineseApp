@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 
-namespace ChineseAppWPF.Controllers
+namespace ChineseAppWPF.UI
 {
-    public static partial class Controller
+    public static partial class UiLayer
     {
         private static MainWindow mainWindow;
         private static Dictionary<string, DetailedWord> allDetailedWords;

@@ -9,9 +9,9 @@ using System.Windows.Media;
 using ChineseAppWPF.Logic;
 using ChineseAppWPF.Models;
 
-namespace ChineseAppWPF.Controllers
+namespace ChineseAppWPF.UI
 {
-    public static partial class Controller
+    public static partial class UiLayer
     {
         private const string pinyin = "   ,. 0123456789/abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

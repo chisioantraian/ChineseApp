@@ -2,9 +2,9 @@
 using System.Windows.Controls;
 using ChineseAppWPF.Models;
 
-namespace ChineseAppWPF.Controllers
+namespace ChineseAppWPF.UI
 {
-    public static partial class Controller
+    public static partial class UiLayer
     {
         public static void InitializeSentenceExamples()
         {

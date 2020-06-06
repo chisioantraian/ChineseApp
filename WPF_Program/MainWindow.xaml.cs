@@ -3,21 +3,12 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ChineseAppWPF.Controllers;
+using ChineseAppWPF.Service;
+using ChineseAppWPF.UI;
 
 namespace ChineseAppWPF
 {
-    public static class MyExtensions
-    {
-        public static bool IsNotExtraCharacter(this char character)
-        {
-            return  character != '〔' &&
-                    character != '〕' &&
-                    character != '-' &&
-                    character != ' ' &&
-                    character != '·';
-        }
-    }
+
 
     public partial class MainWindow : Window
     {
@@ -28,16 +19,16 @@ namespace ChineseAppWPF
             //Needed to be able to print asian characters to the console
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            Controller.SetWindow(this);
-            Controller.InitializeStatistics();
-            Controller.InitializeSentenceExamples();
-            Controller.ShowSomeRandomWords();
+            UiLayer.SetWindow(this);
+            UiLayer.InitializeStatistics();
+            UiLayer.InitializeSentenceExamples();
+            UiLayer.ShowSomeRandomWords();
         }
 
         private void SearchBar_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                Controller.ShowResult();
+                UiLayer.ShowResult();
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -46,11 +37,11 @@ namespace ChineseAppWPF
             button.ContextMenu.IsOpen = true;
         }
 
-        private void ChangeToEnglishInput_Click(object sender, RoutedEventArgs e) => Controller.ChangeToEnglishInput();
+        private void ChangeToEnglishInput_Click(object sender, RoutedEventArgs e) => UiLayer.ChangeToEnglishInput();
 
-        private void ChangeToChineseInput_Click(object sender, RoutedEventArgs e) => Controller.ChangeToChineseInput();
+        private void ChangeToChineseInput_Click(object sender, RoutedEventArgs e) => UiLayer.ChangeToChineseInput();
 
-        private void ShowRandomWords_Click(object sender, RoutedEventArgs e) => Controller.ShowSomeRandomWords();
+        private void ShowRandomWords_Click(object sender, RoutedEventArgs e) => UiLayer.ShowSomeRandomWords();
 
         private void CharacterAndPinyin_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -80,9 +71,9 @@ namespace ChineseAppWPF
                 char character = textBlock.Text[0];
                 if (character.IsNotExtraCharacter())
                 {
-                    Controller.ShowDecompositionTreeOfCharacter(character);
-                    Controller.ShowCharsWithComponent_SidePanel(character);
-                    Controller.ShowWordsWithCharacter_SidePanel(character);
+                    UiLayer.ShowDecompositionTreeOfCharacter(character);
+                    UiLayer.ShowCharsWithComponent_SidePanel(character);
+                    UiLayer.ShowWordsWithCharacter_SidePanel(character);
                 }
             }
         }
@@ -94,7 +85,7 @@ namespace ChineseAppWPF
 
             if (character.IsNotExtraCharacter())
             {
-                Controller.ShowDecompositionTreeOfCharacter(character);
+                UiLayer.ShowDecompositionTreeOfCharacter(character);
             }
         }
 
@@ -105,7 +96,7 @@ namespace ChineseAppWPF
 
             if (character.IsNotExtraCharacter())
             {
-                Controller.ShowWordsWithCharacter_SidePanel(character);
+                UiLayer.ShowWordsWithCharacter_SidePanel(character);
             }
         }
 
@@ -113,7 +104,7 @@ namespace ChineseAppWPF
         {
             MenuItem item = (MenuItem)sender;
             string simplified = item.Tag.ToString();
-            Controller.ShowWordsContainingWord_SidePanel(simplified);
+            UiLayer.ShowWordsContainingWord_SidePanel(simplified);
         }
 
         private void CharactersWithComponent_Click(object sender, RoutedEventArgs e)
@@ -123,7 +114,7 @@ namespace ChineseAppWPF
 
             if (component.IsNotExtraCharacter())
             {
-                Controller.ShowCharsWithComponent_SidePanel(component);
+                UiLayer.ShowCharsWithComponent_SidePanel(component);
             }
         }
 
@@ -131,23 +122,23 @@ namespace ChineseAppWPF
         {
             MenuItem item = (MenuItem)sender;
             string simplified = item.Tag.ToString();
-            Controller.ShowWordsInside_SidePanel(simplified);
+            UiLayer.ShowWordsInside_SidePanel(simplified);
         }
 
-        private void SortByFrequency_Click(object sender, RoutedEventArgs e) => Controller.SortByFrequency();
+        private void SortByFrequency_Click(object sender, RoutedEventArgs e) => UiLayer.SortByFrequency();
 
-        private void SortByNumberOfStrokes_Click(object sender, RoutedEventArgs e) => Controller.SortByNumberOfStrokes();
+        private void SortByNumberOfStrokes_Click(object sender, RoutedEventArgs e) => UiLayer.SortByNumberOfStrokes();
 
-        private void SortByPinyin_Click(object sender, RoutedEventArgs e) => Controller.SortByPinyin();
+        private void SortByPinyin_Click(object sender, RoutedEventArgs e) => UiLayer.SortByPinyin();
 
-        private void SortByExact_Click(object sender, RoutedEventArgs e) => Controller.SortByExact();
+        private void SortByExact_Click(object sender, RoutedEventArgs e) => UiLayer.SortByExact();
 
-        private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => Controller.AnalyseSentence();
+        private void SentenceAnalysis_KeyUp(object sender, KeyEventArgs e) => UiLayer.AnalyseSentence();
 
-        private void AnalyseSentence_Click(object sender, RoutedEventArgs e) => Controller.AnalyseSentence_TestTab();
+        private void AnalyseSentence_Click(object sender, RoutedEventArgs e) => UiLayer.AnalyseSentence_TestTab();
 
-        private void SaveSentence_Click(object sender, RoutedEventArgs e) => Controller.AddSentenceBreakdownToTests();
+        private void SaveSentence_Click(object sender, RoutedEventArgs e) => UiLayer.AddSentenceBreakdownToTests();
 
-        private void Window_Closing(object sender, CancelEventArgs e) => Controller.SaveTestSentences();
+        private void Window_Closing(object sender, CancelEventArgs e) => UiLayer.SaveTestSentences();
     }
 }
